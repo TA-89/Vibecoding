@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#C6D300">
+  <meta name="description" content="Durchklickbares Folien-Deck: Vibecoding im Unterricht, praxisnah erklaert fuer Lehrpersonen der GBS St. Gallen.">
+  <title>Vibecoding im Unterricht</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#deck">Zum Inhalt springen</a>
+
+  <header class="deck-top" aria-label="Praesentationssteuerung">
+    <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+    <button class="icon-btn" id="overview-open" type="button" aria-label="Folienuebersicht oeffnen" title="O: Uebersicht">
+      <span></span><span></span><span></span><span></span>
+    </button>
+    <div class="counter" id="counter">01 / 15</div>
+  </header>
+
+  <main id="deck" class="deck" tabindex="-1">
+    <section class="slide title-slide" data-title="Unterrichtsproblem">
+      <div class="image-hero" data-img-src="images/hero-bg.jpg" data-img-label="Titel-Hintergrundfoto"></div>
+      <div class="title-card">
+        <p class="eyebrow">Startkonvent · GBS St. Gallen</p>
+        <h1>Ich wollte nie programmieren.</h1>
+        <p class="lead">Ich hatte einfach immer wieder kleine Unterrichtsprobleme, fuer die es kein passendes Werkzeug gab.</p>
+        <p class="hint">Das ist mein Einstieg in Vibecoding.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-title="So fing es an">
+      <p class="eyebrow">01 · Der Anfang</p>
+      <h2>Es begann nicht mit einer Plattform. Es begann mit einem Schultag.</h2>
+      <div class="slide-grid two">
+        <div class="brutal-card lime">
+          <p class="big-quote">"Wie zeige ich meinen Lernenden einfach, was heute laeuft?"</p>
+        </div>
+        <div class="story-stack">
+          <div><b>Problem</b><span>Tagesprogramm war nicht uebersichtlich genug.</span></div>
+          <div><b>Erste Loesung</b><span>Eine einfache Seite pro Klasse und Schultag.</span></div>
+          <div><b>Naechste Frage</b><span>Wie kann ich das selber schnell bearbeiten?</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Weiterentwickelt">
+      <p class="eyebrow">02 · Immer nur das naechste Problem</p>
+      <h2>So ist spenglersanitaer.ch Schritt fuer Schritt gewachsen.</h2>
+      <div class="growth-line">
+        <article><span>1</span><b>Tagesprogramm</b><small>Was laeuft heute?</small></article>
+        <article><span>2</span><b>Editor</b><small>Ich muss es selber aendern koennen.</small></article>
+        <article><span>3</span><b>Hausaufgaben</b><small>Nicht doppelt erfassen.</small></article>
+        <article><span>4</span><b>QR-Fotos</b><small>Abgaben mit dem Handy.</small></article>
+        <article><span>5</span><b>WebApp</b><small>Direkt auf dem Startbildschirm.</small></article>
+        <article><span>6</span><b>Praxisauftraege</b><small>Suchen, oeffnen, verbinden.</small></article>
+      </div>
+      <p class="lead narrow">Nicht: grosser Masterplan. Sondern: konkretes Beduerfnis, erste Version, testen, verbessern.</p>
+    </section>
+
+    <section class="slide" data-title="Live-Prompt">
+      <p class="eyebrow">03 · Jetzt der Live-Moment</p>
+      <h2>Ich gebe Codex jetzt eine neue Unterrichtsidee.</h2>
+      <div class="live-prompt">
+        <div>
+          <h3>Bild der Woche</h3>
+          <p>Lernende laden ein Praxisbild hoch, beschreiben es kurz, die Lehrperson gibt es frei, danach erscheint es fuer die Klasse.</p>
+          <p>Nach zwei Wochen werden die Bilder automatisch geloescht.</p>
+        </div>
+        <pre><code>Ergaenze die Demo-Version der Website um
+"Bild der Woche" fuer SAIa26-30 und SAIb26-30.
+
+Lernende: QR scannen, Foto hochladen,
+kurzen Text schreiben.
+
+Lehrperson: Foto pruefen, freigeben
+oder loeschen.
+
+Freigegebene Bilder erscheinen direkt
+in Teams und in der WebApp.</code></pre>
+      </div>
+      <p class="switch-note">Hier wechsle ich kurz zu Codex. Danach kommen wir zurueck und schauen, was im Hintergrund passiert.</p>
+    </section>
+
+    <section class="slide" data-title="Was ist Vibecoding?">
+      <div class="slide-grid two">
+        <div>
+          <p class="eyebrow">04 · Definition</p>
+          <h2>Vibecoding heisst: Ziel beschreiben statt Technik tippen.</h2>
+          <p class="lead">Ich sage der KI in normaler Sprache, was ich brauche. Sie schreibt eine erste Version. Ich teste und beschreibe die naechste Aenderung.</p>
+        </div>
+        <div class="brutal-card">
+          <h3>Wichtig</h3>
+          <p>Ich muss nicht wissen, wie jede Codezeile funktioniert.</p>
+          <p><b>Aber ich muss wissen, welches Problem ich loesen will.</b></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Kreislauf">
+      <p class="eyebrow">05 · Der Ablauf</p>
+      <h2>Vibecoding ist ein Kreislauf.</h2>
+      <div class="cycle" aria-label="Kreislauf Beschreiben, KI schreibt, Ausprobieren, Nachbessern">
+        <button data-cycle="0" class="cycle-step is-active"><b>1</b><span>Beschreiben</span></button>
+        <button data-cycle="1" class="cycle-step"><b>2</b><span>KI baut</span></button>
+        <button data-cycle="2" class="cycle-step"><b>3</b><span>Ausprobieren</span></button>
+        <button data-cycle="3" class="cycle-step"><b>4</b><span>Nachbessern</span></button>
+        <svg viewBox="0 0 320 320" aria-hidden="true">
+          <circle cx="160" cy="160" r="102" fill="none" stroke="currentColor" stroke-width="18" stroke-dasharray="36 24"/>
+          <path d="M246 88l36 6-11 35" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <p class="cycle-text" id="cycle-text">Starte mit einem Satz: "Ich brauche ein Tool, das ..."</p>
+    </section>
+
+    <section class="slide" data-title="Was entsteht?">
+      <p class="eyebrow">06 · Was schreibt die KI?</p>
+      <h2>Am Schluss ist es oft einfach ein Ordner mit Dateien.</h2>
+      <div class="file-grid">
+        <button class="file-card" data-file="index.html"><code>index.html</code><span>Inhalt und Struktur</span></button>
+        <button class="file-card" data-file="style.css"><code>style.css</code><span>Aussehen und Layout</span></button>
+        <button class="file-card" data-file="app.js"><code>app.js</code><span>Verhalten und Klicks</span></button>
+        <button class="file-card" data-file="images/"><code>images/</code><span>Bilder und Screenshots</span></button>
+        <button class="file-card" data-file="manifest.json"><code>manifest.json</code><span>App-Name und Icon</span></button>
+        <button class="file-card" data-file="README.md"><code>README.md</code><span>Anleitung fuer Menschen</span></button>
+      </div>
+      <p class="file-explain" id="file-explain">Klicke eine Datei an.</p>
+    </section>
+
+    <section class="slide" data-title="Web-Bausteine">
+      <p class="eyebrow">07 · Didaktische Vereinfachung</p>
+      <h2>Eine Webseite besteht aus drei Bausteinen.</h2>
+      <div class="analogy">
+        <div class="person-svg" aria-hidden="true">
+          <svg viewBox="0 0 360 300">
+            <g class="bone"><circle cx="90" cy="62" r="28"/><path d="M90 90v110M50 130h80M90 200l-38 62M90 200l42 62"/></g>
+            <g class="cloth"><path d="M176 72h88l18 116h-124z"/><path d="M168 188h122v72H168z"/></g>
+            <g class="muscle"><path d="M286 80c42 12 54 48 34 79"/><path d="M286 220c42-12 54-48 34-79"/></g>
+          </svg>
+        </div>
+        <div class="analogy-list">
+          <div><b>HTML</b><span>Skelett: Was steht auf der Seite?</span></div>
+          <div><b>CSS</b><span>Kleidung: Wie sieht es aus?</span></div>
+          <div><b>JS</b><span>Muskeln: Was passiert beim Klicken?</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Live-Beispiel">
+      <p class="eyebrow">08 · Mini-Beispiel</p>
+      <h2>Ein winziges Beispiel, aber es laeuft echt.</h2>
+      <div class="live-lab">
+        <div class="code-panel">
+          <div class="tabs" role="tablist">
+            <button class="tab is-active" data-tab="html" type="button">HTML</button>
+            <button class="tab" data-tab="css" type="button">CSS</button>
+            <button class="tab" data-tab="js" type="button">JS</button>
+          </div>
+          <textarea id="code-html" class="code-area is-active" spellcheck="false"><h1>Hoi GBS!</h1>
+<button id="demoBtn">Klick mich</button>
+<p id="msg">Noch nichts passiert.</p></textarea>
+          <textarea id="code-css" class="code-area" spellcheck="false">body { font-family: system-ui; padding: 20px; }
+h1 { color: #C6D300; -webkit-text-stroke: 1px #0E0E0C; }
+button { border: 3px solid #0E0E0C; padding: 12px 18px; }</textarea>
+          <textarea id="code-js" class="code-area" spellcheck="false">document.querySelector("#demoBtn").addEventListener("click", () => {
+  document.querySelector("#msg").textContent = "JavaScript hat reagiert.";
+});</textarea>
+        </div>
+        <iframe id="preview" title="Live-Vorschau" sandbox="allow-scripts"></iframe>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Unterrichtsideen">
+      <p class="eyebrow">09 · Was koennte man bauen?</p>
+      <h2>Gute VibeCoding-Ideen sind oft klein und sehr konkret.</h2>
+      <div class="idea-grid">
+        <article><b>Werkstatt-Coach</b><span>Beobachtungsbogen mit Feedbacktext.</span></article>
+        <article><b>Exit-Ticket</b><span>Rueckmeldung am Ende einer Lektion.</span></article>
+        <article><b>Lernziel-Ampel</b><span>verstanden, unsicher, Hilfe noetig.</span></article>
+        <article><b>Gruppengenerator</b><span>Namen rein, faire Gruppen raus.</span></article>
+        <article><b>Praxisfragen</b><span>Zufallsfragen fuer Repetition.</span></article>
+        <article><b>Checkliste</b><span>Werkzeug, Material oder Sicherheit.</span></article>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Tools">
+      <p class="eyebrow">10 · Werkzeuge</p>
+      <h2>Es gibt verschiedene Einstiege. Die Tool-Landschaft aendert schnell.</h2>
+      <div class="tool-grid">
+        <article class="tool-card">
+          <div class="image-slot small" data-img-src="images/screenshot-codex.png" data-img-label="Screenshot OpenAI Codex"></div>
+          <h3>OpenAI Codex</h3>
+          <p>Agentisches Coding-Werkzeug, u. a. CLI, IDE und Cloud.</p>
+          <a href="https://openai.com/codex" target="_blank" rel="noopener">openai.com/codex</a>
+        </article>
+        <article class="tool-card">
+          <div class="image-slot small" data-img-src="images/screenshot-claude.png" data-img-label="Screenshot Claude"></div>
+          <h3>Claude</h3>
+          <p>KI-Assistent von Anthropic; fuer Coding gibt es Claude Code.</p>
+          <a href="https://www.claude.com" target="_blank" rel="noopener">claude.com</a>
+        </article>
+        <article class="tool-card">
+          <div class="image-slot small" data-img-src="images/screenshot-google.png" data-img-label="Screenshot Google AI Studio"></div>
+          <h3>Google AI Studio</h3>
+          <p>Vibe-Coding mit Gemini; Antigravity als Coding-Plattform.</p>
+          <a href="https://aistudio.google.com" target="_blank" rel="noopener">aistudio.google.com</a>
+        </article>
+      </div>
+      <div class="link-cloud compact">
+        <a href="https://lovable.dev" target="_blank" rel="noopener">Lovable</a>
+        <a href="https://v0.app" target="_blank" rel="noopener">v0</a>
+        <a href="https://bolt.new" target="_blank" rel="noopener">Bolt</a>
+        <a href="https://replit.com" target="_blank" rel="noopener">Replit</a>
+        <a href="https://cursor.com" target="_blank" rel="noopener">Cursor</a>
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Selbst starten">
+      <p class="eyebrow">11 · Einfach anfangen</p>
+      <h2>Der beste Prompt beginnt nicht technisch, sondern paedagogisch.</h2>
+      <ol class="steps">
+        <li>Was stoert mich im Unterricht?</li>
+        <li>Was soll das Tool fuer wen tun?</li>
+        <li>Wie sieht der kleinste nuetzliche Ablauf aus?</li>
+        <li>Erste Version testen.</li>
+        <li>Eine konkrete Aenderung nach der anderen beschreiben.</li>
+      </ol>
+      <div class="prompt-boxes">
+        <p>"Baue mir einen Beobachtungsbogen fuer den Werkstattunterricht."</p>
+        <p>"Erstelle eine Ampelabfrage fuer die Lernziele von heute."</p>
+        <p>"Mach daraus eine Handyseite mit QR-Code."</p>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Einordnung">
+      <p class="eyebrow">12 · Ehrlich bleiben</p>
+      <h2>Vibecoding ist stark - aber nicht verantwortungsfrei.</h2>
+      <div class="truth-grid">
+        <div class="brutal-card lime"><h3>Stark fuer</h3><p>Prototypen, Unterrichtsideen, kleine Tools, schnelle Varianten.</p></div>
+        <div class="brutal-card coral"><h3>Aufpassen bei</h3><p>Datenschutz, Sicherheit, Wartbarkeit und produktiven Systemen.</p></div>
+        <div class="brutal-card"><h3>Merksatz</h3><p>Die KI kann helfen. Verantwortlich bleibt der Mensch.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Zurueck zur Demo">
+      <p class="eyebrow">13 · Der offene Loop</p>
+      <h2>Jetzt schauen wir, ob aus dem Prompt etwas Brauchbares geworden ist.</h2>
+      <div class="demo-flow">
+        <article><b>1</b><span>Demo-Ordner pruefen</span></article>
+        <article><b>2</b><span>Dateien auf domain.ch hochladen</span></article>
+        <article><b>3</b><span>Teams-Seite oeffnen</span></article>
+        <article><b>4</b><span>QR-Code scannen und Bilder hochladen</span></article>
+        <article><b>5</b><span>Lehrerbereich: freigeben oder loeschen</span></article>
+        <article><b>6</b><span>Freigegebene Bilder erscheinen live</span></article>
+      </div>
+      <div class="slide-grid two">
+        <div class="brutal-card lime">
+          <h3>Auftrag ans Publikum</h3>
+          <p>QR-Code scannen, ein Bild aufnehmen oder aus der Galerie waehlen, kurzen Text schreiben, hochladen.</p>
+        </div>
+        <div class="brutal-card">
+          <h3>Lehrerperspektive</h3>
+          <p>Ich sehe neue Einsendungen, gebe einzelne frei oder loesche sie. Danach sind sie fuer die Klasse sichtbar.</p>
+        </div>
+      </div>
+      <p class="lead narrow">Genau dieser Moment zeigt Vibecoding besser als jede Definition: Idee rein, brauchbarer Unterrichtsablauf raus.</p>
+    </section>
+
+    <section class="slide" data-title="Vertiefen">
+      <p class="eyebrow">14 · Zum Mitnehmen</p>
+      <h2>Wer mag, kann sich hier in Ruhe vertiefen.</h2>
+      <div class="slide-grid two">
+        <div class="qr-wrap">
+          <div id="qr-code" class="qr-code" aria-label="QR-Code zur aktuellen GitHub-Seite"></div>
+          <p id="qr-url" class="qr-url"></p>
+        </div>
+        <div class="install-card">
+          <button id="install-btn" class="mega-btn" type="button" hidden>Als App installieren</button>
+          <p><b>QR-Code:</b> fuehrt auf diese GitHub-Pages-Seite.</p>
+          <p><b>iOS:</b> Teilen -> Zum Home-Bildschirm.</p>
+          <p><b>Android/Desktop:</b> Installationsbutton oder Browser-Menue.</p>
+          <p class="version">v1.1 · Stand: 24.08.2026</p>
+        </div>
+      </div>
+      <div class="sources-wrap">
+        <h3>Quellen</h3>
+        <ul class="sources">
+          <li>Andrej Karpathy auf X, 2.2.2025</li>
+          <li>Collins Dictionary, Wort des Jahres 2025</li>
+          <li>Offizielle Tool-Seiten: Claude, OpenAI Codex, Google AI Studio, GitHub</li>
+          <li>MDN Web Docs fuer Web-Grundlagen</li>
+        </ul>
+        <h3>Mini-Changelog</h3>
+        <p><b>v1.1</b> - Dramaturgie auf Live-Prompt, Unterrichtsproblem, spenglersanitaer.ch-Entwicklung und Demo-Test umgebaut.</p>
+      </div>
+    </section>
+  </main>
+
+  <aside class="keyboard-help" id="keyboard-help">
+    <button id="help-close" type="button" aria-label="Tastaturhilfe schliessen">×</button>
+    <span>← →</span> wechseln · <span>O</span> Uebersicht · <span>F</span> Vollbild
+  </aside>
+
+  <div class="nav-zones" aria-hidden="true">
+    <button id="prev-zone" type="button" tabindex="-1"></button>
+    <button id="next-zone" type="button" tabindex="-1"></button>
+  </div>
+
+  <nav class="deck-actions" aria-label="Foliennavigation">
+    <button class="brutal-btn" id="prev-btn" type="button">Zurueck</button>
+    <button class="brutal-btn primary" id="next-btn" type="button">Weiter</button>
+  </nav>
+
+  <dialog id="overview" class="overview">
+    <form method="dialog">
+      <div class="overview-head">
+        <h2>Folienuebersicht</h2>
+        <button class="brutal-btn" value="close">Schliessen</button>
+      </div>
+      <div class="overview-grid" id="overview-grid"></div>
+    </form>
+  </dialog>
+
+  <script src="qrcode.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
