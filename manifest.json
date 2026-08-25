@@ -1,7 +1,7 @@
 {
   "name": "Vibecoding im Unterricht",
   "short_name": "Vibecoding",
-  "description": "Durchklickbares Folien-Deck zu Vibecoding im Unterricht.",
+  "description": "Interaktive Präsentation und Wissensseite zu Vibecoding im Unterricht.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

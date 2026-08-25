@@ -1,47 +1,35 @@
-# AGENTS.md - Vibecoding-Praesentationsseite
+# AGENTS.md - Vibecoding-Präsentationsseite
 
 ## Projektregeln
 
 - Vanilla HTML, CSS und JavaScript.
-- Kein npm, kein Build, kein Framework, kein CDN zur Laufzeit.
-- Ziel: GitHub Pages, deshalb alle Pfade relativ.
-- Deutsch mit Schweizer Rechtschreibung: immer `ss`, kein deutsches Eszett.
-- Keine Fakten, Features, Preise oder URLs erfinden.
-- Fehlende Bilder duerfen das Layout nicht zerstoeren.
+- Kein npm, kein Build, kein Framework und kein CDN zur Laufzeit.
+- Ziel ist GitHub Pages, deshalb bleiben alle Pfade relativ.
+- Deutsch mit Schweizer Rechtschreibung: Umlaute verwenden, immer `ss`, kein deutsches Eszett.
+- Keine Fakten, Funktionen, Preise oder URLs erfinden.
+- Präsentationsfolien müssen ohne Zoom auf einem Projektor lesbar sein.
+- Interaktive Elemente dürfen nicht durch unsichtbare Navigationsflächen überdeckt werden.
 
 ## Design-Tokens
 
-- `--paper: #FBFBF3`
-- `--ink: #0E0E0C`
+- `--paper: #F7F8F4`
+- `--ink: #111C20`
 - `--lime: #C6D300`
-- `--cobalt: #2440E6`
-- `--coral: #FF5B34`
+- `--blue: #167EA4`
+- `--coral: #E96548`
 - `--panel: #FFFFFF`
-- `--border: 3px solid var(--ink)`
-- `--shadow: 6px 6px 0 var(--ink)`
-- `--radius: 14px`
 
-Stil: Neo-Brutalism, klare Flaechen, dicke Rahmen, harte Schatten, keine Verlaeufe.
+Stil: klare Flächen, starke Typografie, harte Schatten, keine Farbverläufe.
 
-## Folienliste
+## Seitenstruktur
 
-1. Unterrichtsproblem
-2. So fing es an
-3. spenglersanitaer.ch wurde Schritt fuer Schritt weiterentwickelt
-4. Live-Prompt: Bild der Woche
-5. Was ist Vibecoding?
-6. Kreislauf
-7. Was entsteht?
-8. Web-Bausteine
-9. Live-Mini-Beispiel
-10. Unterrichtsideen
-11. Tools
-12. Selbst starten
-13. Ehrliche Einordnung
-14. Zurueck zur Demo und Live-Test
-15. Vertiefen, Quellen und Changelog
+- `index.html`: 15-teilige Präsentation.
+- `wissen.html`: Vertiefungsseite mit Kapiteln und Präsentations-Reiter.
+- `app.js`: Foliennavigation, Datei-Dialog, Kreislauf, Prompt-Kopie und QR-Code.
+- `wissen.js`: Prompt-Kopie und Offline-Registrierung der Wissensseite.
 
 ## Mini-Changelog
 
-- `v1.1` - Dramaturgie auf Unterrichtsproblem, Plattformgeschichte, Live-Prompt und Live-Test umgebaut.
-- `v1.0` - Erstes statisches Folien-Deck mit Navigation, Uebersicht, QR-Code, PWA, Offline-Cache und Live-Code-Beispiel.
+- `v2.0`: Dramaturgie, Umlaute, Typografie, Dateidialog, Promptbeispiel, Tool-Links und Wissensseite überarbeitet.
+- `v1.1`: Dramaturgie auf Unterrichtsproblem, Plattformgeschichte, Live-Prompt und Live-Test umgebaut.
+- `v1.0`: Erstes statisches Foliendeck mit Navigation, Übersicht, QR-Code, PWA und Offline-Cache.

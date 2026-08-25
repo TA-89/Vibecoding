@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#C6D300">
+  <meta name="description" content="Vibecoding einfach erklärt: Ablauf, Beispiele, Prompts, Werkzeuge, Chancen und Grenzen für Lehrpersonen.">
+  <title>Vibecoding einfach erklärt</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="knowledge-page">
+  <a class="skip-link" href="#wissen">Zum Inhalt springen</a>
+
+  <header class="knowledge-header">
+    <a class="knowledge-brand" href="#wissen">Vibecoding einfach erklärt</a>
+    <nav class="knowledge-tabs" aria-label="Kapitel">
+      <a href="#ueberblick">Überblick</a>
+      <a href="#kreislauf">Kreislauf</a>
+      <a href="#ideen">Ideen</a>
+      <a href="#prompt">Prompt</a>
+      <a href="#tools">Tools</a>
+      <a href="#verantwortung">Verantwortung</a>
+      <a href="index.html#1">Präsentation</a>
+    </nav>
+  </header>
+
+  <main id="wissen" class="knowledge-main">
+    <section class="knowledge-hero" id="ueberblick">
+      <div>
+        <p class="eyebrow">Für Lehrpersonen</p>
+        <h1>Eine Unterrichtsidee kann zum eigenen Werkzeug werden.</h1>
+        <p>Beim Vibecoding beschreibst du in normaler Sprache, was ein digitales Werkzeug leisten soll. Eine KI erstellt eine erste Version. Du probierst sie aus und beschreibst die nächste Verbesserung.</p>
+      </div>
+      <div class="hero-prompt">
+        <b>Der beste Anfang</b>
+        <p>«Ich brauche für meinen Unterricht ein einfaches Tool, das ...»</p>
+        <p>Starte mit einem echten Problem und der kleinsten nützlichen Lösung.</p>
+      </div>
+    </section>
+
+    <section class="knowledge-section" id="kreislauf">
+      <p class="eyebrow">So funktioniert es</p>
+      <h2>Vier Schritte, die sich wiederholen.</h2>
+      <p class="section-lead">Eine gute erste Version muss nicht vollständig sein. Entscheidend ist, dass du sie ausprobieren und gezielt verbessern kannst.</p>
+      <div class="knowledge-cycle">
+        <article><span>01</span><h3>Beschreiben</h3><p>Problem, Zielgruppe und gewünschten Ablauf in eigenen Worten erklären.</p></article>
+        <article><span>02</span><h3>Generieren</h3><p>Die KI erstellt Dateien, verbindet Funktionen und erklärt die Änderungen.</p></article>
+        <article><span>03</span><h3>Ausprobieren</h3><p>Klicken, testen und prüfen, ob die Lösung im echten Unterricht verständlich ist.</p></article>
+        <article><span>04</span><h3>Verbessern</h3><p>Eine konkrete Änderung beschreiben und den Kreislauf erneut durchlaufen.</p></article>
+      </div>
+    </section>
+
+    <section class="knowledge-section alt" id="ideen">
+      <p class="eyebrow">Ideen für den Unterricht</p>
+      <h2>Klein beginnen, konkret entlasten.</h2>
+      <p class="section-lead">Besonders geeignet sind überschaubare Werkzeuge, die einen wiederkehrenden Ablauf vereinfachen.</p>
+      <div class="knowledge-ideas">
+        <article><h3>Gruppengenerator</h3><p>Namen verteilen oder eine Selbstwahl ermöglichen, ohne Einzelgruppen zu erzeugen.</p></article>
+        <article><h3>Feedbackformular</h3><p>Beobachtungen erfassen und eine klare Rückmeldung strukturieren.</p></article>
+        <article><h3>Zufallsfragen</h3><p>Fragen aus einem eigenen Themenpool für Repetition auswählen.</p></article>
+        <article><h3>Quiz</h3><p>Kurze Lernkontrollen mit direkter Rückmeldung erstellen.</p></article>
+        <article><h3>Checkliste</h3><p>Material, Sicherheit oder Arbeitsschritte übersichtlich abhaken.</p></article>
+        <article><h3>Lernziel-Ampel</h3><p>Verstanden, unsicher oder Hilfe nötig direkt sichtbar machen.</p></article>
+      </div>
+    </section>
+
+    <section class="knowledge-section" id="prompt">
+      <p class="eyebrow">Beispielprompt</p>
+      <h2>So könnte dein erster Auftrag an die KI aussehen.</h2>
+      <p class="section-lead">Du musst keine Fachbegriffe verwenden. Beschreibe Ziel, Personen, Ablauf und wichtige Regeln.</p>
+      <div class="knowledge-prompt">
+        <pre id="knowledge-group-prompt">Erstelle mir einen Gruppengenerator für meinen Unterricht.
+
+Ich kann Namen einfügen und wähle die Gruppengrösse oder die Anzahl Gruppen. Die Gruppen entstehen zufällig oder die Lernenden wählen sich selbst. Niemand soll am Schluss allein in einer Gruppe sein.
+
+Die Seite soll auf dem Handy einfach bedienbar sein. Baue zuerst eine kleine funktionierende Version. Erkläre mir danach kurz, welche Dateien du erstellt hast.</pre>
+        <button class="copy-btn" id="knowledge-copy-prompt" type="button">Prompt kopieren</button>
+      </div>
+    </section>
+
+    <section class="knowledge-section alt" id="tools">
+      <p class="eyebrow">Werkzeuge</p>
+      <h2>Wähle den Einstieg, der zu dir passt.</h2>
+      <p class="section-lead">Die Angebote verändern sich laufend. Prüfe vor dem Einsatz mit echten Daten immer die aktuellen Datenschutz- und Nutzungsbedingungen.</p>
+      <div class="knowledge-tools">
+        <a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>OpenAI Codex ↗</b><span>Arbeitet direkt mit Dateien und kann Änderungen testen.</span></a>
+        <a href="https://docs.anthropic.com/en/docs/claude-code/getting-started" target="_blank" rel="noopener"><b>Claude Code ↗</b><span>Coding-Agent von Anthropic für bestehende und neue Projekte.</span></a>
+        <a href="https://aistudio.google.com/" target="_blank" rel="noopener"><b>Google AI Studio ↗</b><span>Mit Gemini und unterschiedlichen Prompts experimentieren.</span></a>
+        <a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable ↗</b><span>Web-Anwendungen durch eine Beschreibung erstellen.</span></a>
+        <a href="https://v0.app/" target="_blank" rel="noopener"><b>v0 ↗</b><span>Oberflächen und Web-Anwendungen visuell entwickeln.</span></a>
+        <a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt ↗</b><span>Apps direkt im Browser bauen und testen.</span></a>
+        <a href="https://replit.com/products/agent" target="_blank" rel="noopener"><b>Replit Agent ↗</b><span>Von der Idee bis zur veröffentlichten Anwendung.</span></a>
+        <a href="https://cursor.com/" target="_blank" rel="noopener"><b>Cursor ↗</b><span>Code-Editor mit KI-Unterstützung und Agentenfunktionen.</span></a>
+        <a href="https://github.com/features/copilot" target="_blank" rel="noopener"><b>GitHub Copilot ↗</b><span>KI-Unterstützung beim Schreiben und Verstehen von Code.</span></a>
+      </div>
+    </section>
+
+    <section class="knowledge-section" id="verantwortung">
+      <p class="eyebrow">Chancen und Grenzen</p>
+      <h2>Die KI baut mit. Die Verantwortung bleibt beim Menschen.</h2>
+      <div class="responsibility">
+        <div class="good">
+          <h3>Vibecoding ist stark für</h3>
+          <ul>
+            <li>kleine Prototypen und Unterrichtstools</li>
+            <li>schnelle Varianten und Verbesserungen</li>
+            <li>das Sichtbarmachen einer eigenen Idee</li>
+            <li>das schrittweise Erweitern des eigenen Verständnisses</li>
+          </ul>
+        </div>
+        <div class="watch">
+          <h3>Besonders aufpassen bei</h3>
+          <ul>
+            <li>Personendaten und Fotos</li>
+            <li>Zugriffsrechten und öffentlichen Links</li>
+            <li>Sicherheit und automatischen Löschungen</li>
+            <li>Systemen, die langfristig zuverlässig laufen müssen</li>
+          </ul>
+        </div>
+      </div>
+      <blockquote>Du musst nicht jede Codezeile verstehen. Aber du solltest wissen, welche Daten verwendet werden, was öffentlich wird und wie du zum alten Stand zurückkommst.</blockquote>
+    </section>
+
+    <section class="knowledge-section alt" id="start">
+      <div class="start-panel">
+        <div>
+          <p class="eyebrow">Dein erster Versuch</p>
+          <h2>Welches kleine Problem möchtest du morgen lösen?</h2>
+        </div>
+        <a href="#prompt">Beispielprompt verwenden</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="knowledge-footer">
+    <p><b>Vibecoding im Unterricht</b> · Startkonvent GBS St. Gallen · Version 2.0</p>
+    <p>Weiterführend: <a href="https://openai.com/codex/" target="_blank" rel="noopener">OpenAI Codex</a>, <a href="https://docs.anthropic.com/en/docs/claude-code/getting-started" target="_blank" rel="noopener">Claude Code</a>, <a href="https://ai.google.dev/aistudio" target="_blank" rel="noopener">Google AI Studio</a>, <a href="https://developer.mozilla.org/de/docs/Learn_web_development" target="_blank" rel="noopener">MDN Webentwicklung</a>.</p>
+  </footer>
+
+  <script src="wissen.js"></script>
+</body>
+</html>

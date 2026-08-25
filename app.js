@@ -6,18 +6,62 @@
   const progress = document.querySelector("#progress-bar");
   const overview = document.querySelector("#overview");
   const overviewGrid = document.querySelector("#overview-grid");
-  const installBtn = document.querySelector("#install-btn");
-  const qrUrl = document.querySelector("#qr-url");
-  const qrCode = document.querySelector("#qr-code");
+  const prevButton = document.querySelector("#prev-btn");
+  const nextButton = document.querySelector("#next-btn");
+  const fileDialog = document.querySelector("#file-dialog");
   let current = readHash();
-  let deferredInstall = null;
   let touchStartX = 0;
   let touchStartY = 0;
 
+  const cycleTexts = [
+    "Beschreibe zuerst das Problem, die Zielgruppe und den kleinsten nützlichen Ablauf.",
+    "Die KI erstellt oder verändert die benötigten Dateien und erklärt, was sie gemacht hat.",
+    "Öffnen, klicken und ehrlich prüfen: Ist die Lösung verständlich und im Unterricht brauchbar?",
+    "Eine konkrete Rückmeldung geben, erneut testen und die nächste Verbesserung anstossen."
+  ];
+
+  const fileDetails = {
+    index: {
+      title: "index.html",
+      summary: "Die Hauptseite legt fest, welche Inhalte auf der Webseite stehen und in welcher Reihenfolge sie erscheinen.",
+      list: ["Überschriften und Texte", "Buttons und Eingabefelder", "Bilder und Links", "Bereiche und Reihenfolge"],
+      example: "HTML ist wie der Rohbau eines Hauses: Räume, Türen und Fenster sind vorhanden, aber das Aussehen kommt erst später."
+    },
+    css: {
+      title: "style.css",
+      summary: "Diese Datei bestimmt das gesamte Erscheinungsbild und sorgt dafür, dass die Seite auf Handy und Computer funktioniert.",
+      list: ["Farben und Schriften", "Abstände und Grössen", "Anordnung der Inhalte", "Darstellung auf kleinen Bildschirmen"],
+      example: "CSS ist die Gestaltung: Es legt fest, ob ein Button limegrün, gross, linksbündig oder auf dem Handy untereinander erscheint."
+    },
+    js: {
+      title: "app.js",
+      summary: "JavaScript macht die Seite interaktiv und reagiert auf das Verhalten der Benutzerinnen und Benutzer.",
+      list: ["Klicks auswerten", "Ansichten öffnen", "Daten prüfen", "Inhalte aktualisieren"],
+      example: "JavaScript entscheidet zum Beispiel, was nach dem Klick auf «Bild hochladen» oder «Freigeben» passiert."
+    },
+    php: {
+      title: "bild-der-woche.php",
+      summary: "Die Serverdatei verarbeitet Uploads und entscheidet, welche Bilder gespeichert, freigegeben oder gelöscht werden.",
+      list: ["Dateien sicher entgegennehmen", "Klasse und Status speichern", "Freigaben verarbeiten", "Alte Bilder automatisch löschen"],
+      example: "Diese Datei arbeitet auf dem Webserver. Sie ist die Verbindung zwischen dem Upload auf dem Handy und der Galerie der Klasse."
+    },
+    images: {
+      title: "images/",
+      summary: "Im Bilderordner liegen die visuellen Inhalte, welche die Webseite direkt anzeigen darf.",
+      list: ["Fotos", "Hintergrundbilder", "Screenshots", "Grafiken"],
+      example: "Die Webseite merkt sich nicht das Bild selbst im HTML, sondern den Weg zu einer Bilddatei in diesem Ordner."
+    },
+    readme: {
+      title: "README.md",
+      summary: "Die README erklärt Menschen, was das Projekt macht und wie es verwendet, getestet oder veröffentlicht wird.",
+      list: ["Zweck des Projekts", "Installation und Start", "Wichtige Dateien", "Hinweise für spätere Änderungen"],
+      example: "Sie ist der Beipackzettel des Projekts. Der eigentliche Code funktioniert auch ohne sie, Menschen finden sich mit ihr aber schneller zurecht."
+    }
+  };
+
   function readHash() {
     const raw = Number((location.hash || "").replace("#", ""));
-    if (Number.isFinite(raw) && raw >= 1 && raw <= slides.length) return raw - 1;
-    return 0;
+    return Number.isFinite(raw) && raw >= 1 && raw <= slides.length ? raw - 1 : 0;
   }
 
   function go(index, replaceHash) {
@@ -25,33 +69,26 @@
     slides.forEach((slide, i) => slide.classList.toggle("is-active", i === current));
     counter.textContent = `${String(current + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
     progress.style.width = `${((current + 1) / slides.length) * 100}%`;
-  document.title = `${slides[current].dataset.title || "Vibecoding"} - Vibecoding im Unterricht`;
+    document.title = `${slides[current].dataset.title || "Vibecoding"} - Vibecoding im Unterricht`;
+    prevButton.disabled = current === 0;
+    nextButton.disabled = current === slides.length - 1;
     if (replaceHash) history.replaceState(null, "", `#${current + 1}`);
     else if (location.hash !== `#${current + 1}`) history.pushState(null, "", `#${current + 1}`);
-    syncOverview();
+    overviewGrid.querySelectorAll(".overview-card").forEach((button, i) => button.classList.toggle("is-active", i === current));
     slides[current].scrollTop = 0;
   }
 
-  function next() { go(current + 1); }
-  function prev() { go(current - 1); }
+  function next() { if (current < slides.length - 1) go(current + 1); }
+  function previous() { if (current > 0) go(current - 1); }
 
-  document.querySelector("#next-btn").addEventListener("click", next);
-  document.querySelector("#prev-btn").addEventListener("click", prev);
-  document.querySelector("#next-zone").addEventListener("click", next);
-  document.querySelector("#prev-zone").addEventListener("click", prev);
+  prevButton.addEventListener("click", previous);
+  nextButton.addEventListener("click", next);
   document.querySelector("#overview-open").addEventListener("click", () => overview.showModal());
-  document.querySelector("#help-close").addEventListener("click", () => {
-    document.querySelector("#keyboard-help").classList.add("is-hidden");
-    localStorage.setItem("vibecoding-help-hidden", "1");
-  });
-  if (localStorage.getItem("vibecoding-help-hidden") === "1") {
-    document.querySelector("#keyboard-help").classList.add("is-hidden");
-  }
 
   document.addEventListener("keydown", (event) => {
-    if (event.target.matches("textarea, input, button, a")) return;
+    if (overview.open || fileDialog.open || event.target.matches("textarea, input, button, a")) return;
     if (event.key === "ArrowRight" || event.key === " ") { event.preventDefault(); next(); }
-    if (event.key === "ArrowLeft") { event.preventDefault(); prev(); }
+    if (event.key === "ArrowLeft") { event.preventDefault(); previous(); }
     if (event.key === "Home") { event.preventDefault(); go(0); }
     if (event.key === "End") { event.preventDefault(); go(slides.length - 1); }
     if (event.key.toLowerCase() === "o") overview.showModal();
@@ -60,17 +97,19 @@
 
   window.addEventListener("hashchange", () => go(readHash(), true));
   document.addEventListener("touchstart", (event) => {
-    const t = event.changedTouches[0];
-    touchStartX = t.clientX;
-    touchStartY = t.clientY;
+    if (event.target.closest("a, button, dialog, pre")) return;
+    const touch = event.changedTouches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
   }, { passive: true });
   document.addEventListener("touchend", (event) => {
-    const t = event.changedTouches[0];
-    const dx = t.clientX - touchStartX;
-    const dy = t.clientY - touchStartY;
-    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.2) {
-      dx < 0 ? next() : prev();
-    }
+    if (!touchStartX || event.target.closest("a, button, dialog, pre")) return;
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    touchStartX = 0;
+    touchStartY = 0;
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.2) dx < 0 ? next() : previous();
   }, { passive: true });
 
   function toggleFullscreen() {
@@ -81,127 +120,71 @@
     }
   }
 
-  function syncOverview() {
-    overviewGrid.querySelectorAll(".overview-card").forEach((button, i) => {
-      button.classList.toggle("is-active", i === current);
-    });
-  }
-
-  slides.forEach((slide, i) => {
+  slides.forEach((slide, index) => {
     const button = document.createElement("button");
     button.className = "overview-card";
     button.type = "button";
-    button.innerHTML = `<small>${String(i + 1).padStart(2, "0")}</small>${slide.dataset.title || "Folie"}`;
-    button.addEventListener("click", () => {
-      overview.close();
-      go(i);
-    });
+    button.innerHTML = `<small>${String(index + 1).padStart(2, "0")}</small>${slide.dataset.title || "Folie"}`;
+    button.addEventListener("click", () => { overview.close(); go(index); });
     overviewGrid.append(button);
   });
 
-  const cycleTexts = [
-    "Starte mit einem Satz: \"Ich brauche ein Tool, das ...\"",
-    "Codex erstellt Dateien und meldet zurueck, was geaendert wurde.",
-    "Oeffnen, klicken, ausprobieren: Passt das fuer den Unterricht?",
-    "Rueckmelden: \"mach den QR groesser\" oder \"zeige die Galerie anders\"."
-  ];
   document.querySelectorAll("[data-cycle]").forEach((button) => {
     button.addEventListener("click", () => {
-      document.querySelectorAll("[data-cycle]").forEach((b) => b.classList.remove("is-active"));
-      button.classList.add("is-active");
+      document.querySelectorAll("[data-cycle]").forEach((node) => node.classList.toggle("is-active", node === button));
       document.querySelector("#cycle-text").textContent = cycleTexts[Number(button.dataset.cycle)] || cycleTexts[0];
     });
   });
 
-  const fileTexts = {
-    "index.html": "HTML ist der Inhalt: Ueberschriften, Texte, Buttons und die Reihenfolge.",
-    "style.css": "CSS ist das Aussehen: Farben, Abstaende, Schriftgroessen und Layout.",
-    "app.js": "JavaScript ist Verhalten: Klicks, Berechnungen, Speichern und Anzeigen.",
-    "images/": "Der Bilderordner sammelt Fotos, Screenshots, Icons und Grafiken.",
-    "manifest.json": "Das Manifest sagt dem Handy, wie die Webseite als App heisst.",
-    "README.md": "Die README ist die kurze menschliche Anleitung zum Projekt."
-  };
   document.querySelectorAll("[data-file]").forEach((button) => {
-    button.addEventListener("click", () => {
-      document.querySelector("#file-explain").textContent = fileTexts[button.dataset.file];
-    });
+    button.addEventListener("click", () => openFileDialog(button.dataset.file));
   });
 
-  document.querySelectorAll("[data-tip]").forEach((button) => {
-    button.addEventListener("click", () => {
-      document.querySelector("#tooltip").textContent = button.dataset.tip;
-    });
-  });
-
-  const tabs = document.querySelectorAll(".tab");
-  const areas = {
-    html: document.querySelector("#code-html"),
-    css: document.querySelector("#code-css"),
-    js: document.querySelector("#code-js")
-  };
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      tabs.forEach((t) => t.classList.toggle("is-active", t === tab));
-      Object.entries(areas).forEach(([key, area]) => area.classList.toggle("is-active", key === tab.dataset.tab));
-    });
-  });
-  Object.values(areas).forEach((area) => area.addEventListener("input", renderPreview));
-  function renderPreview() {
-    const html = areas.html.value;
-    const css = `<style>${areas.css.value}</style>`;
-    const js = `<script>${areas.js.value.replace(/<\/script/gi, "<\\/script")}<\/script>`;
-    document.querySelector("#preview").srcdoc = `<!doctype html><html lang="de"><head><meta charset="utf-8">${css}</head><body>${html}${js}</body></html>`;
+  function openFileDialog(key) {
+    const detail = fileDetails[key];
+    if (!detail) return;
+    document.querySelector("#file-dialog-title").textContent = detail.title;
+    document.querySelector("#file-dialog-summary").textContent = detail.summary;
+    document.querySelector("#file-dialog-list").innerHTML = detail.list.map((item) => `<li>${item}</li>`).join("");
+    document.querySelector("#file-dialog-example").textContent = detail.example;
+    fileDialog.showModal();
   }
 
-  function loadImageSlots() {
-    document.querySelectorAll("[data-img-src]").forEach((slot) => {
-      const img = new Image();
-      img.alt = slot.dataset.imgLabel || "Bild";
-      img.onload = () => {
-        slot.classList.add("has-image");
-        slot.textContent = "";
-        slot.append(img);
-      };
-      img.onerror = () => {};
-      img.src = slot.dataset.imgSrc;
-    });
-  }
-
-  window.addEventListener("beforeinstallprompt", (event) => {
-    event.preventDefault();
-    deferredInstall = event;
-    installBtn.hidden = false;
+  document.querySelector("#file-dialog-close").addEventListener("click", () => fileDialog.close());
+  fileDialog.addEventListener("click", (event) => {
+    if (event.target === fileDialog) fileDialog.close();
   });
-  installBtn.addEventListener("click", async () => {
-    if (!deferredInstall) return;
-    deferredInstall.prompt();
-    await deferredInstall.userChoice.catch(() => null);
-    deferredInstall = null;
-    installBtn.hidden = true;
+
+  document.querySelector("#copy-prompt").addEventListener("click", async (event) => {
+    const button = event.currentTarget;
+    const text = document.querySelector("#group-prompt").textContent.trim();
+    try {
+      await navigator.clipboard.writeText(text);
+      button.textContent = "Kopiert";
+    } catch (error) {
+      button.textContent = "Bitte Text markieren";
+    }
+    window.setTimeout(() => { button.textContent = "Prompt kopieren"; }, 1800);
   });
 
   function renderQr() {
-    const url = location.href.split("#")[0];
+    const qrCode = document.querySelector("#qr-code");
+    const qrUrl = document.querySelector("#qr-url");
+    if (!qrCode || !qrUrl) return;
+    const url = new URL("wissen.html", location.href).href.split("#")[0];
     qrUrl.textContent = url;
-    if (!window.VibeQR || !qrCode) {
-      qrCode.textContent = "QR-Code nicht verfuegbar.";
-      return;
-    }
+    if (!window.VibeQR) { qrCode.textContent = "QR-Code nicht verfügbar."; return; }
     try {
       window.VibeQR.render(qrCode, url, { cellSize: 8, margin: 4 });
     } catch (error) {
-      qrCode.innerHTML = `<p>QR-Code konnte fuer diese lokale URL nicht erzeugt werden. Nutze die URL darunter.</p>`;
+      qrCode.textContent = "QR-Code konnte für diese Adresse nicht erzeugt werden.";
     }
   }
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("service-worker.js", { scope: "./" }).catch(() => {});
-    });
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js", { scope: "./" }).catch(() => {}));
   }
 
-  loadImageSlots();
-  renderPreview();
   renderQr();
   go(current, true);
 })();

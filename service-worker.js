@@ -1,11 +1,14 @@
-const CACHE_NAME = "vibecoding-deck-v1.1.0";
+const CACHE_NAME = "vibecoding-deck-v2.0.0";
 const APP_SHELL = [
   "./",
   "index.html",
+  "wissen.html",
   "style.css",
   "app.js",
+  "wissen.js",
   "qrcode.min.js",
   "manifest.json",
+  "images/hero-workshop.png",
   "icons/icon-192.svg",
   "icons/icon-512.svg",
   "icons/icon-maskable.svg"
@@ -33,6 +36,10 @@ self.addEventListener("fetch", (event) => {
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
       }
       return response;
-    }).catch(() => caches.match("index.html")))
+    }).catch(() => {
+      if (event.request.mode !== "navigate") return Response.error();
+      const fallback = new URL(event.request.url).pathname.endsWith("/wissen.html") ? "wissen.html" : "index.html";
+      return caches.match(fallback);
+    }))
   );
 });
