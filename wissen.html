@@ -4,142 +4,149 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#C6D300">
-  <meta name="description" content="Vibecoding einfach erklärt: von der Unterrichtsidee bis zur ersten eigenen Webseite.">
+  <meta name="description" content="Vibecoding einfach erklärt: von der Unterrichtsidee bis zum eigenen digitalen Werkzeug.">
   <title>Vibecoding einfach erklärt</title>
-  <link rel="manifest" href="manifest.json?v=3.0.0">
+  <link rel="manifest" href="manifest.json?v=3.1.0">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icons/icon-192.svg">
-  <link rel="stylesheet" href="style.css?v=3.0.0">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="style.css?v=3.1.0">
 </head>
 <body class="knowledge-page">
   <a class="skip-link" href="#wissen">Zum Inhalt springen</a>
+  <div class="knowledge-progress" aria-hidden="true"><span id="knowledge-progress-bar"></span></div>
+
   <header class="knowledge-header">
-    <a class="knowledge-brand" href="#wissen">Vibecoding einfach erklärt</a>
+    <a class="knowledge-brand" href="#wissen"><span aria-hidden="true"></span>Vibecoding</a>
     <nav class="knowledge-tabs" aria-label="Kapitel">
-      <a href="#ablauf">So geht es</a>
-      <a href="#ideen">Ideen</a>
-      <a href="#prompt">Prompt</a>
-      <a href="#github">Gratis online</a>
-      <a href="#tools">Tools</a>
-      <a href="#sicherheit">Sicher arbeiten</a>
+      <a href="#ablauf">Ablauf</a>
+      <a href="#start">Ausprobieren</a>
+      <a href="#github">Online</a>
       <a href="index.html#1">Präsentation</a>
     </nav>
+    <button class="header-install" type="button" data-install>Als WebApp</button>
   </header>
 
   <main id="wissen" class="knowledge-main">
     <section class="knowledge-hero">
-      <div>
+      <div class="knowledge-hero-copy reveal">
         <p class="eyebrow">Für Lehrpersonen</p>
-        <h1>Aus einem Unterrichtsproblem wird ein eigenes Werkzeug.</h1>
-        <p>Beim Vibecoding beschreibst du in normaler Sprache, was eine digitale Lösung können soll. Eine KI erstellt die Dateien. Du probierst die Lösung aus und beschreibst die nächste Verbesserung.</p>
+        <h1>Du hast eine Idee. Vibecoding macht sie ausprobierbar.</h1>
+        <p>Du beschreibst in normaler Sprache, was du für deinen Unterricht brauchst. Eine KI erstellt eine erste Version. Du testest sie und sagst, was noch besser werden soll.</p>
+        <div class="hero-actions"><a href="#start">Ersten Versuch starten</a><button type="button" data-install>Als WebApp installieren</button></div>
+        <div class="hero-facts" aria-label="Wichtige Voraussetzungen"><span>Keine Code-Vorkenntnisse nötig</span><span>Sprache oder Text</span><span>Klein anfangen</span></div>
       </div>
-      <div class="definition-box">
-        <b>Die Kurzdefinition</b>
-        <p>Idee erklären → erste Version erhalten → testen → verbessern.</p>
-        <p>Du musst dafür nicht zuerst programmieren lernen. Du musst aber verstehen, was veröffentlicht wird und welche Daten verwendet werden.</p>
+      <div class="definition-box reveal">
+        <b>Vibecoding in einem Satz</b>
+        <p>Idee erklären → erste Version erhalten → ausprobieren → verbessern.</p>
+        <small>Du bleibst verantwortlich für Inhalte, Daten und die Veröffentlichung.</small>
+      </div>
+    </section>
+
+    <section class="pwa-invite" id="installieren">
+      <div><p class="eyebrow">Diese Seite mitnehmen</p><h2>Als WebApp auf dem Home-Bildschirm speichern.</h2><p>Danach öffnest du die Übersicht ohne Umweg direkt wie eine App.</p></div>
+      <div class="platform-help">
+        <button type="button" data-platform-help="android"><b>Android</b><span>Installieren oder zum Startbildschirm hinzufügen</span></button>
+        <button type="button" data-platform-help="ios"><b>iPhone / iPad</b><span>In Safari über «Teilen» hinzufügen</span></button>
       </div>
     </section>
 
     <section class="knowledge-section" id="ablauf">
       <p class="eyebrow">So funktioniert es</p>
-      <h2>Vier Schritte, die sich wiederholen.</h2>
+      <h2>Vier Schritte. Dann beginnt die nächste, bessere Runde.</h2>
       <div class="knowledge-cycle">
-        <article><span>01</span><h3>Beschreiben</h3><p>Problem, Zielgruppe und den gewünschten Ablauf in eigenen Worten erklären.</p></article>
-        <article><span>02</span><h3>Generieren</h3><p>Die KI erstellt oder verändert HTML, CSS, JavaScript und weitere Dateien.</p></article>
-        <article><span>03</span><h3>Ausprobieren</h3><p>Öffnen, klicken und prüfen, ob das Werkzeug im echten Unterricht verständlich ist.</p></article>
-        <article><span>04</span><h3>Verbessern</h3><p>Eine konkrete Änderung beschreiben und den Kreislauf erneut durchlaufen.</p></article>
-      </div>
-      <div class="start-check">
-        <div><h3>Ein guter Einstieg</h3><ul><li>kleines, echtes Unterrichtsproblem</li><li>klarer Ablauf</li><li>wenige Funktionen</li><li>schnell testbar</li></ul></div>
-        <div><h3>Noch kein guter Einstieg</h3><ul><li>Notenverwaltung</li><li>sensible Personendaten</li><li>kritische Sicherheitsfunktionen</li><li>ein riesiges System auf einmal</li></ul></div>
+        <article class="reveal"><span>01</span><h3>Beschreiben</h3><p>Was soll für wen einfacher werden?</p></article>
+        <article class="reveal"><span>02</span><h3>Erstellen lassen</h3><p>Die KI baut die benötigten Dateien.</p></article>
+        <article class="reveal"><span>03</span><h3>Ausprobieren</h3><p>Öffnen, klicken und im echten Ablauf prüfen.</p></article>
+        <article class="reveal"><span>04</span><h3>Verbessern</h3><p>Eine konkrete Änderung erklären und erneut testen.</p></article>
       </div>
     </section>
 
-    <section class="knowledge-section alt" id="ideen">
-      <p class="eyebrow">Ideen für den Unterricht</p>
-      <h2>Klein beginnen und einen wiederkehrenden Ablauf vereinfachen.</h2>
-      <div class="knowledge-ideas">
-        <article><h3>Gruppengenerator</h3><p>Namen zufällig verteilen oder eine Selbstwahl ermöglichen.</p></article>
-        <article><h3>Feedbackformular</h3><p>Beobachtungen erfassen und Rückmeldungen übersichtlich strukturieren.</p></article>
-        <article><h3>Quiz</h3><p>Eigene Fragen mit direkter Rückmeldung verwenden.</p></article>
-        <article><h3>Checkliste</h3><p>Material, Sicherheit oder Arbeitsschritte abhaken.</p></article>
-        <article><h3>Fehlersuch-Simulator</h3><p>Typische Fehler zeigen und Lösungswege vergleichen.</p></article>
-        <article><h3>Praxisfoto-Challenge</h3><p>Eine Arbeitssituation fotografieren, erklären und gemeinsam besprechen.</p></article>
+    <section class="knowledge-section alt" id="start">
+      <p class="eyebrow">Dein erster Versuch</p>
+      <h2>Wähle ein kleines Problem, das dich wirklich nervt.</h2>
+      <p class="section-lead">Ein guter Start ist überschaubar, nützlich und noch am selben Tag testbar.</p>
+      <div class="starter-ideas">
+        <article><b>Gruppen bilden</b><span>Namen fair verteilen</span></article>
+        <article><b>Feedback sammeln</b><span>Antworten sortiert anzeigen</span></article>
+        <article><b>Übung bauen</b><span>Quiz, H5P oder Lernpfad</span></article>
+        <article><b>Ablauf vereinfachen</b><span>Checkliste oder kleines Tool</span></article>
       </div>
-    </section>
-
-    <section class="knowledge-section" id="prompt">
-      <p class="eyebrow">Ein guter Prompt</p>
-      <h2>Beschreibe nicht den Code. Beschreibe das Werkzeug.</h2>
       <div class="prompt-formula">
         <article><span>1</span><h3>Ziel</h3><p>Welches Problem soll einfacher werden?</p></article>
-        <article><span>2</span><h3>Personen</h3><p>Wer benutzt das Werkzeug und auf welchem Gerät?</p></article>
-        <article><span>3</span><h3>Ablauf</h3><p>Was wird eingegeben, angeklickt und angezeigt?</p></article>
-        <article><span>4</span><h3>Regeln</h3><p>Was darf auf keinen Fall passieren?</p></article>
+        <article><span>2</span><h3>Personen</h3><p>Wer nutzt es und auf welchem Gerät?</p></article>
+        <article><span>3</span><h3>Ablauf</h3><p>Was wird eingegeben und angezeigt?</p></article>
+        <article><span>4</span><h3>Regeln</h3><p>Was darf nicht passieren?</p></article>
       </div>
       <div class="knowledge-prompt">
         <pre id="knowledge-group-prompt">Erstelle mir einen einfachen Gruppengenerator für meinen Unterricht.
 
-Ich füge die Vornamen ein und wähle die Anzahl Gruppen. Die Namen werden zufällig und möglichst gleichmässig verteilt. Niemand soll am Schluss allein in einer Gruppe sein.
+Ich füge Namen ein und wähle die Anzahl Gruppen. Die Namen werden zufällig und möglichst gleichmässig verteilt. Niemand soll am Schluss allein in einer Gruppe sein.
 
 Die Seite muss auf dem Handy gut funktionieren. Erstelle zuerst eine kleine Version und erkläre mir danach kurz, welche Dateien du erstellt hast.</pre>
         <button class="copy-btn" id="knowledge-copy-prompt" type="button">Prompt kopieren</button>
       </div>
     </section>
 
-    <section class="knowledge-section alt" id="github">
-      <p class="eyebrow">Gratis ausprobieren</p>
+    <section class="knowledge-section" id="github">
+      <p class="eyebrow">Gratis online stellen</p>
       <h2>Eine einfache Webseite mit GitHub Pages veröffentlichen.</h2>
-      <p class="section-lead">Für HTML, CSS, JavaScript und Bilder reicht ein öffentliches GitHub-Repository. Es ist kein eigener Webserver nötig.</p>
+      <p class="section-lead">Für HTML, CSS, JavaScript und Bilder genügt ein kostenloses GitHub-Konto.</p>
       <div class="github-steps">
-        <article><span>01</span><h3>Konto</h3><p>Ein kostenloses GitHub-Konto erstellen.</p></article>
-        <article><span>02</span><h3>Repository</h3><p>Ein neues öffentliches Projekt anlegen.</p></article>
-        <article><span>03</span><h3>Dateien</h3><p><code>index.html</code>, CSS, JavaScript und Bilder hochladen.</p></article>
-        <article><span>04</span><h3>Pages</h3><p>Unter «Settings → Pages» die Veröffentlichung aus dem Branch <code>main</code> aktivieren.</p></article>
-        <article><span>05</span><h3>Link</h3><p>Den erzeugten <code>github.io</code>-Link öffnen und testen.</p></article>
+        <article><span>01</span><h3>Projekt anlegen</h3><p>Ein öffentliches Repository erstellen.</p></article>
+        <article><span>02</span><h3>Dateien laden</h3><p>Projektdateien und Bilder hochladen.</p></article>
+        <article><span>03</span><h3>Pages einschalten</h3><p>Unter «Settings → Pages» den Branch <code>main</code> wählen.</p></article>
+        <article><span>04</span><h3>Link testen</h3><p>Die neue <code>github.io</code>-Adresse öffnen.</p></article>
       </div>
-      <p class="github-note">Wichtig: GitHub Pages veröffentlicht statische Webseiten. PHP, Datenbanken und geschützte Uploadbereiche benötigen einen richtigen Webserver. Lade keine Lernendendaten oder privaten Fotos in ein öffentliches Repository.</p>
-      <p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener"><b>Offizielle GitHub-Pages-Anleitung öffnen ↗</b></a></p>
+      <div class="github-note"><b>Wichtig:</b> GitHub Pages ist öffentlich und für statische Seiten gedacht. Keine Lernendendaten oder privaten Fotos hochladen. PHP, Datenbanken und geschützte Uploads brauchen einen passenden Webserver.</div>
+      <a class="text-link" href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">Offizielle GitHub-Pages-Anleitung öffnen ↗</a>
     </section>
 
-    <section class="knowledge-section" id="tools">
-      <p class="eyebrow">Werkzeuge</p>
-      <h2>Verschiedene Wege zur ersten Version.</h2>
-      <p class="section-lead">Die Angebote verändern sich laufend. Starte mit einem Werkzeug und einem kleinen Testprojekt.</p>
+    <section class="knowledge-section alt" id="tools">
+      <p class="eyebrow">Mögliche Werkzeuge</p>
+      <h2>Wähle eines und starte mit einer kleinen Aufgabe.</h2>
       <div class="knowledge-tools">
-        <a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>OpenAI Codex ↗</b><span>Arbeitet direkt mit Dateien, verändert Projekte und führt Tests aus.</span></a>
-        <a href="https://docs.anthropic.com/en/docs/claude-code/getting-started" target="_blank" rel="noopener"><b>Claude Code ↗</b><span>Coding-Agent für bestehende und neue Projekte.</span></a>
-        <a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable ↗</b><span>Erstellt Web-Anwendungen aus einer Beschreibung.</span></a>
-        <a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt ↗</b><span>Baut und testet Apps direkt im Browser.</span></a>
-        <a href="https://v0.app/" target="_blank" rel="noopener"><b>v0 ↗</b><span>Entwickelt Oberflächen und Web-Anwendungen visuell.</span></a>
-        <a href="https://github.com/" target="_blank" rel="noopener"><b>GitHub ↗</b><span>Speichert Projektdateien und veröffentlicht statische Seiten.</span></a>
+        <a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>OpenAI Codex ↗</b><span>Arbeitet direkt mit Dateien und führt Tests aus.</span></a>
+        <a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable ↗</b><span>Erstellt WebApps aus einer Beschreibung.</span></a>
+        <a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt ↗</b><span>Baut Prototypen direkt im Browser.</span></a>
+        <a href="https://v0.app/" target="_blank" rel="noopener"><b>v0 ↗</b><span>Hilft beim Erstellen von Oberflächen.</span></a>
       </div>
     </section>
 
-    <section class="knowledge-section alt" id="sicherheit">
+    <section class="knowledge-section" id="sicherheit">
       <p class="eyebrow">Sicher arbeiten</p>
-      <h2>Fünf Regeln, die wichtiger sind als perfekte Codekenntnisse.</h2>
+      <h2>Prüfen ist wichtiger als alles blind zu verstehen.</h2>
       <ol class="safety-list">
-        <li>Keine sensiblen Lernendendaten in öffentliche Projekte laden.</li>
-        <li>Jeden Link, Upload und Löschvorgang selbst testen.</li>
-        <li>Nur die wirklich benötigten Zugriffsrechte vergeben.</li>
-        <li>Vor grösseren Änderungen einen funktionierenden Stand sichern.</li>
-        <li>Bei Unsicherheit Datenschutz, IT oder eine fachkundige Person einbeziehen.</li>
+        <li>Keine sensiblen Daten in öffentliche Projekte laden.</li>
+        <li>Links, Eingaben, Uploads und Löschfunktionen selbst testen.</li>
+        <li>Vor Änderungen einen funktionierenden Stand sichern.</li>
+        <li>Bei Datenschutz oder Sicherheit Unterstützung holen.</li>
       </ol>
     </section>
 
-    <section class="knowledge-section" id="start">
-      <div class="start-panel">
-        <div><p class="eyebrow">Dein erster Versuch</p><h2>Welches kleine Unterrichtsproblem möchtest du morgen lösen?</h2></div>
-        <a href="#prompt">Beispielprompt verwenden</a>
-      </div>
+    <section class="knowledge-section final-try">
+      <div class="start-panel"><div><p class="eyebrow">Jetzt bist du dran</p><h2>Welche kleine Idee würdest du heute ausprobieren?</h2></div><div><a href="#start">Mit dem Beispiel starten</a><button type="button" data-install>WebApp installieren</button></div></div>
     </section>
   </main>
 
   <footer class="knowledge-footer">
-    <p><b>Vibecoding im Unterricht</b> · Startkonvent GBS St. Gallen · <a href="index.html#1">Präsentation öffnen</a></p>
-    <p>Quelle zur Veröffentlichung: <a href="https://docs.github.com/en/pages" target="_blank" rel="noopener">Offizielle GitHub-Pages-Dokumentation</a>.</p>
+    <p><b>Vibecoding im Unterricht</b> · Startkonvent GBS St. Gallen</p>
+    <p><a href="index.html#1">Präsentation öffnen</a> · <a href="https://docs.github.com/en/pages" target="_blank" rel="noopener">GitHub-Pages-Dokumentation</a></p>
   </footer>
-  <script src="wissen.js?v=3.0.0"></script>
+
+  <dialog class="install-dialog" id="install-dialog">
+    <button class="dialog-close" id="install-dialog-close" type="button" aria-label="Installationshilfe schliessen">×</button>
+    <p class="eyebrow">WebApp installieren</p>
+    <h2 id="install-dialog-title">Auf dem Home-Bildschirm speichern</h2>
+    <div class="install-steps" id="install-dialog-steps"></div>
+    <button class="native-install" id="native-install" type="button" hidden>Jetzt installieren</button>
+  </dialog>
+
+  <aside class="install-nudge" id="install-nudge" hidden aria-label="WebApp-Installation">
+    <div><b>Vibecoding mitnehmen</b><span>Direkt vom Home-Bildschirm öffnen.</span></div>
+    <button type="button" data-install>Installieren</button>
+    <button class="nudge-close" id="install-nudge-close" type="button" aria-label="Installationshinweis schliessen">×</button>
+  </aside>
+
+  <script src="wissen.js?v=3.1.0"></script>
 </body>
 </html>

@@ -187,17 +187,6 @@
     fileDialog.showModal();
   }
 
-  const copyButton = document.querySelector("#copy-prompt");
-  copyButton.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(document.querySelector("#group-prompt").textContent.trim());
-      copyButton.textContent = "Kopiert";
-    } catch (error) {
-      copyButton.textContent = "Bitte Text markieren";
-    }
-    window.setTimeout(() => { copyButton.textContent = "Prompt kopieren"; }, 1800);
-  });
-
   function isFullscreen() { return Boolean(document.fullscreenElement || document.webkitFullscreenElement); }
   async function toggleFullscreen() {
     try {
@@ -239,7 +228,7 @@
   }
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=3.0.0", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=3.1.0", { scope: "./" }).catch(() => {}));
   }
 
   renderQr();

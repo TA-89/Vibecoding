@@ -1,13 +1,13 @@
-const CACHE_NAME = "vibecoding-deck-v3.0.0";
+const CACHE_NAME = "vibecoding-deck-v3.1.0";
 const APP_SHELL = [
   "./",
   "index.html",
   "wissen.html",
-  "style.css?v=3.0.0",
-  "app.js?v=3.0.0",
-  "wissen.js?v=3.0.0",
-  "qrcode.min.js?v=3.0.0",
-  "manifest.json?v=3.0.0",
+  "style.css?v=3.1.0",
+  "app.js?v=3.1.0",
+  "wissen.js?v=3.1.0",
+  "qrcode.min.js?v=3.1.0",
+  "manifest.json?v=3.1.0",
   "images/hero-workshop.png",
   "images/bild-der-woche-story.png",
   "images/platform-01-tagesprogramm.png",
@@ -19,8 +19,12 @@ const APP_SHELL = [
   "images/platform-05-webapp-view.jpeg",
   "images/platform-06-praxisauftraege.png",
   "icons/icon-192.svg",
+  "icons/icon-180.png",
+  "icons/icon-192.png",
   "icons/icon-512.svg",
-  "icons/icon-maskable.svg"
+  "icons/icon-512.png",
+  "icons/icon-maskable.svg",
+  "icons/icon-maskable.png"
 ];
 
 self.addEventListener("install", (event) => {
@@ -38,6 +42,19 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request).then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        return response;
+      }).catch(() => {
+        const fallback = new URL(event.request.url).pathname.endsWith("/wissen.html") ? "wissen.html" : "index.html";
+        return caches.match(event.request).then((cached) => cached || caches.match(fallback));
+      })
+    );
+    return;
+  }
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
       if (response && response.ok && new URL(event.request.url).origin === location.origin) {
@@ -45,10 +62,6 @@ self.addEventListener("fetch", (event) => {
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
       }
       return response;
-    }).catch(() => {
-      if (event.request.mode !== "navigate") return Response.error();
-      const fallback = new URL(event.request.url).pathname.endsWith("/wissen.html") ? "wissen.html" : "index.html";
-      return caches.match(fallback);
-    }))
+    }).catch(() => Response.error()))
   );
 });

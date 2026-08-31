@@ -23,13 +23,15 @@ Stil: klare Flächen, starke Typografie, harte Schatten, keine Farbverläufe.
 
 ## Seitenstruktur
 
-- `index.html`: 15-teilige Präsentation.
+- `index.html`: 12-teilige Präsentation.
 - `wissen.html`: Vertiefungsseite mit Kapiteln und Präsentations-Reiter.
-- `app.js`: Foliennavigation, Datei-Dialog, Kreislauf, Prompt-Kopie und QR-Code.
-- `wissen.js`: Prompt-Kopie und Offline-Registrierung der Wissensseite.
+- `app.js`: Foliennavigation, Datei-Dialog, Kreislauf und QR-Code.
+- `wissen.js`: Prompt-Kopie, PWA-Installation, Scroll-Effekte und Offline-Registrierung der Wissensseite.
 
 ## Mini-Changelog
 
+- `v3.1`: Präsentation gestrafft, Kernvorteil ergänzt und Wissensseite für Mobilgeräte sowie PWA-Installation überarbeitet.
+- `v3.0`: Präsentation auf 12 Folien gestrafft, Vollbildmodus, Bildstrecke und neue Wissensseite ergänzt.
 - `v2.0`: Dramaturgie, Umlaute, Typografie, Dateidialog, Promptbeispiel, Tool-Links und Wissensseite überarbeitet.
 - `v1.1`: Dramaturgie auf Unterrichtsproblem, Plattformgeschichte, Live-Prompt und Live-Test umgebaut.
 - `v1.0`: Erstes statisches Foliendeck mit Navigation, Übersicht, QR-Code, PWA und Offline-Cache.

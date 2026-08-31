@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding im Unterricht: eine interaktive Kurzpräsentation für Lehrpersonen der GBS St. Gallen.">
   <title>Vibecoding im Unterricht</title>
-  <link rel="manifest" href="manifest.json?v=3.0.0">
+  <link rel="manifest" href="manifest.json?v=3.1.0">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icons/icon-192.svg">
-  <link rel="stylesheet" href="style.css?v=3.0.0">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="style.css?v=3.1.0">
 </head>
 <body class="deck-page">
   <a class="skip-link" href="#deck">Zum Inhalt springen</a>
@@ -62,10 +62,8 @@
     <section class="slide story-slide" data-title="Bild der Woche">
       <div class="story-photo" role="img" aria-label="Von der Idee vor dem Einschlafen über ein Baustellenfoto bis zur Besprechung in der Klasse"></div>
       <div class="story-copy">
-        <p class="eyebrow">Die nächste Idee</p>
-        <h2>Vor dem Einschlafen dachte ich: Warum nicht ein «Bild der Woche»?</h2>
-        <p class="lead">Auf der Baustelle fotografieren. Kurz erklären. Im Unterricht gemeinsam besprechen.</p>
-        <a class="switch-link" href="https://openai.com/codex/" target="_blank" rel="noopener">Jetzt live mit Codex umsetzen <span>↗</span></a>
+        <div class="story-title"><p class="eyebrow">Die nächste Idee</p><h2>Vor dem Einschlafen dachte ich: Warum nicht ein «Bild der Woche»?</h2></div>
+        <div class="story-action"><p class="lead">Auf der Baustelle fotografieren. Kurz erklären. Im Unterricht gemeinsam besprechen.</p><a class="switch-link" href="https://openai.com/codex/" target="_blank" rel="noopener">Jetzt live mit Codex umsetzen <span>↗</span></a></div>
       </div>
       <div class="story-labels" aria-hidden="true"><span>Idee</span><span>Praxisfoto</span><span>Besprechung</span></div>
     </section>
@@ -129,35 +127,34 @@
       </div>
     </section>
 
-    <section class="slide" data-title="Werkzeug und Prompt">
-      <p class="eyebrow">Klein anfangen</p>
-      <h2>Ein Werkzeug. Ein klarer Prompt. Eine erste Version.</h2>
-      <div class="quick-tools" aria-label="Drei mögliche Vibecoding-Werkzeuge">
-        <a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>Codex</b><span>arbeitet direkt mit Dateien</span></a>
-        <a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable</b><span>baut Web-Apps im Browser</span></a>
-        <a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt</b><span>erstellt schnell erste Prototypen</span></a>
-      </div>
-      <div class="prompt-strip">
-        <pre id="group-prompt">Erstelle mir einen einfachen Gruppengenerator für meinen Unterricht. Ich füge Namen ein und wähle die Anzahl Gruppen. Niemand soll am Schluss allein in einer Gruppe sein. Die Seite muss auf dem Handy gut funktionieren.</pre>
-        <button class="copy-btn" id="copy-prompt" type="button">Prompt kopieren</button>
-      </div>
-    </section>
-
     <section class="slide" data-title="Stärken und Verantwortung">
-      <p class="eyebrow">Ehrlich einordnen</p>
-      <h2>Vibecoding ist stark. Die Verantwortung bleibt bei mir.</h2>
+      <p class="eyebrow">Was ich dabei gelernt habe</p>
+      <h2>Aus Ideen werden Werkzeuge, die genau zu meinem Unterricht passen.</h2>
       <div class="balance-grid">
-        <article class="positive"><h3>Stark für</h3><p>Prototypen, kleine Unterrichtstools, Varianten und schnelle Verbesserungen.</p></article>
-        <article class="careful"><h3>Aufpassen bei</h3><p>Datenschutz, Sicherheit, Zugriffsrechten, Wartung und sensiblen Daten.</p></article>
+        <article class="positive"><h3>Was plötzlich möglich wird</h3><p>Eine Idee ist schnell ausprobiert. Danach verbessere ich genau das, was im Unterricht noch nicht funktioniert.</p></article>
+        <article class="careful"><h3>Wo ich bewusst langsam mache</h3><p>Bei Lernendendaten, Zugriffsrechten und Veröffentlichungen prüfe ich selbst und hole bei Bedarf Unterstützung.</p></article>
       </div>
-      <blockquote>Ich habe nicht gelernt zu codieren. Aber ich verstehe mehr und kann eigene Werkzeuge bauen. Das finde ich am eindrücklichsten.</blockquote>
+      <blockquote>Ich bin nicht plötzlich Programmierer. Aber ich kann meine Ideen klarer beschreiben, Lösungen prüfen und eigene Werkzeuge weiterentwickeln.</blockquote>
     </section>
 
     <section class="slide check-slide" data-title="Zurück zu Codex">
       <p class="eyebrow">Der Live-Check</p>
       <h2>Was hat Codex aus der Idee gemacht?</h2>
       <p class="lead">Wir prüfen die Dateien, laden sie hoch und testen die neue Funktion gemeinsam.</p>
-      <div class="control-note"><b>Bewusster Kontrollpunkt</b><p>Ein Agent könnte die Dateien auch selbständig veröffentlichen. Ich lade sie bewusst noch selbst hoch. So behalte ich den Überblick.</p></div>
+      <div class="deploy-keywords" aria-label="Möglichkeiten für eine direkte Veröffentlichung"><span>GitHub verbinden</span><span>Commit &amp; Push</span><span>GitHub Actions</span><span>SFTP / FTP</span><span>Vercel / Netlify</span></div>
+      <div class="control-note"><b>Direkt wäre möglich</b><p>Mit den passenden Zugriffsrechten kann ein Coding-Agent die Dateien selbst zu GitHub oder auf einen Webserver übertragen. Heute lade ich sie bewusst noch selbst hoch und behalte so den Überblick.</p></div>
+    </section>
+
+    <section class="slide possibility-slide" data-title="Der grösste Vorteil">
+      <p class="eyebrow">Der grösste Vorteil</p>
+      <h2>Ich starte nicht mit Code. Ich starte mit einer Idee aus meinem Unterricht.</h2>
+      <p class="possibility-lead">Auch ohne Vorkenntnisse kann daraus etwas entstehen, das vorher ausser Reichweite schien.</p>
+      <div class="possibility-scale">
+        <article><span>Einfach</span><h3>Moodle-Lernpfad, H5P, Quiz oder Checkliste</h3></article>
+        <article><span>Individuell</span><h3>Unterrichtstool, Dashboard oder interaktive Übung</h3></article>
+        <article><span>Komplex</span><h3>Webseite, WebApp, App oder ganzer Arbeitsablauf</h3></article>
+      </div>
+      <p class="possibility-note">Die Technik wird zugänglicher. Entscheidend bleiben die Idee, das Ausprobieren und mein fachlicher Blick.</p>
     </section>
 
     <section class="slide knowledge-slide" data-title="In Ruhe vertiefen">
@@ -183,7 +180,7 @@
     <button class="dialog-close" id="file-dialog-close" type="button" aria-label="Dateierklärung schliessen">×</button><p class="eyebrow">Diese Datei</p><h2 id="file-dialog-title"></h2><p class="file-dialog-lead" id="file-dialog-summary"></p><div class="file-dialog-body"><div><h3>Darin steckt</h3><ul id="file-dialog-list"></ul></div><div><h3>Einfach gesagt</h3><p id="file-dialog-example"></p></div></div>
   </dialog>
 
-  <script src="qrcode.min.js?v=3.0.0"></script>
-  <script src="app.js?v=3.0.0"></script>
+  <script src="qrcode.min.js?v=3.1.0"></script>
+  <script src="app.js?v=3.1.0"></script>
 </body>
 </html>
