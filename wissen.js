@@ -4,7 +4,7 @@
   const copyButton = document.querySelector("#knowledge-copy-prompt");
   const prompt = document.querySelector("#knowledge-group-prompt");
 
-  copyButton.addEventListener("click", async () => {
+  copyButton?.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(prompt.textContent.trim());
       copyButton.textContent = "Kopiert";
@@ -15,6 +15,6 @@
   });
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=2.0.1", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=3.0.0", { scope: "./" }).catch(() => {}));
   }
 })();

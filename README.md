@@ -6,7 +6,7 @@ Kein npm, kein Build und keine externen Laufzeit-Abhängigkeiten.
 
 ## Seiten
 
-- `index.html`: Präsentation mit 15 Folien, Tastatur- und Wischsteuerung.
+- `index.html`: Präsentation mit 12 Folien, Vollbild-, Tastatur- und Wischsteuerung.
 - `wissen.html`: Klickbare Vertiefung mit Beispielen, Promptvorlage, Tools, Chancen und Grenzen.
 - Die letzte Folie erzeugt automatisch einen QR-Code zur Wissensseite.
 
@@ -24,8 +24,8 @@ Das Repository ist unter `https://github.com/TA-89/Vibecoding` erreichbar. Die v
 - Zurück: Pfeiltaste links, Navigationsbutton oder Wischbewegung nach rechts.
 - Übersicht: Taste `O` oder Rasterbutton.
 - Vollbild: Taste `F`.
-- Direktlink: `#1` bis `#15`.
+- Direktlink: `#1` bis `#12`.
 
 ## Stand
 
-Version `v2.0`, Stand 25.08.2026.
+Version `v3.0`, Stand 31.08.2026.

@@ -8,54 +8,83 @@
   const overviewGrid = document.querySelector("#overview-grid");
   const prevButton = document.querySelector("#prev-btn");
   const nextButton = document.querySelector("#next-btn");
+  const fullscreenButton = document.querySelector("#fullscreen-toggle");
+  const platformDialog = document.querySelector("#platform-dialog");
   const fileDialog = document.querySelector("#file-dialog");
   let current = readHash();
   let touchStartX = 0;
   let touchStartY = 0;
 
   const cycleTexts = [
-    "Beschreibe zuerst das Problem, die Zielgruppe und den kleinsten nützlichen Ablauf.",
-    "Die KI erstellt oder verändert die benötigten Dateien und erklärt, was sie gemacht hat.",
-    "Öffnen, klicken und ehrlich prüfen: Ist die Lösung verständlich und im Unterricht brauchbar?",
-    "Eine konkrete Rückmeldung geben, erneut testen und die nächste Verbesserung anstossen."
+    "Erkläre das Problem und den kleinsten nützlichen Ablauf.",
+    "Die KI erstellt oder verändert die benötigten Dateien.",
+    "Öffne die Seite und prüfe sie im echten Ablauf.",
+    "Beschreibe eine konkrete Änderung und teste erneut."
   ];
+
+  const platformDetails = {
+    1: {
+      title: "1 · Tagesprogramm",
+      summary: "Der erste Wunsch: Lernende sehen für jeden Schultag ein aktuelles, klares Tagesprogramm.",
+      images: [{ src: "images/platform-01-tagesprogramm.png", alt: "Tagesprogramm einer Sanitärklasse", caption: "Aktueller Schultag mit Lektionen, Lernauftrag und Hausaufgaben" }]
+    },
+    2: {
+      title: "2 · Editor",
+      summary: "Danach brauchte es eine einfache Oberfläche, damit Lehrpersonen Inhalte selbst anpassen können.",
+      images: [{ src: "images/platform-02-editor.png", alt: "Lehrer-Editor für einen Schultag", caption: "Editor für Lektionen, Links, Prüfungen und Zusatzmaterial" }]
+    },
+    3: {
+      title: "3 · Hausaufgaben",
+      summary: "Hausaufgaben werden einmal erfasst und erscheinen danach am richtigen Schultag in der Lernendenansicht.",
+      images: [
+        { src: "images/platform-03-hausaufgaben-editor.png", alt: "Hausaufgabenbereich im Editor", caption: "Erfassen, fotografieren und speichern" },
+        { src: "images/platform-03-hausaufgaben-ansicht.png", alt: "Hausaufgaben in der Klassenansicht", caption: "Anzeige am richtigen Schultag" }
+      ]
+    },
+    4: {
+      title: "4 · Fotos per QR-Code",
+      summary: "Ein QR-Code verbindet den Computer der Lehrperson mit der Kamera auf dem Handy.",
+      images: [{ src: "images/platform-04-qr-upload.png", alt: "QR-Code für einen Foto-Upload", caption: "Foto direkt aufnehmen und dem ausgewählten Schultag zuordnen" }]
+    },
+    5: {
+      title: "5 · WebApp",
+      summary: "Die Klassenansicht lässt sich auf dem Startbildschirm installieren und wie eine App öffnen.",
+      images: [
+        { src: "images/platform-05-webapp-home.jpeg", alt: "Klassen-WebApp auf einem Android-Startbildschirm", caption: "Direkter Einstieg über das Klassenicon" },
+        { src: "images/platform-05-webapp-view.jpeg", alt: "Tagesprogramm in der mobilen WebApp", caption: "Daumenfreundliche Ansicht für Lernende" }
+      ]
+    },
+    6: {
+      title: "6 · Praxisaufträge",
+      summary: "Aus einer weiteren Idee entstand eine durchsuchbare Übersicht mit Praxisaufträgen und Kompetenzen.",
+      images: [{ src: "images/platform-06-praxisauftraege.png", alt: "Interaktive Übersicht der Praxisaufträge", caption: "Kompetenzen, Praxisaufträge und Lernaufträge an einem Ort" }]
+    }
+  };
 
   const fileDetails = {
     index: {
       title: "index.html",
-      summary: "Die Hauptseite legt fest, welche Inhalte auf der Webseite stehen und in welcher Reihenfolge sie erscheinen.",
-      list: ["Überschriften und Texte", "Buttons und Eingabefelder", "Bilder und Links", "Bereiche und Reihenfolge"],
-      example: "HTML ist wie der Rohbau eines Hauses: Räume, Türen und Fenster sind vorhanden, aber das Aussehen kommt erst später."
+      summary: "Die Hauptseite enthält die sichtbaren Texte, Bilder, Überschriften und Buttons.",
+      list: ["Inhalte", "Reihenfolge", "Links", "Eingabefelder"],
+      example: "HTML ist der Rohbau: Es legt fest, was auf der Seite vorhanden ist."
     },
     css: {
       title: "style.css",
-      summary: "Diese Datei bestimmt das gesamte Erscheinungsbild und sorgt dafür, dass die Seite auf Handy und Computer funktioniert.",
-      list: ["Farben und Schriften", "Abstände und Grössen", "Anordnung der Inhalte", "Darstellung auf kleinen Bildschirmen"],
-      example: "CSS ist die Gestaltung: Es legt fest, ob ein Button limegrün, gross, linksbündig oder auf dem Handy untereinander erscheint."
+      summary: "Diese Datei bestimmt das Aussehen auf Computer, Tablet und Handy.",
+      list: ["Farben", "Schriften", "Abstände", "Anordnung"],
+      example: "CSS ist die Gestaltung: Es macht aus dem Rohbau eine lesbare Oberfläche."
     },
     js: {
       title: "app.js",
-      summary: "JavaScript macht die Seite interaktiv und reagiert auf das Verhalten der Benutzerinnen und Benutzer.",
-      list: ["Klicks auswerten", "Ansichten öffnen", "Daten prüfen", "Inhalte aktualisieren"],
-      example: "JavaScript entscheidet zum Beispiel, was nach dem Klick auf «Bild hochladen» oder «Freigeben» passiert."
-    },
-    php: {
-      title: "bild-der-woche.php",
-      summary: "Die Serverdatei verarbeitet Uploads und entscheidet, welche Bilder gespeichert, freigegeben oder gelöscht werden.",
-      list: ["Dateien sicher entgegennehmen", "Klasse und Status speichern", "Freigaben verarbeiten", "Alte Bilder automatisch löschen"],
-      example: "Diese Datei arbeitet auf dem Webserver. Sie ist die Verbindung zwischen dem Upload auf dem Handy und der Galerie der Klasse."
+      summary: "JavaScript macht die Seite interaktiv und reagiert auf Klicks oder Eingaben.",
+      list: ["Klicks", "Prüfungen", "Berechnungen", "Ansichten"],
+      example: "JavaScript entscheidet, was nach einem Klick passieren soll."
     },
     images: {
       title: "images/",
-      summary: "Im Bilderordner liegen die visuellen Inhalte, welche die Webseite direkt anzeigen darf.",
-      list: ["Fotos", "Hintergrundbilder", "Screenshots", "Grafiken"],
-      example: "Die Webseite merkt sich nicht das Bild selbst im HTML, sondern den Weg zu einer Bilddatei in diesem Ordner."
-    },
-    readme: {
-      title: "README.md",
-      summary: "Die README erklärt Menschen, was das Projekt macht und wie es verwendet, getestet oder veröffentlicht wird.",
-      list: ["Zweck des Projekts", "Installation und Start", "Wichtige Dateien", "Hinweise für spätere Änderungen"],
-      example: "Sie ist der Beipackzettel des Projekts. Der eigentliche Code funktioniert auch ohne sie, Menschen finden sich mit ihr aber schneller zurecht."
+      summary: "In diesem Ordner liegen Fotos, Screenshots und andere Bilddateien.",
+      list: ["Fotos", "Screenshots", "Hintergründe", "Grafiken"],
+      example: "Die Webseite zeigt Bilder an, indem sie auf die Dateien in diesem Ordner verweist."
     }
   };
 
@@ -80,13 +109,14 @@
 
   function next() { if (current < slides.length - 1) go(current + 1); }
   function previous() { if (current > 0) go(current - 1); }
+  function anyDialogOpen() { return Array.from(document.querySelectorAll("dialog")).some((dialog) => dialog.open); }
 
   prevButton.addEventListener("click", previous);
   nextButton.addEventListener("click", next);
   document.querySelector("#overview-open").addEventListener("click", () => overview.showModal());
 
   document.addEventListener("keydown", (event) => {
-    if (overview.open || fileDialog.open || event.target.matches("textarea, input, button, a")) return;
+    if (anyDialogOpen()) return;
     if (event.key === "ArrowRight" || event.key === " ") { event.preventDefault(); next(); }
     if (event.key === "ArrowLeft") { event.preventDefault(); previous(); }
     if (event.key === "Home") { event.preventDefault(); go(0); }
@@ -103,22 +133,14 @@
     touchStartY = touch.clientY;
   }, { passive: true });
   document.addEventListener("touchend", (event) => {
-    if (!touchStartX || event.target.closest("a, button, dialog, pre")) return;
+    if (!touchStartX || anyDialogOpen()) return;
     const touch = event.changedTouches[0];
     const dx = touch.clientX - touchStartX;
     const dy = touch.clientY - touchStartY;
     touchStartX = 0;
     touchStartY = 0;
-    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.2) dx < 0 ? next() : previous();
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) dx < 0 ? next() : previous();
   }, { passive: true });
-
-  function toggleFullscreen() {
-    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen().catch(() => {});
-    }
-  }
 
   slides.forEach((slide, index) => {
     const button = document.createElement("button");
@@ -136,9 +158,24 @@
     });
   });
 
-  document.querySelectorAll("[data-file]").forEach((button) => {
-    button.addEventListener("click", () => openFileDialog(button.dataset.file));
-  });
+  document.querySelectorAll("[data-platform]").forEach((button) => button.addEventListener("click", () => openPlatformDialog(button.dataset.platform)));
+  document.querySelector("#platform-dialog-close").addEventListener("click", () => platformDialog.close());
+  platformDialog.addEventListener("click", (event) => { if (event.target === platformDialog) platformDialog.close(); });
+
+  function openPlatformDialog(key) {
+    const detail = platformDetails[key];
+    if (!detail) return;
+    document.querySelector("#platform-dialog-title").textContent = detail.title;
+    document.querySelector("#platform-dialog-summary").textContent = detail.summary;
+    const gallery = document.querySelector("#platform-dialog-gallery");
+    gallery.classList.toggle("has-two", detail.images.length > 1);
+    gallery.innerHTML = detail.images.map((image) => `<figure><img src="${image.src}" alt="${image.alt}"><figcaption>${image.caption}</figcaption></figure>`).join("");
+    platformDialog.showModal();
+  }
+
+  document.querySelectorAll("[data-file]").forEach((button) => button.addEventListener("click", () => openFileDialog(button.dataset.file)));
+  document.querySelector("#file-dialog-close").addEventListener("click", () => fileDialog.close());
+  fileDialog.addEventListener("click", (event) => { if (event.target === fileDialog) fileDialog.close(); });
 
   function openFileDialog(key) {
     const detail = fileDetails[key];
@@ -150,39 +187,59 @@
     fileDialog.showModal();
   }
 
-  document.querySelector("#file-dialog-close").addEventListener("click", () => fileDialog.close());
-  fileDialog.addEventListener("click", (event) => {
-    if (event.target === fileDialog) fileDialog.close();
+  const copyButton = document.querySelector("#copy-prompt");
+  copyButton.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(document.querySelector("#group-prompt").textContent.trim());
+      copyButton.textContent = "Kopiert";
+    } catch (error) {
+      copyButton.textContent = "Bitte Text markieren";
+    }
+    window.setTimeout(() => { copyButton.textContent = "Prompt kopieren"; }, 1800);
   });
 
-  document.querySelector("#copy-prompt").addEventListener("click", async (event) => {
-    const button = event.currentTarget;
-    const text = document.querySelector("#group-prompt").textContent.trim();
+  function isFullscreen() { return Boolean(document.fullscreenElement || document.webkitFullscreenElement); }
+  async function toggleFullscreen() {
     try {
-      await navigator.clipboard.writeText(text);
-      button.textContent = "Kopiert";
+      if (isFullscreen()) {
+        if (document.exitFullscreen) await document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      } else if (document.documentElement.requestFullscreen) {
+        await document.documentElement.requestFullscreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen();
+      }
     } catch (error) {
-      button.textContent = "Bitte Text markieren";
+      fullscreenButton.title = "Vollbildmodus wurde vom Browser blockiert";
     }
-    window.setTimeout(() => { button.textContent = "Prompt kopieren"; }, 1800);
-  });
+  }
+
+  fullscreenButton.addEventListener("click", toggleFullscreen);
+  document.addEventListener("fullscreenchange", updateFullscreenButton);
+  document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
+  function updateFullscreenButton() {
+    const active = isFullscreen();
+    fullscreenButton.textContent = active ? "×" : "⛶";
+    fullscreenButton.setAttribute("aria-label", active ? "Vollbildmodus verlassen" : "Vollbildmodus einschalten");
+    fullscreenButton.title = active ? "Vollbildmodus verlassen" : "Vollbildmodus einschalten";
+  }
+  if (!document.documentElement.requestFullscreen && !document.documentElement.webkitRequestFullscreen) fullscreenButton.hidden = true;
 
   function renderQr() {
     const qrCode = document.querySelector("#qr-code");
     const qrUrl = document.querySelector("#qr-url");
-    if (!qrCode || !qrUrl) return;
     const url = new URL("wissen.html", location.href).href.split("#")[0];
     qrUrl.textContent = url;
     if (!window.VibeQR) { qrCode.textContent = "QR-Code nicht verfügbar."; return; }
     try {
-      window.VibeQR.render(qrCode, url, { cellSize: 8, margin: 4 });
+      window.VibeQR.render(qrCode, url, { cellSize: 9, margin: 4 });
     } catch (error) {
-      qrCode.textContent = "QR-Code konnte für diese Adresse nicht erzeugt werden.";
+      qrCode.textContent = "QR-Code konnte nicht erzeugt werden.";
     }
   }
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=2.0.1", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=3.0.0", { scope: "./" }).catch(() => {}));
   }
 
   renderQr();

@@ -6,20 +6,18 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding im Unterricht: eine interaktive Kurzpräsentation für Lehrpersonen der GBS St. Gallen.">
   <title>Vibecoding im Unterricht</title>
-  <link rel="manifest" href="manifest.json?v=2.0.1">
+  <link rel="manifest" href="manifest.json?v=3.0.0">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.svg">
-  <link rel="stylesheet" href="style.css?v=2.0.1">
+  <link rel="stylesheet" href="style.css?v=3.0.0">
 </head>
 <body class="deck-page">
   <a class="skip-link" href="#deck">Zum Inhalt springen</a>
-
   <header class="deck-top" aria-label="Präsentationssteuerung">
     <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-    <button class="icon-btn" id="overview-open" type="button" aria-label="Folienübersicht öffnen" title="Folienübersicht öffnen">
-      <span></span><span></span><span></span><span></span>
-    </button>
-    <div class="counter" id="counter">01 / 15</div>
+    <button class="icon-btn grid-icon" id="overview-open" type="button" aria-label="Folienübersicht öffnen" title="Folienübersicht öffnen"><span></span><span></span><span></span><span></span></button>
+    <button class="icon-btn fullscreen-icon" id="fullscreen-toggle" type="button" aria-label="Vollbildmodus einschalten" title="Vollbildmodus einschalten">⛶</button>
+    <div class="counter" id="counter">01 / 12</div>
   </header>
 
   <main id="deck" class="deck" tabindex="-1">
@@ -28,6 +26,7 @@
       <div class="title-veil" aria-hidden="true"></div>
       <div class="title-copy">
         <p class="eyebrow">Startkonvent · GBS St. Gallen</p>
+        <p class="vibecoding-mark">Vibecoding</p>
         <h1>Ich wollte nie programmieren.</h1>
         <p class="lead">Ich hatte einfach Unterrichtsprobleme, für die es kein passendes Werkzeug gab.</p>
       </div>
@@ -45,119 +44,101 @@
       </div>
     </section>
 
-    <section class="slide" data-title="So entstand die Plattform">
+    <section class="slide platform-slide" data-title="So entstand die Plattform">
       <p class="eyebrow">Schritt für Schritt</p>
-      <h2>So entstand unsere Unterrichtsplattform.</h2>
-      <div class="growth-path" aria-label="Entwicklung der Plattform">
-        <article><span>1</span><b>Tagesprogramm</b><small>Immer aktuell</small></article>
-        <article><span>2</span><b>Editor</b><small>Selbst anpassen</small></article>
-        <article><span>3</span><b>Hausaufgaben</b><small>Einmal erfassen</small></article>
-        <article><span>4</span><b>Fotos per QR</b><small>Direkt vom Handy</small></article>
-        <article><span>5</span><b>WebApp</b><small>Für alle Klassen</small></article>
-        <article><span>6</span><b>Praxisaufträge</b><small>Suchen und verbinden</small></article>
+      <h2>So entstand eine Unterrichtsplattform für Sanitärinstallateure.</h2>
+      <p class="lead">Klicke auf eine Nummer und schau dir den jeweiligen Entwicklungsschritt an.</p>
+      <div class="platform-timeline" aria-label="Entwicklung der Unterrichtsplattform">
+        <button class="platform-step" data-platform="1" type="button"><span>1</span><b>Tagesprogramm</b></button>
+        <button class="platform-step" data-platform="2" type="button"><span>2</span><b>Editor</b></button>
+        <button class="platform-step" data-platform="3" type="button"><span>3</span><b>Hausaufgaben</b></button>
+        <button class="platform-step" data-platform="4" type="button"><span>4</span><b>Fotos per QR</b></button>
+        <button class="platform-step" data-platform="5" type="button"><span>5</span><b>WebApp</b></button>
+        <button class="platform-step" data-platform="6" type="button"><span>6</span><b>Praxisaufträge</b></button>
+        <div class="timeline-more"><span aria-hidden="true"></span><b>weitere Ideen …</b></div>
       </div>
     </section>
 
-    <section class="slide idea-slide" data-title="Bild der Woche">
-      <div class="idea-intro">
-        <p class="eyebrow">Eine neue Idee</p>
-        <h2>Vor dem Einschlafen hatte ich eine zündende Idee.</h2>
-        <p class="lead">Diese möchte ich jetzt live integrieren.</p>
+    <section class="slide story-slide" data-title="Bild der Woche">
+      <div class="story-photo" role="img" aria-label="Von der Idee vor dem Einschlafen über ein Baustellenfoto bis zur Besprechung in der Klasse"></div>
+      <div class="story-copy">
+        <p class="eyebrow">Die nächste Idee</p>
+        <h2>Vor dem Einschlafen dachte ich: Warum nicht ein «Bild der Woche»?</h2>
+        <p class="lead">Auf der Baustelle fotografieren. Kurz erklären. Im Unterricht gemeinsam besprechen.</p>
+        <a class="switch-link" href="https://openai.com/codex/" target="_blank" rel="noopener">Jetzt live mit Codex umsetzen <span>↗</span></a>
       </div>
-      <div class="week-picture">
-        <p class="week-label">Bild der Woche</p>
-        <p>Lernende laden ein Praxisbild hoch und erklären es kurz. Ich prüfe es, gebe es frei oder lösche es.</p>
-        <p>Freigegebene Bilder werden gemeinsam sichtbar und nach zwei Wochen gelöscht.</p>
-      </div>
-      <a class="switch-link" href="https://openai.com/codex/" target="_blank" rel="noopener">Jetzt zu Codex wechseln <span>↗</span></a>
+      <div class="story-labels" aria-hidden="true"><span>Idee</span><span>Praxisfoto</span><span>Besprechung</span></div>
     </section>
 
-    <section class="slide" data-title="Vibecoding in Kürze">
-      <p class="eyebrow">Vibecoding in 20 Sekunden</p>
-      <h2>Die Idee wird beschrieben. Der Code wird generiert.</h2>
-      <div class="fact-line">
-        <article><b>1</b><strong>Per Sprache oder Text</strong></article>
-        <article><b>2</b><strong>Code wird generiert</strong></article>
-        <article><b>3</b><strong>Erste Version testen</strong></article>
-        <article><b>4</b><strong>Änderungen beschreiben</strong></article>
+    <section class="slide cycle-slide" data-title="Der Vibecoding-Kreislauf">
+      <p class="eyebrow">Per Sprache oder Text</p>
+      <h2>Vibecoding ist ein Kreislauf.</h2>
+      <div class="cycle-orbit" aria-label="Vibecoding-Kreislauf mit vier anklickbaren Schritten">
+        <div class="cycle-ring" aria-hidden="true"></div>
+        <button class="cycle-node cycle-top is-active" data-cycle="0" type="button"><span>1</span><b>Beschreiben</b></button>
+        <button class="cycle-node cycle-right" data-cycle="1" type="button"><span>2</span><b>Generieren</b></button>
+        <button class="cycle-node cycle-bottom" data-cycle="2" type="button"><span>3</span><b>Ausprobieren</b></button>
+        <button class="cycle-node cycle-left" data-cycle="3" type="button"><span>4</span><b>Verbessern</b></button>
+        <div class="cycle-core"><strong>Vibecoding</strong><p id="cycle-text">Erkläre das Problem und den kleinsten nützlichen Ablauf.</p></div>
       </div>
-      <p class="takeaway">Zum Start braucht es keine Programmierkenntnisse. Es braucht ein klares Problem.</p>
     </section>
 
-    <section class="slide" data-title="Der Kreislauf">
-      <p class="eyebrow">Immer wieder</p>
-      <h2>Vibecoding ist kein Knopfdruck. Es ist ein Kreislauf.</h2>
-      <div class="cycle-track" aria-label="Vibecoding-Kreislauf">
-        <button class="cycle-node is-active" data-cycle="0" type="button"><span>1</span><b>Beschreiben</b></button>
-        <i aria-hidden="true">→</i>
-        <button class="cycle-node" data-cycle="1" type="button"><span>2</span><b>Generieren</b></button>
-        <i aria-hidden="true">→</i>
-        <button class="cycle-node" data-cycle="2" type="button"><span>3</span><b>Ausprobieren</b></button>
-        <i aria-hidden="true">→</i>
-        <button class="cycle-node" data-cycle="3" type="button"><span>4</span><b>Verbessern</b></button>
+    <section class="slide" data-title="Was entsteht">
+      <p class="eyebrow">Das Ergebnis</p>
+      <h2>Die KI erstellt einen Projektordner. Du behältst die Kontrolle.</h2>
+      <div class="folder-layout">
+        <div class="folder-shell" aria-label="Beispiel eines Projektordners">
+          <div class="folder-tab">mein-tool/</div>
+          <button class="file-row" data-file="index" type="button"><code>index.html</code><span>Inhalt</span></button>
+          <button class="file-row" data-file="css" type="button"><code>style.css</code><span>Aussehen</span></button>
+          <button class="file-row" data-file="js" type="button"><code>app.js</code><span>Funktionen</span></button>
+          <button class="file-row" data-file="images" type="button"><code>images/</code><span>Bilder</span></button>
+        </div>
+        <div class="file-actions">
+          <article><span>1</span><div><b>Öffnen</b><p>Die Seite im Browser anschauen.</p></div></article>
+          <article><span>2</span><div><b>Prüfen</b><p>Klicken, testen und Fehler beschreiben.</p></div></article>
+          <article><span>3</span><div><b>Hochladen</b><p>Die fertigen Dateien veröffentlichen.</p></div></article>
+          <article><span>4</span><div><b>Sichern</b><p>Den funktionierenden Stand behalten.</p></div></article>
+        </div>
       </div>
-      <div class="cycle-return" aria-hidden="true"><span>↖</span> und wieder von vorne</div>
-      <p class="cycle-text" id="cycle-text">Beschreibe zuerst das Problem, die Zielgruppe und den kleinsten nützlichen Ablauf.</p>
+      <p class="click-hint">Die Dateinamen sind anklickbar.</p>
     </section>
 
-    <section class="slide" data-title="Die Dateien">
-      <p class="eyebrow">Was entsteht?</p>
-      <h2>Am Schluss ist es oft einfach ein Ordner mit Dateien.</h2>
-      <div class="file-grid">
-        <button class="file-card" data-file="index" type="button"><code>index.html</code><span>Inhalt und Aufbau</span></button>
-        <button class="file-card" data-file="css" type="button"><code>style.css</code><span>Aussehen und Anordnung</span></button>
-        <button class="file-card" data-file="js" type="button"><code>app.js</code><span>Klicks und Verhalten</span></button>
-        <button class="file-card" data-file="php" type="button"><code>bild-der-woche.php</code><span>Speichern und Freigeben</span></button>
-        <button class="file-card" data-file="images" type="button"><code>images/</code><span>Bilder und Grafiken</span></button>
-        <button class="file-card" data-file="readme" type="button"><code>README.md</code><span>Anleitung und Übersicht</span></button>
-      </div>
-      <p class="click-hint">Eine Datei anklicken, um sie gross zu erklären.</p>
-    </section>
-
-    <section class="slide" data-title="Webseite einfach erklärt">
-      <p class="eyebrow">Ganz einfach</p>
-      <h2>Eine Webseite hat drei Rollen.</h2>
-      <div class="web-roles">
-        <article><code>HTML</code><h3>Inhalt</h3><p>Texte, Bilder, Überschriften und Buttons.</p></article>
-        <article><code>CSS</code><h3>Aussehen</h3><p>Farben, Schriften, Abstände und Anordnung.</p></article>
-        <article><code>JS</code><h3>Verhalten</h3><p>Was passiert beim Klicken, Speichern oder Suchen?</p></article>
+    <section class="slide" data-title="Webseite veröffentlichen">
+      <p class="eyebrow">Vom Ordner ins Internet</p>
+      <h2>Zwei einfache Wege zur eigenen Webseite.</h2>
+      <div class="publish-routes">
+        <article>
+          <p class="route-number">01</p><h3>GitHub Pages</h3><p>Ideal für eine statische Testseite ohne PHP oder Datenbank.</p>
+          <ol><li>Dateien in ein Repository laden</li><li>Pages unter «Settings» aktivieren</li><li>Öffentlichen Link testen</li></ol>
+          <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">Offizielle Anleitung ↗</a>
+        </article>
+        <article>
+          <p class="route-number">02</p><h3>Eigene Domain</h3><p>Für bestehende Webseiten, PHP, Uploads oder geschützte Bereiche.</p>
+          <ol><li>Dateimanager oder FTP öffnen</li><li>Dateien in den Webordner laden</li><li>Seite und Rechte kontrollieren</li></ol>
+          <a href="https://www.domains.ch/" target="_blank" rel="noopener">Beispiel domains.ch ↗</a>
+        </article>
       </div>
     </section>
 
     <section class="slide" data-title="Ideen für den Unterricht">
       <p class="eyebrow">Kleine Werkzeuge</p>
       <h2>Was könnte deinen Unterricht morgen einfacher machen?</h2>
-      <div class="idea-cloud">
-        <span>Gruppengenerator</span><span>Feedbackformular</span><span>Zufallsfragen</span><span>Quiz</span>
-        <span>Checkliste</span><span>Lernziel-Ampel</span><span>Exit-Ticket</span>
+      <div class="idea-circles">
+        <span>Gruppen-<br>generator</span><span>Feedback-<br>formular</span><span>Quiz</span><span>Checkliste</span><span>Fehlersuch-<br>Simulator</span><span>Praxisfoto-<br>Challenge</span>
       </div>
     </section>
 
-    <section class="slide" data-title="Werkzeuge">
-      <p class="eyebrow">Direkt ausprobieren</p>
-      <h2>Es gibt verschiedene Wege zum ersten eigenen Tool.</h2>
-      <div class="tools-list">
-        <a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>OpenAI Codex</b><span>Arbeitet direkt mit Projektdateien</span><i>↗</i></a>
-        <a href="https://docs.anthropic.com/en/docs/claude-code/getting-started" target="_blank" rel="noopener"><b>Claude Code</b><span>Coding-Agent von Anthropic</span><i>↗</i></a>
-        <a href="https://aistudio.google.com/" target="_blank" rel="noopener"><b>Google AI Studio</b><span>Mit Gemini experimentieren</span><i>↗</i></a>
-        <a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable</b><span>Web-Apps per Beschreibung</span><i>↗</i></a>
-        <a href="https://v0.app/" target="_blank" rel="noopener"><b>v0</b><span>Oberflächen und Web-Apps</span><i>↗</i></a>
-        <a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt</b><span>App im Browser bauen</span><i>↗</i></a>
-        <a href="https://replit.com/products/agent" target="_blank" rel="noopener"><b>Replit Agent</b><span>Bauen und veröffentlichen</span><i>↗</i></a>
-        <a href="https://cursor.com/" target="_blank" rel="noopener"><b>Cursor</b><span>Code-Editor mit KI</span><i>↗</i></a>
-        <a href="https://github.com/features/copilot" target="_blank" rel="noopener"><b>GitHub Copilot</b><span>KI-Unterstützung beim Coden</span><i>↗</i></a>
+    <section class="slide" data-title="Werkzeug und Prompt">
+      <p class="eyebrow">Klein anfangen</p>
+      <h2>Ein Werkzeug. Ein klarer Prompt. Eine erste Version.</h2>
+      <div class="quick-tools" aria-label="Drei mögliche Vibecoding-Werkzeuge">
+        <a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>Codex</b><span>arbeitet direkt mit Dateien</span></a>
+        <a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable</b><span>baut Web-Apps im Browser</span></a>
+        <a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt</b><span>erstellt schnell erste Prototypen</span></a>
       </div>
-    </section>
-
-    <section class="slide" data-title="Promptbeispiel">
-      <p class="eyebrow">So könnte man starten</p>
-      <h2>Ein Prompt für einen Gruppengenerator.</h2>
-      <div class="prompt-example">
-        <pre id="group-prompt">Erstelle mir einen Gruppengenerator für meinen Unterricht.
-
-Ich kann Namen einfügen und wähle die Gruppengrösse oder die Anzahl Gruppen. Die Gruppen entstehen zufällig oder die Lernenden wählen sich selbst. Niemand soll am Schluss allein in einer Gruppe sein.
-
-Die Seite soll auf dem Handy einfach bedienbar sein. Baue zuerst eine kleine funktionierende Version.</pre>
+      <div class="prompt-strip">
+        <pre id="group-prompt">Erstelle mir einen einfachen Gruppengenerator für meinen Unterricht. Ich füge Namen ein und wähle die Anzahl Gruppen. Niemand soll am Schluss allein in einer Gruppe sein. Die Seite muss auf dem Handy gut funktionieren.</pre>
         <button class="copy-btn" id="copy-prompt" type="button">Prompt kopieren</button>
       </div>
     </section>
@@ -169,75 +150,40 @@ Die Seite soll auf dem Handy einfach bedienbar sein. Baue zuerst eine kleine fun
         <article class="positive"><h3>Stark für</h3><p>Prototypen, kleine Unterrichtstools, Varianten und schnelle Verbesserungen.</p></article>
         <article class="careful"><h3>Aufpassen bei</h3><p>Datenschutz, Sicherheit, Zugriffsrechten, Wartung und sensiblen Daten.</p></article>
       </div>
-      <blockquote>Ich habe nicht gelernt zu codieren. Aber ich habe mein Verständnis erweitert und konnte eigene Tools bauen. Das finde ich am eindrücklichsten.</blockquote>
+      <blockquote>Ich habe nicht gelernt zu codieren. Aber ich verstehe mehr und kann eigene Werkzeuge bauen. Das finde ich am eindrücklichsten.</blockquote>
     </section>
 
     <section class="slide check-slide" data-title="Zurück zu Codex">
       <p class="eyebrow">Der Live-Check</p>
-      <h2>Was hat Codex aus meiner Idee gemacht?</h2>
-      <p class="lead">Wir öffnen die Dateien und prüfen gemeinsam, ob die neue Funktion wirklich verständlich und brauchbar ist.</p>
-      <div class="control-note">
-        <b>Bewusster Kontrollpunkt</b>
-        <p>Solche Programme könnten die Dateien sogar selbständig auf eine Domain hochladen. Ich mache diesen Schritt bewusst noch selbst. So behalte ich den Überblick.</p>
-      </div>
-    </section>
-
-    <section class="slide" data-title="Live testen">
-      <p class="eyebrow">Jetzt wird es echt</p>
-      <h2>Vier Schritte bis zum Live-Test.</h2>
-      <div class="live-steps">
-        <article><span>1</span><b>Dateien prüfen</b></article>
-        <article><span>2</span><b>Auf domain.ch hochladen</b></article>
-        <article><span>3</span><b>QR-Code scannen</b></article>
-        <article><span>4</span><b>Bilder freigeben</b></article>
-      </div>
-      <p class="takeaway">Idee beschrieben. Funktion gebaut. Gemeinsam getestet.</p>
+      <h2>Was hat Codex aus der Idee gemacht?</h2>
+      <p class="lead">Wir prüfen die Dateien, laden sie hoch und testen die neue Funktion gemeinsam.</p>
+      <div class="control-note"><b>Bewusster Kontrollpunkt</b><p>Ein Agent könnte die Dateien auch selbständig veröffentlichen. Ich lade sie bewusst noch selbst hoch. So behalte ich den Überblick.</p></div>
     </section>
 
     <section class="slide knowledge-slide" data-title="In Ruhe vertiefen">
       <div>
         <p class="eyebrow">Zum Mitnehmen</p>
-        <h2>Vibecoding in Ruhe entdecken.</h2>
-        <p class="lead">Beispiele, Promptvorlagen, Werkzeuge, Chancen und Grenzen auf einer einfachen Infoseite.</p>
-        <div class="knowledge-actions">
-          <a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a>
-          <a href="index.html#1">Präsentation neu starten</a>
-        </div>
+        <h2>Vibecoding selbst ausprobieren.</h2>
+        <p class="lead">Einfach erklärt, mit Promptbeispiel, Gratis-Veröffentlichung über GitHub Pages, Werkzeugen sowie Chancen und Grenzen.</p>
+        <div class="knowledge-actions"><a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a><a href="index.html#1">Präsentation neu starten</a></div>
       </div>
-      <div class="qr-wrap">
-        <div id="qr-code" class="qr-code" aria-label="QR-Code zur Vibecoding-Infoseite"></div>
-        <p id="qr-url" class="qr-url"></p>
-      </div>
+      <div class="qr-wrap"><div id="qr-code" class="qr-code" aria-label="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url"></p></div>
     </section>
   </main>
 
-  <nav class="deck-actions" aria-label="Foliennavigation">
-    <button class="nav-btn" id="prev-btn" type="button" aria-label="Vorherige Folie" title="Vorherige Folie">←</button>
-    <button class="nav-btn primary" id="next-btn" type="button" aria-label="Nächste Folie" title="Nächste Folie">→</button>
-  </nav>
+  <nav class="deck-actions" aria-label="Foliennavigation"><button class="nav-btn" id="prev-btn" type="button" aria-label="Vorherige Folie" title="Vorherige Folie">←</button><button class="nav-btn primary" id="next-btn" type="button" aria-label="Nächste Folie" title="Nächste Folie">→</button></nav>
 
-  <dialog id="overview" class="overview">
-    <form method="dialog">
-      <div class="overview-head">
-        <h2>Folienübersicht</h2>
-        <button class="close-btn" value="close">Schliessen</button>
-      </div>
-      <div class="overview-grid" id="overview-grid"></div>
-    </form>
+  <dialog id="overview" class="overview"><form method="dialog"><div class="overview-head"><h2>Folienübersicht</h2><button class="close-btn" value="close">Schliessen</button></div><div class="overview-grid" id="overview-grid"></div></form></dialog>
+
+  <dialog id="platform-dialog" class="platform-dialog">
+    <button class="dialog-close" id="platform-dialog-close" type="button" aria-label="Screenshot schliessen">×</button><p class="eyebrow">Entwicklungsschritt</p><h2 id="platform-dialog-title"></h2><p class="dialog-lead" id="platform-dialog-summary"></p><div class="platform-gallery" id="platform-dialog-gallery"></div>
   </dialog>
 
   <dialog id="file-dialog" class="file-dialog">
-    <button class="dialog-close" id="file-dialog-close" type="button" aria-label="Dateierklärung schliessen">×</button>
-    <p class="eyebrow">Diese Datei</p>
-    <h2 id="file-dialog-title"></h2>
-    <p class="file-dialog-lead" id="file-dialog-summary"></p>
-    <div class="file-dialog-body">
-      <div><h3>Darin steckt</h3><ul id="file-dialog-list"></ul></div>
-      <div><h3>Einfach gesagt</h3><p id="file-dialog-example"></p></div>
-    </div>
+    <button class="dialog-close" id="file-dialog-close" type="button" aria-label="Dateierklärung schliessen">×</button><p class="eyebrow">Diese Datei</p><h2 id="file-dialog-title"></h2><p class="file-dialog-lead" id="file-dialog-summary"></p><div class="file-dialog-body"><div><h3>Darin steckt</h3><ul id="file-dialog-list"></ul></div><div><h3>Einfach gesagt</h3><p id="file-dialog-example"></p></div></div>
   </dialog>
 
-  <script src="qrcode.min.js?v=2.0.1"></script>
-  <script src="app.js?v=2.0.1"></script>
+  <script src="qrcode.min.js?v=3.0.0"></script>
+  <script src="app.js?v=3.0.0"></script>
 </body>
 </html>
