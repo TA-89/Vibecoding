@@ -4,149 +4,168 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#C6D300">
-  <meta name="description" content="Vibecoding einfach erklärt: von der Unterrichtsidee bis zum eigenen digitalen Werkzeug.">
-  <title>Vibecoding einfach erklärt</title>
-  <link rel="manifest" href="manifest.json?v=3.1.0">
+  <meta name="description" content="Vibecoding als geführte Lernreise: verstehen, ausprobieren, prüfen und eine eigene Idee starten.">
+  <title>Vibecoding Schritt für Schritt</title>
+  <link rel="manifest" href="manifest.json?v=4.0.1">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=3.1.0">
+  <link rel="stylesheet" href="style.css?v=4.0.1">
 </head>
-<body class="knowledge-page">
-  <a class="skip-link" href="#wissen">Zum Inhalt springen</a>
-  <div class="knowledge-progress" aria-hidden="true"><span id="knowledge-progress-bar"></span></div>
+<body class="knowledge-page journey-page">
+  <a class="skip-link" href="#journey-stage">Zum Inhalt springen</a>
 
-  <header class="knowledge-header">
-    <a class="knowledge-brand" href="#wissen"><span aria-hidden="true"></span>Vibecoding</a>
-    <nav class="knowledge-tabs" aria-label="Kapitel">
-      <a href="#ablauf">Ablauf</a>
-      <a href="#start">Ausprobieren</a>
-      <a href="#github">Online</a>
-      <a href="index.html#1">Präsentation</a>
-    </nav>
-    <button class="header-install" type="button" data-install>Als WebApp</button>
+  <header class="knowledge-header journey-header">
+    <a class="knowledge-brand" href="#schritt-1" data-go-step="1"><span aria-hidden="true"></span>Vibecoding</a>
+    <div class="journey-status" aria-live="polite">
+      <span id="journey-step-label">Schritt 1 von 7</span>
+      <div class="journey-progress" aria-hidden="true"><span id="journey-progress-bar"></span></div>
+    </div>
+    <button class="overview-button" type="button" data-go-step="8" title="Alle Themen öffnen">Übersicht</button>
   </header>
 
-  <main id="wissen" class="knowledge-main">
-    <section class="knowledge-hero">
-      <div class="knowledge-hero-copy reveal">
-        <p class="eyebrow">Für Lehrpersonen</p>
-        <h1>Du hast eine Idee. Vibecoding macht sie ausprobierbar.</h1>
-        <p>Du beschreibst in normaler Sprache, was du für deinen Unterricht brauchst. Eine KI erstellt eine erste Version. Du testest sie und sagst, was noch besser werden soll.</p>
-        <div class="hero-actions"><a href="#start">Ersten Versuch starten</a><button type="button" data-install>Als WebApp installieren</button></div>
-        <div class="hero-facts" aria-label="Wichtige Voraussetzungen"><span>Keine Code-Vorkenntnisse nötig</span><span>Sprache oder Text</span><span>Klein anfangen</span></div>
+  <main class="journey-stage" id="journey-stage">
+    <section class="journey-step journey-intro is-active" data-step="1" aria-labelledby="step-1-title">
+      <div class="journey-intro-copy">
+        <p class="journey-kicker">Deine Lernreise beginnt hier</p>
+        <h1 id="step-1-title">Vibecoding verstehen. Schritt für Schritt.</h1>
+        <p class="journey-lead">Du brauchst keine Programmierkenntnisse. Du brauchst eine Idee, klare Worte und die Bereitschaft, das Ergebnis zu prüfen.</p>
+        <fieldset class="choice-field">
+          <legend>Was möchtest du am ehesten bauen?</legend>
+          <div class="choice-grid choice-grid-project">
+            <button type="button" class="choice-card" data-choice="project" data-value="gruppen"><b>Gruppen bilden</b><span>Namen fair verteilen</span></button>
+            <button type="button" class="choice-card" data-choice="project" data-value="quiz"><b>Lernen & üben</b><span>Quiz, H5P oder Lernpfad</span></button>
+            <button type="button" class="choice-card" data-choice="project" data-value="checkliste"><b>Ablauf vereinfachen</b><span>Checkliste oder kleines Tool</span></button>
+            <button type="button" class="choice-card" data-choice="project" data-value="eigene"><b>Eigene Idee</b><span>Etwas, das genau dir fehlt</span></button>
+          </div>
+        </fieldset>
       </div>
-      <div class="definition-box reveal">
-        <b>Vibecoding in einem Satz</b>
-        <p>Idee erklären → erste Version erhalten → ausprobieren → verbessern.</p>
-        <small>Du bleibst verantwortlich für Inhalte, Daten und die Veröffentlichung.</small>
+      <figure class="journey-intro-visual">
+        <img src="images/hero-workshop.png" alt="Werkstatt mit Tablet, Bauplan und Werkzeug">
+        <figcaption><b>Die Idee kommt aus deinem Unterricht.</b><span>Die KI hilft beim Bauen.</span></figcaption>
+      </figure>
+    </section>
+
+    <section class="journey-step" data-step="2" aria-labelledby="step-2-title" hidden>
+      <div class="journey-shell compact-shell">
+        <p class="journey-kicker">Was ist Vibecoding?</p>
+        <h2 id="step-2-title">Du erklärst das Ziel. Die KI baut eine erste Version.</h2>
+        <div class="explain-stage" aria-label="Vibecoding einfach erklärt">
+          <div class="speech-panel human-panel"><span class="panel-label">Du</span><p id="idea-speech">«Ich brauche einen Gruppengenerator, der auf dem Handy funktioniert.»</p></div>
+          <span class="explain-arrow" aria-hidden="true">→</span>
+          <div class="speech-panel ai-panel"><span class="panel-label">Coding-KI</span><p>Erstellt Dateien, verbindet Funktionen und zeigt dir eine erste nutzbare Version.</p></div>
+          <span class="explain-arrow" aria-hidden="true">→</span>
+          <div class="speech-panel result-panel"><span class="panel-label">Du wieder</span><p>Öffnest, klickst, prüfst und sagst konkret, was besser werden soll.</p></div>
+        </div>
+        <div class="simple-definition">
+          <b>Ganz einfach:</b>
+          <p>Vibecoding bedeutet: Du beschreibst Software in normaler Sprache. Eine KI erzeugt den Code. Gemeinsam verbessert ihr das Ergebnis in mehreren Runden.</p>
+          <details><summary>Etwas genauer erklärt</summary><p>Der Begriff wurde 2025 von Andrej Karpathy geprägt. Heute wird er für eine Arbeitsweise verwendet, bei der eine KI viel Code erzeugt und der Mensch vor allem Ziel, Kontext, Entscheidungen und Prüfung übernimmt.</p><a href="https://www.ibm.com/think/topics/vibe-coding" target="_blank" rel="noopener">Quelle: IBM ↗</a></details>
+        </div>
       </div>
     </section>
 
-    <section class="pwa-invite" id="installieren">
-      <div><p class="eyebrow">Diese Seite mitnehmen</p><h2>Als WebApp auf dem Home-Bildschirm speichern.</h2><p>Danach öffnest du die Übersicht ohne Umweg direkt wie eine App.</p></div>
-      <div class="platform-help">
-        <button type="button" data-platform-help="android"><b>Android</b><span>Installieren oder zum Startbildschirm hinzufügen</span></button>
-        <button type="button" data-platform-help="ios"><b>iPhone / iPad</b><span>In Safari über «Teilen» hinzufügen</span></button>
+    <section class="journey-step" data-step="3" aria-labelledby="step-3-title" hidden>
+      <div class="journey-shell">
+        <p class="journey-kicker">Der wichtigste Ablauf</p>
+        <h2 id="step-3-title">Vibecoding ist ein Kreislauf, kein Zauberknopf.</h2>
+        <p class="journey-lead">Tippe die vier Stationen an. Nach jeder Runde wird die Lösung passender.</p>
+        <div class="cycle-path" id="cycle-path">
+          <button type="button" class="cycle-stop" data-cycle="0"><span>01</span><b>Beschreiben</b><small>Problem, Personen und Ziel nennen</small></button>
+          <button type="button" class="cycle-stop" data-cycle="1"><span>02</span><b>Bauen lassen</b><small>Eine kleine erste Version erstellen</small></button>
+          <button type="button" class="cycle-stop" data-cycle="2"><span>03</span><b>Testen</b><small>Alles selbst anklicken und prüfen</small></button>
+          <button type="button" class="cycle-stop" data-cycle="3"><span>04</span><b>Verbessern</b><small>Eine konkrete Änderung verlangen</small></button>
+        </div>
+        <div class="cycle-feedback" id="cycle-feedback" aria-live="polite"><b>Starte bei «Beschreiben».</b><span>Ein guter Auftrag erklärt zuerst das Problem, nicht die Technik.</span></div>
       </div>
     </section>
 
-    <section class="knowledge-section" id="ablauf">
-      <p class="eyebrow">So funktioniert es</p>
-      <h2>Vier Schritte. Dann beginnt die nächste, bessere Runde.</h2>
-      <div class="knowledge-cycle">
-        <article class="reveal"><span>01</span><h3>Beschreiben</h3><p>Was soll für wen einfacher werden?</p></article>
-        <article class="reveal"><span>02</span><h3>Erstellen lassen</h3><p>Die KI baut die benötigten Dateien.</p></article>
-        <article class="reveal"><span>03</span><h3>Ausprobieren</h3><p>Öffnen, klicken und im echten Ablauf prüfen.</p></article>
-        <article class="reveal"><span>04</span><h3>Verbessern</h3><p>Eine konkrete Änderung erklären und erneut testen.</p></article>
+    <section class="journey-step" data-step="4" aria-labelledby="step-4-title" hidden>
+      <div class="journey-shell prompt-workshop">
+        <div>
+          <p class="journey-kicker">Prompt-Werkstatt</p>
+          <h2 id="step-4-title">Baue deinen ersten klaren Auftrag.</h2>
+          <p class="journey-lead">Ein Prompt ist einfach dein Auftrag an die KI. Drei Entscheidungen reichen für einen guten Start.</p>
+          <fieldset class="choice-field compact-choices"><legend>Wer nutzt das Werkzeug?</legend><div class="segmented-choice" data-choice-group="audience"><button type="button" data-choice="audience" data-value="lernende">Lernende</button><button type="button" data-choice="audience" data-value="lehrperson">Lehrperson</button><button type="button" data-choice="audience" data-value="beide">Beide</button></div></fieldset>
+          <fieldset class="choice-field compact-choices"><legend>Wo soll es funktionieren?</legend><div class="segmented-choice" data-choice-group="device"><button type="button" data-choice="device" data-value="handy">Handy</button><button type="button" data-choice="device" data-value="computer">Computer</button><button type="button" data-choice="device" data-value="beides">Auf beidem</button></div></fieldset>
+          <label class="rule-input">Was ist besonders wichtig?<input id="prompt-rule" type="text" maxlength="120" placeholder="z. B. Keine Namen dauerhaft speichern"></label>
+        </div>
+        <div class="generated-prompt"><span class="panel-label">Dein Start-Prompt</span><pre id="generated-prompt-text"></pre><button class="copy-btn journey-copy" id="knowledge-copy-prompt" type="button">Prompt kopieren</button></div>
       </div>
     </section>
 
-    <section class="knowledge-section alt" id="start">
-      <p class="eyebrow">Dein erster Versuch</p>
-      <h2>Wähle ein kleines Problem, das dich wirklich nervt.</h2>
-      <p class="section-lead">Ein guter Start ist überschaubar, nützlich und noch am selben Tag testbar.</p>
-      <div class="starter-ideas">
-        <article><b>Gruppen bilden</b><span>Namen fair verteilen</span></article>
-        <article><b>Feedback sammeln</b><span>Antworten sortiert anzeigen</span></article>
-        <article><b>Übung bauen</b><span>Quiz, H5P oder Lernpfad</span></article>
-        <article><b>Ablauf vereinfachen</b><span>Checkliste oder kleines Tool</span></article>
-      </div>
-      <div class="prompt-formula">
-        <article><span>1</span><h3>Ziel</h3><p>Welches Problem soll einfacher werden?</p></article>
-        <article><span>2</span><h3>Personen</h3><p>Wer nutzt es und auf welchem Gerät?</p></article>
-        <article><span>3</span><h3>Ablauf</h3><p>Was wird eingegeben und angezeigt?</p></article>
-        <article><span>4</span><h3>Regeln</h3><p>Was darf nicht passieren?</p></article>
-      </div>
-      <div class="knowledge-prompt">
-        <pre id="knowledge-group-prompt">Erstelle mir einen einfachen Gruppengenerator für meinen Unterricht.
-
-Ich füge Namen ein und wähle die Anzahl Gruppen. Die Namen werden zufällig und möglichst gleichmässig verteilt. Niemand soll am Schluss allein in einer Gruppe sein.
-
-Die Seite muss auf dem Handy gut funktionieren. Erstelle zuerst eine kleine Version und erkläre mir danach kurz, welche Dateien du erstellt hast.</pre>
-        <button class="copy-btn" id="knowledge-copy-prompt" type="button">Prompt kopieren</button>
+    <section class="journey-step" data-step="5" aria-labelledby="step-5-title" hidden>
+      <div class="journey-shell">
+        <p class="journey-kicker">Echte Beispiele</p>
+        <h2 id="step-5-title">Aus kleinen, klaren Problemen wurden echte Anwendungen.</h2>
+        <p class="journey-lead">Öffne ein Beispiel. Die Zahlen stammen aus veröffentlichten Fallstudien der jeweiligen Plattformanbieter und sind keine Erfolgsgarantie.</p>
+        <div class="example-grid">
+          <button type="button" class="example-card example-education" data-detail="example-nursa"><span>Bildung</span><b>Nursa Study</b><small>Portal für Pflegeschulen in einem Wochenende</small><em>Fallstudie öffnen</em></button>
+          <button type="button" class="example-card example-construction" data-detail="example-helix"><span>Bau</span><b>Helix Electric</b><small>Eigene Werkzeuge für spezielle Bauabläufe</small><em>Fallstudie öffnen</em></button>
+          <button type="button" class="example-card example-health" data-detail="example-health"><span>Gesundheit</span><b>My Doctor</b><small>Plattform durch einen Arzt ohne Code-Erfahrung</small><em>Fallstudie öffnen</em></button>
+          <button type="button" class="example-card example-events" data-detail="example-saastr"><span>Organisation</span><b>SaaStr Tools</b><small>Sieben produktive Anwendungen in drei Monaten</small><em>Fallstudie öffnen</em></button>
+        </div>
+        <div class="example-lesson"><b>Was alle Beispiele gemeinsam haben:</b><span>Sie lösen ein konkretes Problem für eine klar beschriebene Gruppe. Genau damit solltest du ebenfalls beginnen.</span></div>
       </div>
     </section>
 
-    <section class="knowledge-section" id="github">
-      <p class="eyebrow">Gratis online stellen</p>
-      <h2>Eine einfache Webseite mit GitHub Pages veröffentlichen.</h2>
-      <p class="section-lead">Für HTML, CSS, JavaScript und Bilder genügt ein kostenloses GitHub-Konto.</p>
-      <div class="github-steps">
-        <article><span>01</span><h3>Projekt anlegen</h3><p>Ein öffentliches Repository erstellen.</p></article>
-        <article><span>02</span><h3>Dateien laden</h3><p>Projektdateien und Bilder hochladen.</p></article>
-        <article><span>03</span><h3>Pages einschalten</h3><p>Unter «Settings → Pages» den Branch <code>main</code> wählen.</p></article>
-        <article><span>04</span><h3>Link testen</h3><p>Die neue <code>github.io</code>-Adresse öffnen.</p></article>
-      </div>
-      <div class="github-note"><b>Wichtig:</b> GitHub Pages ist öffentlich und für statische Seiten gedacht. Keine Lernendendaten oder privaten Fotos hochladen. PHP, Datenbanken und geschützte Uploads brauchen einen passenden Webserver.</div>
-      <a class="text-link" href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">Offizielle GitHub-Pages-Anleitung öffnen ↗</a>
-    </section>
-
-    <section class="knowledge-section alt" id="tools">
-      <p class="eyebrow">Mögliche Werkzeuge</p>
-      <h2>Wähle eines und starte mit einer kleinen Aufgabe.</h2>
-      <div class="knowledge-tools">
-        <a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>OpenAI Codex ↗</b><span>Arbeitet direkt mit Dateien und führt Tests aus.</span></a>
-        <a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable ↗</b><span>Erstellt WebApps aus einer Beschreibung.</span></a>
-        <a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt ↗</b><span>Baut Prototypen direkt im Browser.</span></a>
-        <a href="https://v0.app/" target="_blank" rel="noopener"><b>v0 ↗</b><span>Hilft beim Erstellen von Oberflächen.</span></a>
+    <section class="journey-step" data-step="6" aria-labelledby="step-6-title" hidden>
+      <div class="journey-shell quiz-shell">
+        <p class="journey-kicker">Der Sicherheitscheck</p>
+        <h2 id="step-6-title">Schnell bauen heisst trotzdem: denken, prüfen, schützen.</h2>
+        <p class="journey-lead">Entscheide bei jeder Situation. Du erhältst sofort eine Erklärung.</p>
+        <div class="safety-quiz" id="safety-quiz">
+          <article data-question="data"><b>1. Darf ich Noten und Lernendendaten in einen öffentlichen Test laden?</b><div><button type="button" data-answer="yes">Ja</button><button type="button" data-answer="no">Nein</button></div><p aria-live="polite"></p></article>
+          <article data-question="backup"><b>2. Soll ich vor grossen Änderungen eine funktionierende Version sichern?</b><div><button type="button" data-answer="yes">Ja</button><button type="button" data-answer="no">Nein</button></div><p aria-live="polite"></p></article>
+          <article data-question="test"><b>3. Muss ich Links, Eingaben, Uploads und Löschen selbst testen?</b><div><button type="button" data-answer="yes">Ja</button><button type="button" data-answer="no">Nein</button></div><p aria-live="polite"></p></article>
+        </div>
+        <a class="source-link" href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener">Warum Prüfen wichtig bleibt: GitHub-Dokumentation ↗</a>
       </div>
     </section>
 
-    <section class="knowledge-section" id="sicherheit">
-      <p class="eyebrow">Sicher arbeiten</p>
-      <h2>Prüfen ist wichtiger als alles blind zu verstehen.</h2>
-      <ol class="safety-list">
-        <li>Keine sensiblen Daten in öffentliche Projekte laden.</li>
-        <li>Links, Eingaben, Uploads und Löschfunktionen selbst testen.</li>
-        <li>Vor Änderungen einen funktionierenden Stand sichern.</li>
-        <li>Bei Datenschutz oder Sicherheit Unterstützung holen.</li>
-      </ol>
+    <section class="journey-step" data-step="7" aria-labelledby="step-7-title" hidden>
+      <div class="journey-shell route-shell">
+        <p class="journey-kicker">Dein persönlicher Start</p>
+        <h2 id="step-7-title">Du weisst jetzt genug für die erste kleine Runde.</h2>
+        <div class="route-result">
+          <div class="route-summary"><span class="panel-label">Deine Auswahl</span><h3 id="route-project-title">Gruppengenerator</h3><p id="route-project-description">Ein überschaubares Werkzeug, das Namen fair verteilt.</p><dl><div><dt>Nutzende</dt><dd id="route-audience">Lernende</dd></div><div><dt>Gerät</dt><dd id="route-device">Handy</dd></div><div><dt>Guter erster Test</dt><dd id="route-test">Mit fünf Fantasienamen ausprobieren</dd></div></dl></div>
+          <div class="route-actions"><b>So gehst du weiter:</b><ol><li>Prompt kopieren und in ein Coding-Werkzeug einsetzen.</li><li>Die kleinste Version öffnen und selbst testen.</li><li>Nur eine konkrete Verbesserung auf einmal verlangen.</li></ol><button type="button" id="route-copy-prompt">Meinen Prompt kopieren</button><button type="button" class="secondary-button" data-go-step="8">Alle Themen öffnen</button></div>
+        </div>
+      </div>
     </section>
 
-    <section class="knowledge-section final-try">
-      <div class="start-panel"><div><p class="eyebrow">Jetzt bist du dran</p><h2>Welche kleine Idee würdest du heute ausprobieren?</h2></div><div><a href="#start">Mit dem Beispiel starten</a><button type="button" data-install>WebApp installieren</button></div></div>
+    <section class="journey-step journey-hub" data-step="8" aria-labelledby="step-8-title" hidden>
+      <div class="journey-shell hub-shell">
+        <div class="hub-heading"><div><p class="journey-kicker">Alles auf einen Blick</p><h2 id="step-8-title">Deine Vibecoding-Wissenskarte</h2><p>Tippe auf ein Thema. Hier kannst du jederzeit nachschauen, ausprobieren und weiterlernen.</p></div><button type="button" class="secondary-button" data-go-step="1">Lernreise neu starten</button></div>
+        <div class="hub-grid">
+          <button type="button" class="hub-card" data-detail="hub-definition"><span>01</span><b>Was ist Vibecoding?</b><small>Definition und Ursprung</small></button>
+          <button type="button" class="hub-card" data-detail="hub-cycle"><span>02</span><b>Der Kreislauf</b><small>Beschreiben, bauen, testen, verbessern</small></button>
+          <button type="button" class="hub-card" data-detail="hub-prompt"><span>03</span><b>Gute Prompts</b><small>Eine einfache Formel mit Beispiel</small></button>
+          <button type="button" class="hub-card" data-detail="hub-ideas"><span>04</span><b>Ideen für den Unterricht</b><small>Von Quiz bis Fotodokumentation</small></button>
+          <button type="button" class="hub-card" data-detail="hub-tools"><span>05</span><b>Werkzeuge</b><small>Codex, Lovable, Replit und Bolt</small></button>
+          <button type="button" class="hub-card" data-detail="hub-publish"><span>06</span><b>Online stellen</b><small>GitHub Pages und Webserver</small></button>
+          <button type="button" class="hub-card" data-detail="hub-safety"><span>07</span><b>Sicher arbeiten</b><small>Daten, Tests und Backups</small></button>
+          <button type="button" class="hub-card" data-detail="hub-examples"><span>08</span><b>Echte Beispiele</b><small>Vier veröffentlichte Fallstudien</small></button>
+          <button type="button" class="hub-card" data-detail="hub-glossary"><span>09</span><b>Wörterbuch</b><small>Prompt, Code, Repository und PWA</small></button>
+          <button type="button" class="hub-card" data-detail="hub-sources"><span>10</span><b>Quellen</b><small>Offizielle Seiten und Methodik</small></button>
+        </div>
+        <div class="hub-links"><a href="index.html#1"><b>Präsentation</b><span>Den 10-Minuten-Vortrag öffnen →</span></a><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener"><b>Gratis veröffentlichen</b><span>Offizielle Anleitung zu GitHub Pages ↗</span></a></div>
+      </div>
     </section>
   </main>
 
-  <footer class="knowledge-footer">
-    <p><b>Vibecoding im Unterricht</b> · Startkonvent GBS St. Gallen</p>
-    <p><a href="index.html#1">Präsentation öffnen</a> · <a href="https://docs.github.com/en/pages" target="_blank" rel="noopener">GitHub-Pages-Dokumentation</a></p>
-  </footer>
+  <nav class="journey-nav" aria-label="Lernreise steuern"><button id="journey-back" type="button" aria-label="Vorheriger Schritt">← <span>Zurück</span></button><span id="journey-nav-hint">Wähle zuerst eine Idee aus.</span><button id="journey-next" type="button"><span>Weiter</span> →</button></nav>
 
-  <dialog class="install-dialog" id="install-dialog">
-    <button class="dialog-close" id="install-dialog-close" type="button" aria-label="Installationshilfe schliessen">×</button>
-    <p class="eyebrow">WebApp installieren</p>
-    <h2 id="install-dialog-title">Auf dem Home-Bildschirm speichern</h2>
+  <dialog class="detail-dialog" id="detail-dialog"><button class="dialog-close" id="detail-dialog-close" type="button" aria-label="Fenster schliessen">×</button><div id="detail-dialog-content"></div></dialog>
+
+  <dialog class="install-dialog first-visit-dialog" id="install-dialog">
+    <button class="dialog-close" id="install-dialog-close" type="button" aria-label="Hinweis schliessen">×</button>
+    <p class="journey-kicker">Ein Hinweis beim ersten Besuch</p>
+    <h2 id="install-dialog-title">Diese Lernreise kann wie eine App geöffnet werden.</h2>
+    <p id="install-dialog-intro">Du kannst sie einmal auf deinem Home-Bildschirm speichern. Danach erscheint dieser Hinweis nicht mehr.</p>
     <div class="install-steps" id="install-dialog-steps"></div>
-    <button class="native-install" id="native-install" type="button" hidden>Jetzt installieren</button>
+    <div class="dialog-actions"><button class="native-install" id="native-install" type="button" hidden>Jetzt installieren</button><button class="secondary-button" id="install-dialog-confirm" type="button">Verstanden</button></div>
   </dialog>
 
-  <aside class="install-nudge" id="install-nudge" hidden aria-label="WebApp-Installation">
-    <div><b>Vibecoding mitnehmen</b><span>Direkt vom Home-Bildschirm öffnen.</span></div>
-    <button type="button" data-install>Installieren</button>
-    <button class="nudge-close" id="install-nudge-close" type="button" aria-label="Installationshinweis schliessen">×</button>
-  </aside>
-
-  <script src="wissen.js?v=3.1.0"></script>
+  <script src="wissen.js?v=4.0.1"></script>
 </body>
 </html>

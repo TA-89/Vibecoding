@@ -1,127 +1,408 @@
 (function () {
   "use strict";
 
-  const copyButton = document.querySelector("#knowledge-copy-prompt");
-  const prompt = document.querySelector("#knowledge-group-prompt");
+  const VERSION = "4.0.1";
+  const FIRST_VISIT_KEY = "vibecoding-install-info-v1";
+  const stepElements = Array.from(document.querySelectorAll(".journey-step"));
+  const backButton = document.querySelector("#journey-back");
+  const nextButton = document.querySelector("#journey-next");
+  const navHint = document.querySelector("#journey-nav-hint");
+  const stepLabel = document.querySelector("#journey-step-label");
+  const progressBar = document.querySelector("#journey-progress-bar");
+  const journeyNav = document.querySelector(".journey-nav");
+  const generatedPrompt = document.querySelector("#generated-prompt-text");
+  const detailDialog = document.querySelector("#detail-dialog");
+  const detailContent = document.querySelector("#detail-dialog-content");
   const installDialog = document.querySelector("#install-dialog");
   const installTitle = document.querySelector("#install-dialog-title");
+  const installIntro = document.querySelector("#install-dialog-intro");
   const installSteps = document.querySelector("#install-dialog-steps");
   const nativeInstall = document.querySelector("#native-install");
-  const installNudge = document.querySelector("#install-nudge");
-  const installButtons = Array.from(document.querySelectorAll("[data-install]"));
   const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isAndroid = /android/i.test(navigator.userAgent);
+  const cycleVisited = new Set();
+  const quizAnswered = new Set();
+  let currentStep = 1;
   let deferredInstall = null;
+
+  const state = {
+    project: null,
+    audience: "lernende",
+    device: "handy",
+    rule: ""
+  };
+
+  const projects = {
+    gruppen: {
+      title: "Gruppengenerator",
+      promptNoun: "einen einfachen Gruppengenerator",
+      speech: "«Ich brauche einen Gruppengenerator, der auf dem Handy funktioniert.»",
+      goal: "Namen zufällig und möglichst gleichmässig auf Gruppen verteilen",
+      features: "Ich füge Namen ein und wähle die Anzahl Gruppen. Niemand soll am Schluss allein in einer Gruppe sein.",
+      description: "Ein überschaubares Werkzeug, das Namen fair verteilt.",
+      test: "Mit fünf Fantasienamen und zwei Gruppen ausprobieren"
+    },
+    quiz: {
+      title: "Lernquiz oder H5P-Idee",
+      promptNoun: "eine einfache digitale Lernübung",
+      speech: "«Ich brauche eine kurze Übung mit sofortiger Rückmeldung.»",
+      goal: "eine kurze Übung zu einem klaren Lernziel erstellen",
+      features: "Nach jeder Antwort soll eine verständliche Rückmeldung erscheinen. Am Schluss wird gezeigt, was bereits sitzt und was noch geübt werden sollte.",
+      description: "Eine kurze Lernaktivität mit direkter Rückmeldung.",
+      test: "Mit drei Fragen und zwei möglichen Antworten starten"
+    },
+    checkliste: {
+      title: "Interaktive Checkliste",
+      promptNoun: "eine einfache interaktive Checkliste",
+      speech: "«Ich brauche eine einfache Checkliste für einen wiederkehrenden Ablauf.»",
+      goal: "einen wiederkehrenden Unterrichtsablauf als klare Checkliste darstellen",
+      features: "Punkte können abgehakt werden. Der Fortschritt ist sichtbar und die Liste kann neu gestartet werden.",
+      description: "Ein klarer Ablauf, der Schritt für Schritt abgearbeitet wird.",
+      test: "Zuerst nur vier Schritte und den Neustart prüfen"
+    },
+    eigene: {
+      title: "Eigene Unterrichtsidee",
+      promptNoun: "ein kleines digitales Werkzeug",
+      speech: "«Ich habe eine Unterrichtsidee, für die es noch kein passendes Werkzeug gibt.»",
+      goal: "meine Unterrichtsidee als kleines digitales Werkzeug umsetzen",
+      features: "Frage mich zuerst nach Ziel, Nutzenden und den drei wichtigsten Funktionen. Erstelle danach eine kleine erste Version.",
+      description: "Eine massgeschneiderte Lösung für ein konkretes Problem.",
+      test: "Mit einer einzigen Kernfunktion beginnen"
+    }
+  };
+
+  const audienceLabels = { lernende: "Lernende", lehrperson: "Lehrperson", beide: "Lernende und Lehrpersonen" };
+  const audiencePrompt = { lernende: "Die Seite wird von Lernenden genutzt.", lehrperson: "Die Seite wird von einer Lehrperson genutzt.", beide: "Die Seite wird von Lernenden und Lehrpersonen genutzt." };
+  const deviceLabels = { handy: "Handy", computer: "Computer", beides: "Handy und Computer" };
+  const devicePrompt = { handy: "Sie muss auf dem Handy sehr einfach bedienbar sein.", computer: "Sie soll auf einem Computer übersichtlich funktionieren.", beides: "Sie muss auf Handy und Computer gut funktionieren." };
+
+  const cycleMessages = [
+    ["Beschreiben", "Nenne das Problem, die Nutzenden und das gewünschte Ergebnis. Gute Ausgangslage: «Ich verliere jede Woche Zeit beim Bilden fairer Gruppen.»"],
+    ["Bauen lassen", "Bitte zuerst um eine kleine Version mit nur der wichtigsten Funktion. So findest du schneller heraus, ob die Idee trägt."],
+    ["Testen", "Klicke selbst durch alle Wege. Prüfe auch falsche Eingaben, leere Felder, Mobilansicht und den Neustart."],
+    ["Verbessern", "Beschreibe genau eine Änderung: Was passiert jetzt, was soll stattdessen passieren und woran erkennst du, dass es stimmt?"]
+  ];
+
+  const quizSolutions = {
+    data: { correct: "no", right: "Richtig. Öffentliche Tests dürfen keine Noten, Namen oder vertraulichen Daten enthalten.", wrong: "Noch nicht. Nutze Fantasiedaten und kläre den Datenschutz, bevor echte Personendaten verarbeitet werden." },
+    backup: { correct: "yes", right: "Richtig. Eine funktionierende Version ist dein Rückweg, falls eine Änderung etwas kaputt macht.", wrong: "Das wäre riskant. Sichere einen funktionierenden Stand, bevor du grössere Änderungen machst." },
+    test: { correct: "yes", right: "Richtig. KI-Code kann Fehler enthalten. Du bleibst für das Ergebnis und die Prüfung verantwortlich.", wrong: "Doch. Prüfe jede wichtige Funktion selbst, besonders Daten, Zugänge, Uploads und Löschen." }
+  };
+
+  const detailPages = {
+    "example-nursa": {
+      kicker: "Praxisbeispiel · Bildung",
+      title: "Nursa Study: ein Portal für Pflegeschulen",
+      body: `<p>Ein Produktverantwortlicher baute laut Lovable in einem Wochenende eine erste funktionierende Version für Pflegeschulen. Darin enthalten waren ein Einsatzplan, ein Portal für Studierende und Hochschulen sowie eine Übersicht zu Qualifikationen.</p><p><b>Was daran spannend ist:</b> Aus einer konkreten Anfrage von Schulen entstand zuerst ein kleiner Test und später ein bezahltes Produkt.</p><p class="detail-note">Quelle und Zahlen stammen aus einer Fallstudie von Lovable. Der Ersteller hatte bereits Erfahrung in Produktdesign und Softwarearchitektur.</p><a href="https://lovable.dev/customers/nursa" target="_blank" rel="noopener">Original-Fallstudie öffnen ↗</a>`
+    },
+    "example-helix": {
+      kicker: "Praxisbeispiel · Bau",
+      title: "Helix Electric: Werkzeuge für spezielle Bauabläufe",
+      body: `<p>Der US-Elektroinstallateur Helix Electric baute eine Reihe eigener Anwendungen für Arbeitsabläufe, die Standardsoftware nicht passend abdeckte.</p><p>Die Replit-Fallstudie nennt unter anderem Prüfungen zur Einhaltung von Arbeitsvorgaben und die Verarbeitung von mehr als 500'000 Terminplan-Aufgaben.</p><p><b>Was daran spannend ist:</b> Nicht «eine App für alles», sondern kleine Werkzeuge für sehr konkrete Lücken.</p><p class="detail-note">Die Kennzahlen sind Angaben aus einer Replit-Kundenfallstudie und wurden hier nicht unabhängig geprüft.</p><a href="https://replit.com/customers/helix-electric" target="_blank" rel="noopener">Original-Fallstudie öffnen ↗</a>`
+    },
+    "example-health": {
+      kicker: "Praxisbeispiel · Gesundheit",
+      title: "My Doctor: von null Code zur Gesundheitsplattform",
+      body: `<p>Ein britischer Arzt ohne vorherige Programmiererfahrung erstellte laut Replit in vier Tagen eine Plattform mit Terminbuchung, Rezeptanfragen, Anmeldung und weiteren Funktionen.</p><p><b>Was daran spannend ist:</b> Fachwissen aus dem Beruf wurde direkt in ein digitales Werkzeug übersetzt.</p><p class="detail-note">Gesundheitssoftware ist besonders sensibel. Die Angaben stammen aus einer Replit-Fallstudie; für reale Patientendaten braucht es professionelle Sicherheits-, Datenschutz- und Qualitätsprüfungen.</p><a href="https://ld.replit.com/customers/northern-health" target="_blank" rel="noopener">Original-Fallstudie öffnen ↗</a>`
+    },
+    "example-saastr": {
+      kicker: "Praxisbeispiel · Organisation",
+      title: "SaaStr: sieben kleine Anwendungen statt einer grossen",
+      body: `<p>SaaStr erstellte laut Replit in drei Monaten sieben produktive Anwendungen. Dazu gehörten ein Bewertungswerkzeug für Tausende Einreichungen, ein Rechner und eine Veranstaltungsseite.</p><p><b>Was daran spannend ist:</b> Einige der wertvollsten Lösungen waren kleine Spezialwerkzeuge, die genau für den eigenen Ablauf gebaut wurden.</p><p class="detail-note">Nutzungs- und Einsparungszahlen sind Angaben aus einer Replit-Kundenfallstudie und keine allgemeine Prognose.</p><a href="https://replit.com/customers/saastr" target="_blank" rel="noopener">Original-Fallstudie öffnen ↗</a>`
+    },
+    "hub-definition": {
+      kicker: "Grundlage",
+      title: "Was ist Vibecoding?",
+      body: `<p><b>Kurz:</b> Du beschreibst eine gewünschte Software in normaler Sprache. Eine KI erzeugt Code und Dateien. Du testest die Lösung und verbesserst sie zusammen mit der KI.</p><p>Der Begriff wurde im Februar 2025 von Andrej Karpathy geprägt. Der spielerische Ursprung bezog sich auf kleine Projekte. Sobald eine Anwendung echte Menschen, Daten oder wichtige Abläufe betrifft, gehören Tests, Datenschutz und Wartung dazu.</p><a href="https://www.ibm.com/think/topics/vibe-coding" target="_blank" rel="noopener">IBM-Erklärung ↗</a><a href="https://www.cloudflare.com/learning/ai/ai-vibe-coding/" target="_blank" rel="noopener">Cloudflare-Erklärung ↗</a>`
+    },
+    "hub-cycle": {
+      kicker: "Arbeitsweise",
+      title: "Der Vier-Schritte-Kreislauf",
+      body: `<ol><li><b>Beschreiben:</b> Problem, Nutzende, Ziel und Grenzen nennen.</li><li><b>Bauen lassen:</b> Zuerst eine kleine, funktionierende Version verlangen.</li><li><b>Testen:</b> Selbst klicken, falsche Eingaben probieren und auf dem Zielgerät prüfen.</li><li><b>Verbessern:</b> Eine konkrete Änderung erklären und erneut testen.</li></ol><p>Dann beginnt die nächste Runde. Gute Software entsteht selten mit einem einzigen Prompt.</p>`
+    },
+    "hub-prompt": {
+      kicker: "Prompt-Formel",
+      title: "So wird aus einer Idee ein guter Auftrag",
+      body: `<p><b>1. Ziel:</b> Welches Problem soll einfacher werden?</p><p><b>2. Personen:</b> Wer nutzt die Lösung?</p><p><b>3. Ablauf:</b> Was wird eingegeben, angeklickt und angezeigt?</p><p><b>4. Regeln:</b> Was darf nicht passieren?</p><p><b>5. Start:</b> Bitte zuerst um eine kleine Version und eine kurze Erklärung der Dateien.</p><div class="detail-prompt"><pre id="detail-current-prompt"></pre><button type="button" data-copy-current>Aktuellen Prompt kopieren</button></div>`
+    },
+    "hub-ideas": {
+      kicker: "Unterrichtsideen",
+      title: "Kleine Projekte mit echtem Nutzen",
+      body: `<ul><li>Gruppengenerator mit fairer Verteilung</li><li>Anonymes Feedbackformular ohne Personendaten</li><li>Quiz mit direkter Rückmeldung</li><li>Checkliste für Werkstatt- oder Sicherheitsabläufe</li><li>Zufallsfragen für Repetition und Prüfungsvorbereitung</li><li>Fotodokumentation mit Freigabe durch die Lehrperson</li><li>H5P-Lernpfad, interaktives Video oder Verzweigungsszenario</li><li>Kleines Dashboard für Lernziele oder Material</li></ul><a href="https://h5p.org/content-types-and-applications" target="_blank" rel="noopener">Offizielle H5P-Beispiele öffnen ↗</a>`
+    },
+    "hub-tools": {
+      kicker: "Werkzeuge",
+      title: "Wo kann ich starten?",
+      body: `<div class="detail-link-list"><a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>OpenAI Codex</b><span>Arbeitet mit Projektdateien, verändert Code und führt Prüfungen aus.</span></a><a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable</b><span>Erstellt WebApps aus einer Beschreibung.</span></a><a href="https://replit.com/" target="_blank" rel="noopener"><b>Replit</b><span>Verbindet Erstellen, Daten und Veröffentlichung in einer Umgebung.</span></a><a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt</b><span>Erstellt Prototypen direkt im Browser.</span></a></div><p class="detail-note">Funktionen, Preise und Datenschutzbedingungen ändern sich. Prüfe vor der Nutzung die aktuellen Bedingungen deiner Schule und des Anbieters.</p>`
+    },
+    "hub-publish": {
+      kicker: "Veröffentlichen",
+      title: "Wie wird aus Dateien eine Webseite?",
+      body: `<p>Eine einfache Seite besteht oft aus <code>index.html</code>, <code>style.css</code>, <code>app.js</code> und Bildern.</p><p><b>GitHub Pages:</b> eignet sich gratis für öffentliche, statische Seiten. Repository anlegen, Dateien hochladen und unter «Settings → Pages» veröffentlichen.</p><p><b>Eigener Webserver:</b> ist nötig für PHP, Datenbanken, geschützte Logins oder Uploads. Solche Funktionen brauchen zusätzliche Sicherheitsprüfungen.</p><p class="detail-note">GitHub Pages ist öffentlich. Keine vertraulichen Daten oder privaten Bilder ins Repository laden.</p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">Offizielle GitHub-Pages-Anleitung ↗</a>`
+    },
+    "hub-safety": {
+      kicker: "Sicher arbeiten",
+      title: "Fünf Regeln, die immer gelten",
+      body: `<ol><li>Mit Fantasiedaten testen.</li><li>Keine Passwörter oder Schlüssel in öffentliche Dateien schreiben.</li><li>Vor Änderungen einen funktionierenden Stand sichern.</li><li>Alle wichtigen Wege und Geräte selbst prüfen.</li><li>Bei Personendaten, Zahlungen, Medizin oder Zugängen Fachpersonen beiziehen.</li></ol><p>KI-generierter Code kann falsch oder unsicher sein. Du musst nicht jede Codezeile auswendig verstehen, aber du musst wissen, was die Anwendung tun soll und ob sie das zuverlässig tut.</p><a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener">GitHub: verantwortungsvolle Nutzung ↗</a>`
+    },
+    "hub-examples": {
+      kicker: "Praxis",
+      title: "Vier dokumentierte Beispiele",
+      body: `<div class="detail-link-list"><button type="button" data-detail="example-nursa"><b>Nursa Study</b><span>Portal für Pflegeschulen</span></button><button type="button" data-detail="example-helix"><b>Helix Electric</b><span>Spezialwerkzeuge für Bauabläufe</span></button><button type="button" data-detail="example-health"><b>My Doctor</b><span>Gesundheitsplattform</span></button><button type="button" data-detail="example-saastr"><b>SaaStr</b><span>Sieben kleine Produktionswerkzeuge</span></button></div><p class="detail-note">Alle Zahlen und Resultate stammen aus Anbieter-Fallstudien. Sie zeigen Möglichkeiten, nicht typische oder garantierte Ergebnisse.</p>`
+    },
+    "hub-glossary": {
+      kicker: "Wörterbuch",
+      title: "Die wichtigsten Begriffe ohne Fachchinesisch",
+      body: `<dl class="glossary"><div><dt>Prompt</dt><dd>Dein Auftrag an die KI.</dd></div><div><dt>Code</dt><dd>Text mit genauen Anweisungen für den Computer.</dd></div><div><dt>HTML</dt><dd>Der Inhalt und Aufbau einer Webseite.</dd></div><div><dt>CSS</dt><dd>Das Aussehen einer Webseite.</dd></div><div><dt>JavaScript</dt><dd>Die Interaktion und Logik im Browser.</dd></div><div><dt>Repository</dt><dd>Ein Projektordner mit Versionsgeschichte, zum Beispiel auf GitHub.</dd></div><div><dt>Deployment</dt><dd>Die Dateien werden so veröffentlicht, dass andere die Anwendung öffnen können.</dd></div><div><dt>PWA / WebApp</dt><dd>Eine Webseite, die sich auf dem Home-Bildschirm wie eine App öffnen lässt.</dd></div></dl>`
+    },
+    "hub-sources": {
+      kicker: "Quellen",
+      title: "Worauf diese Lernreise basiert",
+      body: `<p>Definitionen und Sicherheitsregeln wurden mit aktuellen, möglichst offiziellen Quellen geprüft. Praxiszahlen sind als Anbieterangaben gekennzeichnet.</p><div class="detail-link-list"><a href="https://www.ibm.com/think/topics/vibe-coding" target="_blank" rel="noopener">IBM: What is Vibe Coding? ↗</a><a href="https://www.cloudflare.com/learning/ai/ai-vibe-coding/" target="_blank" rel="noopener">Cloudflare: What is vibe coding? ↗</a><a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener">GitHub: Responsible use of coding agents ↗</a><a href="https://www.w3.org/WAI/WCAG2/supplemental/objectives/o3-clear-content/" target="_blank" rel="noopener">W3C: klare und verständliche Inhalte ↗</a><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Veröffentlichung ↗</a><a href="https://h5p.org/content-types-and-applications" target="_blank" rel="noopener">H5P: Inhaltstypen und Beispiele ↗</a></div>`
+    }
+  };
 
   function isStandalone() {
     return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
   }
 
-  copyButton?.addEventListener("click", async () => {
+  function readFirstVisitState() {
+    try { return localStorage.getItem(FIRST_VISIT_KEY); } catch (error) { return null; }
+  }
+
+  function writeFirstVisitState(value) {
+    try { localStorage.setItem(FIRST_VISIT_KEY, value); } catch (error) { /* Storage can be blocked. */ }
+  }
+
+  function buildPrompt() {
+    const project = projects[state.project || "gruppen"];
+    const rule = state.rule.trim();
+    return `Erstelle mir ${project.promptNoun} für meinen Unterricht.\n\nZiel: ${project.goal}.\n${audiencePrompt[state.audience]} ${devicePrompt[state.device]}\n\nAblauf: ${project.features}${rule ? `\n\nWichtige Regel: ${rule}.` : ""}\n\nErstelle zuerst eine kleine funktionierende Version. Erkläre mir danach kurz, welche Dateien du erstellt hast und wie ich alles selbst testen kann.`;
+  }
+
+  function updatePersonalContent() {
+    const project = projects[state.project || "gruppen"];
+    document.querySelector("#idea-speech").textContent = project.speech;
+    generatedPrompt.textContent = buildPrompt();
+    document.querySelector("#route-project-title").textContent = project.title;
+    document.querySelector("#route-project-description").textContent = project.description;
+    document.querySelector("#route-audience").textContent = audienceLabels[state.audience];
+    document.querySelector("#route-device").textContent = deviceLabels[state.device];
+    document.querySelector("#route-test").textContent = project.test;
+  }
+
+  function updateSelectedButtons(type, value) {
+    document.querySelectorAll(`[data-choice="${type}"]`).forEach((button) => {
+      const selected = button.dataset.value === value;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", String(selected));
+    });
+  }
+
+  function stepIsReady(step) {
+    if (step === 1) return Boolean(state.project);
+    if (step === 3) return cycleVisited.size === 4;
+    if (step === 6) return quizAnswered.size === 3;
+    return true;
+  }
+
+  function updateNavigation() {
+    const hub = currentStep === 8;
+    backButton.hidden = currentStep === 1;
+    journeyNav.classList.toggle("no-back", currentStep === 1);
+    nextButton.hidden = hub;
+    nextButton.disabled = !stepIsReady(currentStep);
+    if (currentStep === 1 && !state.project) navHint.textContent = "Wähle zuerst eine Idee aus.";
+    else if (currentStep === 3 && cycleVisited.size < 4) navHint.textContent = `Noch ${4 - cycleVisited.size} Station${4 - cycleVisited.size === 1 ? "" : "en"} antippen.`;
+    else if (currentStep === 6 && quizAnswered.size < 3) navHint.textContent = `Noch ${3 - quizAnswered.size} Frage${3 - quizAnswered.size === 1 ? "" : "n"} beantworten.`;
+    else if (hub) navHint.textContent = "Tippe auf ein Thema, um es zu öffnen.";
+    else if (currentStep === 7) navHint.textContent = "Dein Startpunkt ist bereit.";
+    else navHint.textContent = "Du kannst weitergehen.";
+  }
+
+  function showStep(step, addHistory) {
+    const safeStep = Math.max(1, Math.min(8, Number(step) || 1));
+    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+    currentStep = safeStep;
+    let activeSection = null;
+    stepElements.forEach((element) => {
+      const active = Number(element.dataset.step) === safeStep;
+      element.classList.toggle("is-active", active);
+      element.hidden = !active;
+      if (active) activeSection = element;
+    });
+    const hub = safeStep === 8;
+    stepLabel.textContent = hub ? "Wissenskarte" : `Schritt ${safeStep} von 7`;
+    progressBar.style.width = `${hub ? 100 : (safeStep / 7) * 100}%`;
+    document.body.classList.toggle("is-hub", hub);
+    updatePersonalContent();
+    updateNavigation();
+    if (addHistory) history.pushState({ step: safeStep }, "", hub ? "#uebersicht" : `#schritt-${safeStep}`);
+    window.setTimeout(() => { if (activeSection) activeSection.scrollTop = 0; }, 60);
+  }
+
+  function stepFromHash() {
+    if (location.hash === "#uebersicht") return 8;
+    const match = location.hash.match(/^#schritt-(\d)$/);
+    return match ? Number(match[1]) : 1;
+  }
+
+  async function copyText(text, button) {
+    const original = button.textContent;
     try {
-      await navigator.clipboard.writeText(prompt.textContent.trim());
-      copyButton.textContent = "Kopiert";
+      await navigator.clipboard.writeText(text);
+      button.textContent = "Kopiert";
     } catch (error) {
-      copyButton.textContent = "Bitte Text markieren";
+      button.textContent = "Bitte Text markieren";
     }
-    window.setTimeout(() => { copyButton.textContent = "Prompt kopieren"; }, 1800);
+    window.setTimeout(() => { button.textContent = original; }, 1700);
+  }
+
+  function openDetail(key) {
+    const detail = detailPages[key];
+    if (!detail) return;
+    detailContent.innerHTML = `<p class="journey-kicker">${detail.kicker}</p><h2>${detail.title}</h2><div class="detail-body">${detail.body}</div>`;
+    const promptTarget = detailContent.querySelector("#detail-current-prompt");
+    if (promptTarget) promptTarget.textContent = buildPrompt();
+    if (!detailDialog.open) detailDialog.showModal();
+  }
+
+  document.addEventListener("click", (event) => {
+    const stepButton = event.target.closest("[data-go-step]");
+    if (stepButton) {
+      event.preventDefault();
+      showStep(stepButton.dataset.goStep, true);
+      return;
+    }
+    const choice = event.target.closest("[data-choice]");
+    if (choice) {
+      const type = choice.dataset.choice;
+      const value = choice.dataset.value;
+      state[type] = value;
+      updateSelectedButtons(type, value);
+      updatePersonalContent();
+      updateNavigation();
+      return;
+    }
+    const detailButton = event.target.closest("[data-detail]");
+    if (detailButton) {
+      openDetail(detailButton.dataset.detail);
+      return;
+    }
+    const copyCurrent = event.target.closest("[data-copy-current]");
+    if (copyCurrent) copyText(buildPrompt(), copyCurrent);
+  });
+
+  document.querySelectorAll(".cycle-stop").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.cycle);
+      cycleVisited.add(index);
+      document.querySelectorAll(".cycle-stop").forEach((item) => item.classList.toggle("is-active", item === button));
+      button.classList.add("is-visited");
+      const [title, message] = cycleMessages[index];
+      document.querySelector("#cycle-feedback").innerHTML = `<b>${title}</b><span>${message}</span>`;
+      updateNavigation();
+    });
+  });
+
+  document.querySelectorAll("#safety-quiz article").forEach((question) => {
+    question.querySelectorAll("[data-answer]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const key = question.dataset.question;
+        const solution = quizSolutions[key];
+        const correct = button.dataset.answer === solution.correct;
+        quizAnswered.add(key);
+        question.classList.toggle("is-correct", correct);
+        question.classList.toggle("is-wrong", !correct);
+        question.querySelectorAll("button").forEach((item) => item.classList.toggle("is-selected", item === button));
+        question.querySelector("p").textContent = correct ? solution.right : solution.wrong;
+        updateNavigation();
+      });
+    });
+  });
+
+  document.querySelector("#prompt-rule")?.addEventListener("input", (event) => {
+    state.rule = event.target.value;
+    updatePersonalContent();
+  });
+
+  document.querySelector("#knowledge-copy-prompt")?.addEventListener("click", (event) => copyText(buildPrompt(), event.currentTarget));
+  document.querySelector("#route-copy-prompt")?.addEventListener("click", (event) => copyText(buildPrompt(), event.currentTarget));
+  nextButton.addEventListener("click", () => { if (stepIsReady(currentStep)) showStep(Math.min(8, currentStep + 1), true); });
+  backButton.addEventListener("click", () => showStep(currentStep === 8 ? 7 : Math.max(1, currentStep - 1), true));
+
+  document.querySelector("#detail-dialog-close")?.addEventListener("click", () => detailDialog.close());
+  detailDialog?.addEventListener("click", (event) => { if (event.target === detailDialog) detailDialog.close(); });
+  window.addEventListener("popstate", () => showStep(stepFromHash(), false));
+  window.addEventListener("hashchange", () => showStep(stepFromHash(), false));
+  window.addEventListener("keydown", (event) => {
+    if (detailDialog.open || installDialog.open || /input|textarea/i.test(document.activeElement?.tagName)) return;
+    if (event.key === "ArrowRight" && !nextButton.hidden && !nextButton.disabled) showStep(currentStep + 1, true);
+    if (event.key === "ArrowLeft" && currentStep > 1) showStep(currentStep === 8 ? 7 : currentStep - 1, true);
   });
 
   function setInstallSteps(items) {
     installSteps.innerHTML = items.map((item) => `<p>${item}</p>`).join("");
   }
 
-  function showInstallGuide(platform) {
+  function prepareInstallDialog() {
     nativeInstall.hidden = true;
-    if (isStandalone()) {
-      installTitle.textContent = "Die WebApp ist bereits geöffnet";
-      setInstallSteps(["Du nutzt diese Seite bereits vom Home-Bildschirm aus."]);
-    } else if (deferredInstall && platform !== "ios") {
-      installTitle.textContent = "Vibecoding als WebApp installieren";
-      setInstallSteps(["Tippe unten auf «Jetzt installieren».", "Bestätige den Browserdialog. Danach findest du Vibecoding auf deinem Home-Bildschirm."]);
+    if (deferredInstall && !isIos) {
+      installTitle.textContent = "Vibecoding auf dem Home-Bildschirm speichern?";
+      installIntro.textContent = "So öffnest du die Lernreise später direkt wie eine App. Dieser Hinweis erscheint nur einmal.";
+      setInstallSteps(["Tippe auf «Jetzt installieren».", "Bestätige den Browserdialog.", "Öffne Vibecoding künftig über das neue Symbol."]);
       nativeInstall.hidden = false;
-    } else if (platform === "ios") {
-      installTitle.textContent = "Auf iPhone oder iPad hinzufügen";
-      setInstallSteps(["Öffne diese Seite in Safari.", "Tippe unten auf das Teilen-Symbol.", "Wähle «Zum Home-Bildschirm» und danach «Hinzufügen»."]);
-    } else if (platform === "android") {
-      installTitle.textContent = "Auf Android hinzufügen";
-      setInstallSteps(["Öffne das Browsermenü oben rechts.", "Tippe auf «App installieren» oder «Zum Startbildschirm hinzufügen».", "Bestätige die Installation."]);
+    } else if (isIos) {
+      installTitle.textContent = "Vibecoding auf iPhone oder iPad speichern?";
+      installIntro.textContent = "Dieser Hinweis erscheint nur einmal. Du kannst die Lernreise auch einfach im Browser nutzen.";
+      setInstallSteps(["Öffne diese Seite in Safari.", "Tippe auf das Teilen-Symbol.", "Wähle «Zum Home-Bildschirm» und danach «Hinzufügen»."]);
+    } else if (isAndroid) {
+      installTitle.textContent = "Vibecoding auf Android speichern?";
+      installIntro.textContent = "Dieser Hinweis erscheint nur einmal. Du kannst die Lernreise auch einfach im Browser nutzen.";
+      setInstallSteps(["Öffne das Browsermenü oben rechts.", "Wähle «App installieren» oder «Zum Startbildschirm hinzufügen».", "Bestätige die Installation."]);
     } else {
-      installTitle.textContent = "Auf dem Home-Bildschirm speichern";
-      setInstallSteps(["Öffne das Menü deines Browsers.", "Wähle «App installieren» oder «Zum Startbildschirm hinzufügen».", "Bestätige den Namen Vibecoding."]);
+      installTitle.textContent = "Diese Lernreise kann wie eine App geöffnet werden.";
+      installIntro.textContent = "Du kannst sie über das Browsermenü installieren. Dieser Hinweis erscheint nur einmal.";
+      setInstallSteps(["Öffne das Menü deines Browsers.", "Wähle «App installieren» oder «Zum Startbildschirm hinzufügen».", "Du kannst die Lernreise auch ohne Installation vollständig nutzen."]);
     }
+  }
+
+  function showFirstVisitInfo() {
+    if (isStandalone() || readFirstVisitState()) return;
+    writeFirstVisitState("shown");
+    prepareInstallDialog();
     installDialog.showModal();
   }
 
-  async function requestInstall() {
-    if (isStandalone()) {
-      showInstallGuide();
-      return;
-    }
-    if (!deferredInstall) {
-      showInstallGuide(isIos ? "ios" : isAndroid ? "android" : "desktop");
-      return;
-    }
+  document.querySelector("#install-dialog-close")?.addEventListener("click", () => installDialog.close());
+  document.querySelector("#install-dialog-confirm")?.addEventListener("click", () => installDialog.close());
+  installDialog?.addEventListener("click", (event) => { if (event.target === installDialog) installDialog.close(); });
+  nativeInstall?.addEventListener("click", async () => {
+    if (!deferredInstall) return;
+    installDialog.close();
     deferredInstall.prompt();
     await deferredInstall.userChoice;
     deferredInstall = null;
-    installNudge.hidden = true;
-  }
-
-  installButtons.forEach((button) => button.addEventListener("click", requestInstall));
-  document.querySelectorAll("[data-platform-help]").forEach((button) => button.addEventListener("click", () => showInstallGuide(button.dataset.platformHelp)));
-  document.querySelector("#install-dialog-close")?.addEventListener("click", () => installDialog.close());
-  installDialog?.addEventListener("click", (event) => { if (event.target === installDialog) installDialog.close(); });
-  nativeInstall?.addEventListener("click", async () => { installDialog.close(); await requestInstall(); });
-  document.querySelector("#install-nudge-close")?.addEventListener("click", () => {
-    installNudge.hidden = true;
-    window.sessionStorage.setItem("vibecoding-install-dismissed", "1");
   });
 
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     deferredInstall = event;
+    if (installDialog.open) prepareInstallDialog();
   });
-
   window.addEventListener("appinstalled", () => {
     deferredInstall = null;
-    installNudge.hidden = true;
-    installButtons.forEach((button) => {
-      button.textContent = "WebApp installiert";
-      button.disabled = true;
-    });
+    writeFirstVisitState("installed");
+    if (installDialog.open) installDialog.close();
   });
 
-  if (isStandalone()) {
-    installButtons.forEach((button) => {
-      button.textContent = "Als WebApp geöffnet";
-      button.disabled = true;
-    });
-  } else if (!window.sessionStorage.getItem("vibecoding-install-dismissed")) {
-    window.setTimeout(() => { installNudge.hidden = false; }, 1400);
-  }
-
-  const progress = document.querySelector("#knowledge-progress-bar");
-  function updateProgress() {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    progress.style.width = `${max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0}%`;
-  }
-  window.addEventListener("scroll", updateProgress, { passive: true });
-  window.addEventListener("resize", updateProgress);
-  updateProgress();
-
-  document.body.classList.add("reveal-ready");
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+  updateSelectedButtons("audience", state.audience);
+  updateSelectedButtons("device", state.device);
+  updatePersonalContent();
+  showStep(stepFromHash(), false);
+  window.setTimeout(showFirstVisitInfo, 1300);
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=3.1.0", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register(`service-worker.js?v=${VERSION}`, { scope: "./" }).catch(() => {}));
   }
 })();

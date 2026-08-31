@@ -1,13 +1,13 @@
-const CACHE_NAME = "vibecoding-deck-v3.1.0";
+const CACHE_NAME = "vibecoding-deck-v4.0.1";
 const APP_SHELL = [
   "./",
   "index.html",
   "wissen.html",
-  "style.css?v=3.1.0",
-  "app.js?v=3.1.0",
-  "wissen.js?v=3.1.0",
-  "qrcode.min.js?v=3.1.0",
-  "manifest.json?v=3.1.0",
+  "style.css?v=4.0.1",
+  "app.js?v=4.0.1",
+  "wissen.js?v=4.0.1",
+  "qrcode.min.js?v=4.0.1",
+  "manifest.json?v=4.0.1",
   "images/hero-workshop.png",
   "images/bild-der-woche-story.png",
   "images/platform-01-tagesprogramm.png",

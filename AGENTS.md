@@ -24,12 +24,13 @@ Stil: klare Flächen, starke Typografie, harte Schatten, keine Farbverläufe.
 ## Seitenstruktur
 
 - `index.html`: 12-teilige Präsentation.
-- `wissen.html`: Vertiefungsseite mit Kapiteln und Präsentations-Reiter.
+- `wissen.html`: Geführte Lernreise mit sieben Schritten und abschliessender Wissenskarte.
 - `app.js`: Foliennavigation, Datei-Dialog, Kreislauf und QR-Code.
-- `wissen.js`: Prompt-Kopie, PWA-Installation, Scroll-Effekte und Offline-Registrierung der Wissensseite.
+- `wissen.js`: Lernreise, Auswahl- und Promptlogik, Sicherheitscheck, Detaildialoge, einmaliger PWA-Hinweis und Offline-Registrierung.
 
 ## Mini-Changelog
 
+- `v4.0`: Wissensseite als geführte, interaktive Lernreise mit echten Praxisbeispielen, Quellen und klickbarer Schlussübersicht neu gebaut.
 - `v3.1`: Präsentation gestrafft, Kernvorteil ergänzt und Wissensseite für Mobilgeräte sowie PWA-Installation überarbeitet.
 - `v3.0`: Präsentation auf 12 Folien gestrafft, Vollbildmodus, Bildstrecke und neue Wissensseite ergänzt.
 - `v2.0`: Dramaturgie, Umlaute, Typografie, Dateidialog, Promptbeispiel, Tool-Links und Wissensseite überarbeitet.
