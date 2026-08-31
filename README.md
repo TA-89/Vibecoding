@@ -8,6 +8,7 @@ Kein npm, kein Build und keine externen Laufzeit-Abhängigkeiten.
 
 - `index.html`: Präsentation mit 12 Folien, Vollbild-, Tastatur- und Wischsteuerung.
 - `wissen.html`: Geführte, responsive Lernreise mit Auswahl, Prompt-Werkstatt, Praxisbeispielen, Sicherheitscheck und klickbarer Wissenskarte.
+- `mediathek.html`: Filterbare deutschsprachige Lernvideos mit lokalen Vorschaubildern, Entdeckerfortschritt und offiziellen Lesetipps.
 - Die letzte Folie erzeugt automatisch einen QR-Code zur Wissensseite.
 
 ## Starten
@@ -28,4 +29,4 @@ Das Repository ist unter `https://github.com/TA-89/Vibecoding` erreichbar. Die v
 
 ## Stand
 
-Version `v4.0`, Stand 31.08.2026.
+Version `v4.1`, Stand 31.08.2026.

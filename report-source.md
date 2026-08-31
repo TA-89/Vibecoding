@@ -77,8 +77,19 @@ Quelle: https://replit.com/customers/saastr
 - Bolt: https://bolt.new/
 - H5P Inhaltstypen: https://h5p.org/content-types-and-applications
 - GitHub Pages: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+- GitHub Pages, deutsche Einstiegsseite: https://docs.github.com/de/pages/getting-started-with-github-pages
+- Google Cloud, deutsche Erklärung zu Vibe Coding: https://cloud.google.com/discover/what-is-vibe-coding?hl=de
 
 GitHub Pages eignet sich für öffentliche statische Seiten. Serverseitige Funktionen wie PHP, Datenbanken, geschützte Uploads oder Benutzerkonten benötigen eine andere Infrastruktur und zusätzliche Sicherheitsmassnahmen.
+
+## Deutschsprachige Video-Mediathek
+
+- KI programmieren mit Cursor: Vibe Coding als Co-Entwickler: https://www.youtube.com/watch?v=IMseojNtxkk
+- Mit KI die erste App entwickeln, ohne selbst Code zu schreiben: https://www.youtube.com/watch?v=yMxw_5gCpaw
+- Git und GitHub für Anfänger: https://www.youtube.com/watch?v=a0_AcknhqDY
+- Einführung in GitHub Pages: https://www.youtube.com/watch?v=TvJXACCwkC8
+
+Die Vorschaubilder werden lokal ausgeliefert. Die Videos selbst öffnen sich direkt auf YouTube; sie sind keine Bestandteile oder Kopien dieses Projekts.
 
 ## Grenzen
 

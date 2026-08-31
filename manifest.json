@@ -1,7 +1,7 @@
 {
   "name": "Vibecoding im Unterricht",
   "short_name": "Vibecoding",
-  "description": "Interaktive Präsentation und Wissensseite zu Vibecoding im Unterricht.",
+  "description": "Interaktive Präsentation, Lernreise und Mediathek zu Vibecoding im Unterricht.",
   "id": "./wissen.html",
   "start_url": "./wissen.html",
   "scope": "./",

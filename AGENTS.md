@@ -25,11 +25,14 @@ Stil: klare Flächen, starke Typografie, harte Schatten, keine Farbverläufe.
 
 - `index.html`: 12-teilige Präsentation.
 - `wissen.html`: Geführte Lernreise mit sieben Schritten und abschliessender Wissenskarte.
+- `mediathek.html`: Deutschsprachige Videos und offizielle Startpunkte mit Themenfiltern und Entdeckerfortschritt.
 - `app.js`: Foliennavigation, Datei-Dialog, Kreislauf und QR-Code.
 - `wissen.js`: Lernreise, Auswahl- und Promptlogik, Sicherheitscheck, Detaildialoge, einmaliger PWA-Hinweis und Offline-Registrierung.
+- `mediathek.js`: Themenfilter, sichtbare Besuchsmarkierungen, Entdeckerpunkte und Überraschungsfunktion.
 
 ## Mini-Changelog
 
+- `v4.1`: Lernreise gamifiziert, Vibecoding-Kreislauf drehbar gemacht und eine filterbare Video-Mediathek ergänzt.
 - `v4.0`: Wissensseite als geführte, interaktive Lernreise mit echten Praxisbeispielen, Quellen und klickbarer Schlussübersicht neu gebaut.
 - `v3.1`: Präsentation gestrafft, Kernvorteil ergänzt und Wissensseite für Mobilgeräte sowie PWA-Installation überarbeitet.
 - `v3.0`: Präsentation auf 12 Folien gestrafft, Vollbildmodus, Bildstrecke und neue Wissensseite ergänzt.

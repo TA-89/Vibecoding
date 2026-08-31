@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#C6D300">
+  <meta name="description" content="Deutschsprachige Videos und offizielle Anleitungen zu Vibecoding, GitHub und GitHub Pages.">
+  <title>Vibecoding Mediathek</title>
+  <link rel="manifest" href="manifest.json?v=4.1.3">
+  <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="style.css?v=4.1.3">
+</head>
+<body class="knowledge-page media-page">
+  <a class="skip-link" href="#media-content">Zum Inhalt springen</a>
+
+  <header class="media-header">
+    <a class="knowledge-brand" href="wissen.html#uebersicht"><span aria-hidden="true"></span>Vibecoding</a>
+    <div class="media-header-title"><b>Mediathek</b><span>Videos und sichere Startpunkte</span></div>
+    <div class="discovery-score" title="Deine Entdeckungen"><span aria-hidden="true">+</span><b id="discovery-points">0</b><small>Punkte</small></div>
+    <a class="media-back" href="wissen.html#uebersicht">Zur Wissenskarte</a>
+  </header>
+
+  <main class="media-main" id="media-content">
+    <section class="media-intro" aria-labelledby="media-title">
+      <div>
+        <p class="journey-kicker">Weiterstöbern</p>
+        <h1 id="media-title">Vom ersten Prompt bis zur eigenen Webseite.</h1>
+        <p>Wähle ein Thema oder lass dich überraschen. Jedes geöffnete Video wird auf diesem Gerät markiert.</p>
+      </div>
+      <div class="media-progress-card" aria-live="polite">
+        <b id="media-progress-title">0 von 4 Videos entdeckt</b>
+        <span id="media-progress-copy">Starte mit dem Thema, das dich am meisten interessiert.</span>
+        <div class="media-meter" aria-hidden="true"><span id="media-progress-bar"></span></div>
+      </div>
+    </section>
+
+    <nav class="media-controls" aria-label="Videos filtern">
+      <b>Was möchtest du lernen?</b>
+      <button class="media-filter is-active" type="button" data-filter="all" aria-pressed="true">Alles</button>
+      <button class="media-filter" type="button" data-filter="vibe" aria-pressed="false">Vibecoding</button>
+      <button class="media-filter" type="button" data-filter="github" aria-pressed="false">GitHub</button>
+      <button class="media-filter" type="button" data-filter="publish" aria-pressed="false">Veröffentlichen</button>
+      <button class="media-filter surprise-button" id="surprise-video" type="button">Überrasch mich</button>
+    </nav>
+
+    <section class="video-grid" id="video-grid" aria-label="Deutschsprachige Lernvideos">
+      <a class="video-card" data-video="IMseojNtxkk" data-topic="vibe" href="https://www.youtube.com/watch?v=IMseojNtxkk" target="_blank" rel="noopener">
+        <div class="video-thumb"><img src="images/videos/vibecoding-cursor.jpg" alt="Vorschaubild des Videos über Vibe Coding mit Cursor"><span class="video-play" aria-hidden="true">▶</span></div>
+        <div class="video-copy"><span class="video-topic">Vibecoding · Deutsch</span><h2>KI programmieren mit Cursor: Vibe Coding als Co-Entwickler</h2><p>Ein aktueller Einblick in das gemeinsame Bauen, Testen und Verbessern mit einer Coding-KI.</p><span class="video-status"><span class="video-status-text">Auf YouTube öffnen</span><span aria-hidden="true">↗</span></span></div>
+      </a>
+
+      <a class="video-card" data-video="yMxw_5gCpaw" data-topic="vibe" href="https://www.youtube.com/watch?v=yMxw_5gCpaw" target="_blank" rel="noopener">
+        <div class="video-thumb"><img src="images/videos/vibecoding-erste-app.jpg" alt="Vorschaubild des Tutorials zur ersten App ohne Code"><span class="video-play" aria-hidden="true">▶</span></div>
+        <div class="video-copy"><span class="video-topic">Erste App · Deutsch</span><h2>Mit KI die erste App entwickeln, ohne selbst Code zu schreiben</h2><p>Ein Einstieg für alle, die zuerst das Ergebnis sehen und die Technik Schritt für Schritt kennenlernen möchten.</p><span class="video-status"><span class="video-status-text">Auf YouTube öffnen</span><span aria-hidden="true">↗</span></span></div>
+      </a>
+
+      <a class="video-card" data-video="a0_AcknhqDY" data-topic="github" href="https://www.youtube.com/watch?v=a0_AcknhqDY" target="_blank" rel="noopener">
+        <div class="video-thumb"><img src="images/videos/github-anfaenger.jpg" alt="Vorschaubild des Git- und GitHub-Tutorials für Anfänger"><span class="video-play" aria-hidden="true">▶</span></div>
+        <div class="video-copy"><span class="video-topic">GitHub · Deutsch</span><h2>Git und GitHub für Anfänger</h2><p>Repository, Versionen und Veröffentlichung verständlich erklärt. Gut, wenn aus dem ersten Versuch ein richtiges Projekt wird.</p><span class="video-status"><span class="video-status-text">Auf YouTube öffnen</span><span aria-hidden="true">↗</span></span></div>
+      </a>
+
+      <a class="video-card" data-video="TvJXACCwkC8" data-topic="github publish" href="https://www.youtube.com/watch?v=TvJXACCwkC8" target="_blank" rel="noopener">
+        <div class="video-thumb"><img src="images/videos/github-pages.jpg" alt="Vorschaubild der Einführung in GitHub Pages"><span class="video-play" aria-hidden="true">▶</span></div>
+        <div class="video-copy"><span class="video-topic">GitHub Pages · Deutsch</span><h2>Eine Webseite mit GitHub Pages veröffentlichen</h2><p>Das Video ist älter, erklärt aber anschaulich das Grundprinzip: Dateien im Repository werden zu einer erreichbaren Webseite.</p><span class="video-status"><span class="video-status-text">Auf YouTube öffnen</span><span aria-hidden="true">↗</span></span></div>
+      </a>
+    </section>
+
+    <section class="resource-section" aria-labelledby="resource-title">
+      <p class="journey-kicker">Nachlesen und ausprobieren</p>
+      <h2 id="resource-title">Drei verlässliche nächste Schritte</h2>
+      <p>Diese Seiten erklären die Grundlagen direkt bei den jeweiligen Anbietern.</p>
+      <div class="resource-grid">
+        <a class="resource-card" data-resource="google-vibe" href="https://cloud.google.com/discover/what-is-vibe-coding?hl=de" target="_blank" rel="noopener"><small>Deutsch · Erklärung</small><b>Google Cloud: Was ist Vibe Coding?</b><span>Begriff, Kreislauf, Werkzeuge und verantwortungsbewusstes Arbeiten.</span></a>
+        <a class="resource-card" data-resource="github-pages" href="https://docs.github.com/de/pages/getting-started-with-github-pages" target="_blank" rel="noopener"><small>Deutsch · Anleitung</small><b>GitHub Pages: Erste Schritte</b><span>Eine statische Webseite direkt aus einem Repository veröffentlichen.</span></a>
+        <a class="resource-card" data-resource="openai-codex" href="https://openai.com/codex/" target="_blank" rel="noopener"><small>Werkzeug · Englisch</small><b>OpenAI Codex</b><span>Projektdateien verändern, Funktionen umsetzen und Ergebnisse prüfen lassen.</span></a>
+      </div>
+    </section>
+  </main>
+
+  <div class="discovery-toast" id="discovery-toast" role="status" aria-live="polite" hidden></div>
+  <script src="mediathek.js?v=4.1.3"></script>
+</body>
+</html>

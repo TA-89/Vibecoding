@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding als geführte Lernreise: verstehen, ausprobieren, prüfen und eine eigene Idee starten.">
   <title>Vibecoding Schritt für Schritt</title>
-  <link rel="manifest" href="manifest.json?v=4.0.1">
+  <link rel="manifest" href="manifest.json?v=4.1.3">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.0.1">
+  <link rel="stylesheet" href="style.css?v=4.1.3">
 </head>
 <body class="knowledge-page journey-page">
   <a class="skip-link" href="#journey-stage">Zum Inhalt springen</a>
@@ -20,6 +20,8 @@
       <span id="journey-step-label">Schritt 1 von 7</span>
       <div class="journey-progress" aria-hidden="true"><span id="journey-progress-bar"></span></div>
     </div>
+    <div class="discovery-score" title="Deine Entdeckungen auf dieser Lernreise"><span aria-hidden="true">+</span><b id="discovery-points">0</b><small>Punkte</small></div>
+    <a class="media-button" href="mediathek.html">Mediathek</a>
     <button class="overview-button" type="button" data-go-step="8" title="Alle Themen öffnen">Übersicht</button>
   </header>
 
@@ -69,13 +71,18 @@
         <p class="journey-kicker">Der wichtigste Ablauf</p>
         <h2 id="step-3-title">Vibecoding ist ein Kreislauf, kein Zauberknopf.</h2>
         <p class="journey-lead">Tippe die vier Stationen an. Nach jeder Runde wird die Lösung passender.</p>
-        <div class="cycle-path" id="cycle-path">
-          <button type="button" class="cycle-stop" data-cycle="0"><span>01</span><b>Beschreiben</b><small>Problem, Personen und Ziel nennen</small></button>
-          <button type="button" class="cycle-stop" data-cycle="1"><span>02</span><b>Bauen lassen</b><small>Eine kleine erste Version erstellen</small></button>
-          <button type="button" class="cycle-stop" data-cycle="2"><span>03</span><b>Testen</b><small>Alles selbst anklicken und prüfen</small></button>
-          <button type="button" class="cycle-stop" data-cycle="3"><span>04</span><b>Verbessern</b><small>Eine konkrete Änderung verlangen</small></button>
+        <div class="orbit-layout">
+          <div class="cycle-orbit" id="cycle-orbit" style="--orbit-turn: 0deg; --orbit-counter-turn: 0deg">
+            <div class="orbit-track" id="orbit-track">
+              <button type="button" class="cycle-stop orbit-top" data-cycle="0"><span class="orbit-node-content"><small>01</small><b>Beschreiben</b></span></button>
+              <button type="button" class="cycle-stop orbit-right" data-cycle="1"><span class="orbit-node-content"><small>02</small><b>Bauen</b></span></button>
+              <button type="button" class="cycle-stop orbit-bottom" data-cycle="2"><span class="orbit-node-content"><small>03</small><b>Testen</b></span></button>
+              <button type="button" class="cycle-stop orbit-left" data-cycle="3"><span class="orbit-node-content"><small>04</small><b>Verbessern</b></span></button>
+            </div>
+            <button class="orbit-core" id="cycle-spin" type="button"><b>Kreislauf drehen</b><span id="cycle-count">0 von 4 entdeckt</span></button>
+          </div>
+          <div class="cycle-feedback" id="cycle-feedback" aria-live="polite"><span class="panel-label">Deine aktuelle Station</span><b>Starte bei «Beschreiben».</b><p>Ein guter Auftrag erklärt zuerst das Problem, nicht die Technik.</p></div>
         </div>
-        <div class="cycle-feedback" id="cycle-feedback" aria-live="polite"><b>Starte bei «Beschreiben».</b><span>Ein guter Auftrag erklärt zuerst das Problem, nicht die Technik.</span></div>
       </div>
     </section>
 
@@ -87,7 +94,7 @@
           <p class="journey-lead">Ein Prompt ist einfach dein Auftrag an die KI. Drei Entscheidungen reichen für einen guten Start.</p>
           <fieldset class="choice-field compact-choices"><legend>Wer nutzt das Werkzeug?</legend><div class="segmented-choice" data-choice-group="audience"><button type="button" data-choice="audience" data-value="lernende">Lernende</button><button type="button" data-choice="audience" data-value="lehrperson">Lehrperson</button><button type="button" data-choice="audience" data-value="beide">Beide</button></div></fieldset>
           <fieldset class="choice-field compact-choices"><legend>Wo soll es funktionieren?</legend><div class="segmented-choice" data-choice-group="device"><button type="button" data-choice="device" data-value="handy">Handy</button><button type="button" data-choice="device" data-value="computer">Computer</button><button type="button" data-choice="device" data-value="beides">Auf beidem</button></div></fieldset>
-          <label class="rule-input">Was ist besonders wichtig?<input id="prompt-rule" type="text" maxlength="120" placeholder="z. B. Keine Namen dauerhaft speichern"></label>
+          <label class="rule-input">Was ist besonders wichtig?<input id="prompt-rule" type="text" maxlength="120" placeholder="z. B. Keine Namen dauerhaft speichern"><span id="prompt-live-status">Deine Eingabe erscheint sofort rechts im Prompt.</span></label>
         </div>
         <div class="generated-prompt"><span class="panel-label">Dein Start-Prompt</span><pre id="generated-prompt-text"></pre><button class="copy-btn journey-copy" id="knowledge-copy-prompt" type="button">Prompt kopieren</button></div>
       </div>
@@ -147,8 +154,9 @@
           <button type="button" class="hub-card" data-detail="hub-examples"><span>08</span><b>Echte Beispiele</b><small>Vier veröffentlichte Fallstudien</small></button>
           <button type="button" class="hub-card" data-detail="hub-glossary"><span>09</span><b>Wörterbuch</b><small>Prompt, Code, Repository und PWA</small></button>
           <button type="button" class="hub-card" data-detail="hub-sources"><span>10</span><b>Quellen</b><small>Offizielle Seiten und Methodik</small></button>
+          <a class="hub-card hub-card-media" href="mediathek.html"><span>11</span><b>Video-Mediathek</b><small>Deutsch lernen und weiterstöbern</small></a>
         </div>
-        <div class="hub-links"><a href="index.html#1"><b>Präsentation</b><span>Den 10-Minuten-Vortrag öffnen →</span></a><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener"><b>Gratis veröffentlichen</b><span>Offizielle Anleitung zu GitHub Pages ↗</span></a></div>
+        <div class="hub-links"><a href="index.html#1"><b>Präsentation</b><span>Den 10-Minuten-Vortrag öffnen →</span></a><a href="mediathek.html"><b>Weiterlernen</b><span>Videos und offizielle Anleitungen öffnen →</span></a></div>
       </div>
     </section>
   </main>
@@ -166,6 +174,8 @@
     <div class="dialog-actions"><button class="native-install" id="native-install" type="button" hidden>Jetzt installieren</button><button class="secondary-button" id="install-dialog-confirm" type="button">Verstanden</button></div>
   </dialog>
 
-  <script src="wissen.js?v=4.0.1"></script>
+  <div class="discovery-toast" id="discovery-toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="wissen.js?v=4.1.3"></script>
 </body>
 </html>

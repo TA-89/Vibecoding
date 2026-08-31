@@ -1,13 +1,15 @@
-const CACHE_NAME = "vibecoding-deck-v4.0.1";
+const CACHE_NAME = "vibecoding-deck-v4.1.3";
 const APP_SHELL = [
   "./",
   "index.html",
   "wissen.html",
-  "style.css?v=4.0.1",
-  "app.js?v=4.0.1",
-  "wissen.js?v=4.0.1",
-  "qrcode.min.js?v=4.0.1",
-  "manifest.json?v=4.0.1",
+  "mediathek.html",
+  "style.css?v=4.1.3",
+  "app.js?v=4.1.3",
+  "wissen.js?v=4.1.3",
+  "mediathek.js?v=4.1.3",
+  "qrcode.min.js?v=4.1.3",
+  "manifest.json?v=4.1.3",
   "images/hero-workshop.png",
   "images/bild-der-woche-story.png",
   "images/platform-01-tagesprogramm.png",
@@ -18,6 +20,10 @@ const APP_SHELL = [
   "images/platform-05-webapp-home.jpeg",
   "images/platform-05-webapp-view.jpeg",
   "images/platform-06-praxisauftraege.png",
+  "images/videos/vibecoding-cursor.jpg",
+  "images/videos/vibecoding-erste-app.jpg",
+  "images/videos/github-anfaenger.jpg",
+  "images/videos/github-pages.jpg",
   "icons/icon-192.svg",
   "icons/icon-180.png",
   "icons/icon-192.png",
@@ -49,7 +55,8 @@ self.addEventListener("fetch", (event) => {
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
         return response;
       }).catch(() => {
-        const fallback = new URL(event.request.url).pathname.endsWith("/wissen.html") ? "wissen.html" : "index.html";
+        const path = new URL(event.request.url).pathname;
+        const fallback = path.endsWith("/mediathek.html") ? "mediathek.html" : path.endsWith("/wissen.html") ? "wissen.html" : "index.html";
         return caches.match(event.request).then((cached) => cached || caches.match(fallback));
       })
     );

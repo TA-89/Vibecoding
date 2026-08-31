@@ -1,8 +1,9 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.0.1";
+  const VERSION = "4.1.3";
   const FIRST_VISIT_KEY = "vibecoding-install-info-v1";
+  const DISCOVERY_KEY = "vibecoding-discoveries-v1";
   const stepElements = Array.from(document.querySelectorAll(".journey-step"));
   const backButton = document.querySelector("#journey-back");
   const nextButton = document.querySelector("#journey-next");
@@ -18,12 +19,21 @@
   const installIntro = document.querySelector("#install-dialog-intro");
   const installSteps = document.querySelector("#install-dialog-steps");
   const nativeInstall = document.querySelector("#native-install");
+  const discoveryPoints = document.querySelector("#discovery-points");
+  const discoveryToast = document.querySelector("#discovery-toast");
+  const cycleOrbit = document.querySelector("#cycle-orbit");
+  const cycleFeedback = document.querySelector("#cycle-feedback");
+  const cycleCount = document.querySelector("#cycle-count");
+  const promptLiveStatus = document.querySelector("#prompt-live-status");
   const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isAndroid = /android/i.test(navigator.userAgent);
   const cycleVisited = new Set();
   const quizAnswered = new Set();
+  const discoveries = readDiscoveries();
   let currentStep = 1;
   let deferredInstall = null;
+  let orbitRotation = 0;
+  let toastTimer = 0;
 
   const state = {
     project: null,
@@ -123,7 +133,7 @@
     "hub-prompt": {
       kicker: "Prompt-Formel",
       title: "So wird aus einer Idee ein guter Auftrag",
-      body: `<p><b>1. Ziel:</b> Welches Problem soll einfacher werden?</p><p><b>2. Personen:</b> Wer nutzt die Lösung?</p><p><b>3. Ablauf:</b> Was wird eingegeben, angeklickt und angezeigt?</p><p><b>4. Regeln:</b> Was darf nicht passieren?</p><p><b>5. Start:</b> Bitte zuerst um eine kleine Version und eine kurze Erklärung der Dateien.</p><div class="detail-prompt"><pre id="detail-current-prompt"></pre><button type="button" data-copy-current>Aktuellen Prompt kopieren</button></div>`
+      body: `<div class="prompt-formula"><p><b>1. Ziel</b><span>Welches Problem soll einfacher werden?</span></p><p><b>2. Personen</b><span>Wer nutzt die Lösung?</span></p><p><b>3. Ablauf</b><span>Was wird eingegeben, angeklickt und angezeigt?</span></p><p><b>4. Regeln</b><span>Was darf nicht passieren?</span></p><p><b>5. Start</b><span>Zuerst eine kleine Version verlangen.</span></p></div><p>Dein persönlicher Prompt aus der Werkstatt ist bereits fertig und kann direkt kopiert werden.</p><div class="dialog-actions"><button type="button" data-copy-current>Meinen Prompt kopieren</button></div>`
     },
     "hub-ideas": {
       kicker: "Unterrichtsideen",
@@ -161,6 +171,41 @@
       body: `<p>Definitionen und Sicherheitsregeln wurden mit aktuellen, möglichst offiziellen Quellen geprüft. Praxiszahlen sind als Anbieterangaben gekennzeichnet.</p><div class="detail-link-list"><a href="https://www.ibm.com/think/topics/vibe-coding" target="_blank" rel="noopener">IBM: What is Vibe Coding? ↗</a><a href="https://www.cloudflare.com/learning/ai/ai-vibe-coding/" target="_blank" rel="noopener">Cloudflare: What is vibe coding? ↗</a><a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener">GitHub: Responsible use of coding agents ↗</a><a href="https://www.w3.org/WAI/WCAG2/supplemental/objectives/o3-clear-content/" target="_blank" rel="noopener">W3C: klare und verständliche Inhalte ↗</a><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Veröffentlichung ↗</a><a href="https://h5p.org/content-types-and-applications" target="_blank" rel="noopener">H5P: Inhaltstypen und Beispiele ↗</a></div>`
     }
   };
+
+  function readDiscoveries() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(DISCOVERY_KEY) || "[]");
+      return new Set(Array.isArray(saved) ? saved : []);
+    } catch (error) {
+      return new Set();
+    }
+  }
+
+  function saveDiscoveries() {
+    try { localStorage.setItem(DISCOVERY_KEY, JSON.stringify(Array.from(discoveries))); } catch (error) { /* Storage can be blocked. */ }
+  }
+
+  function updateDiscoveryUi() {
+    if (discoveryPoints) discoveryPoints.textContent = String(discoveries.size * 10);
+    document.querySelectorAll("[data-detail]").forEach((element) => {
+      element.classList.toggle("is-discovered", discoveries.has(`detail:${element.dataset.detail}`));
+    });
+  }
+
+  function reward(key, label, points = 10) {
+    if (discoveries.has(key)) return;
+    discoveries.add(key);
+    saveDiscoveries();
+    updateDiscoveryUi();
+    if (!discoveryToast) return;
+    window.clearTimeout(toastTimer);
+    discoveryToast.hidden = false;
+    discoveryToast.textContent = `+${points} Punkte · ${label}`;
+    discoveryToast.classList.remove("is-showing");
+    void discoveryToast.offsetWidth;
+    discoveryToast.classList.add("is-showing");
+    toastTimer = window.setTimeout(() => { discoveryToast.hidden = true; }, 1900);
+  }
 
   function isStandalone() {
     return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
@@ -237,7 +282,10 @@
     document.body.classList.toggle("is-hub", hub);
     updatePersonalContent();
     updateNavigation();
-    if (addHistory) history.pushState({ step: safeStep }, "", hub ? "#uebersicht" : `#schritt-${safeStep}`);
+    if (addHistory) {
+      history.pushState({ step: safeStep }, "", hub ? "#uebersicht" : `#schritt-${safeStep}`);
+      reward(`step:${safeStep}`, hub ? "Wissenskarte geöffnet" : `Schritt ${safeStep} erreicht`);
+    }
     window.setTimeout(() => { if (activeSection) activeSection.scrollTop = 0; }, 60);
   }
 
@@ -252,6 +300,7 @@
     try {
       await navigator.clipboard.writeText(text);
       button.textContent = "Kopiert";
+      reward("action:prompt-copied", "Eigener Prompt kopiert");
     } catch (error) {
       button.textContent = "Bitte Text markieren";
     }
@@ -265,9 +314,14 @@
     const promptTarget = detailContent.querySelector("#detail-current-prompt");
     if (promptTarget) promptTarget.textContent = buildPrompt();
     if (!detailDialog.open) detailDialog.showModal();
+    detailDialog.scrollTop = 0;
+    reward(`detail:${key}`, "Neues Thema entdeckt");
   }
 
   document.addEventListener("click", (event) => {
+    const mediaLink = event.target.closest('a[href="mediathek.html"]');
+    if (mediaLink) reward("page:mediathek", "Mediathek freigeschaltet");
+
     const stepButton = event.target.closest("[data-go-step]");
     if (stepButton) {
       event.preventDefault();
@@ -282,6 +336,7 @@
       updateSelectedButtons(type, value);
       updatePersonalContent();
       updateNavigation();
+      reward(`choice:${type}:${value}`, "Auswahl übernommen");
       return;
     }
     const detailButton = event.target.closest("[data-detail]");
@@ -291,18 +346,42 @@
     }
     const copyCurrent = event.target.closest("[data-copy-current]");
     if (copyCurrent) copyText(buildPrompt(), copyCurrent);
+
+    const externalLink = event.target.closest('a[target="_blank"]');
+    if (externalLink) reward(`link:${externalLink.href}`, "Quelle geöffnet");
   });
 
+  function activateCycle(index) {
+    const buttons = Array.from(document.querySelectorAll(".cycle-stop"));
+    const button = buttons.find((item) => Number(item.dataset.cycle) === index);
+    if (!button) return;
+    orbitRotation += 90;
+    cycleOrbit?.style.setProperty("--orbit-turn", `${orbitRotation}deg`);
+    cycleOrbit?.style.setProperty("--orbit-counter-turn", `${-orbitRotation}deg`);
+    cycleVisited.add(index);
+    buttons.forEach((item) => item.classList.toggle("is-active", item === button));
+    button.classList.add("is-visited");
+    const [title, message] = cycleMessages[index];
+    cycleFeedback.innerHTML = `<span class="panel-label">Deine aktuelle Station</span><b>${title}</b><p>${message}</p>`;
+    cycleFeedback.classList.remove("is-changing");
+    void cycleFeedback.offsetWidth;
+    cycleFeedback.classList.add("is-changing");
+    cycleCount.textContent = `${cycleVisited.size} von 4 entdeckt`;
+    reward(`cycle:${index}`, `${title} verstanden`);
+    updateNavigation();
+    if (window.matchMedia("(max-width: 720px)").matches) {
+      window.setTimeout(() => cycleFeedback.scrollIntoView({ behavior: "smooth", block: "center" }), 180);
+    }
+  }
+
   document.querySelectorAll(".cycle-stop").forEach((button) => {
-    button.addEventListener("click", () => {
-      const index = Number(button.dataset.cycle);
-      cycleVisited.add(index);
-      document.querySelectorAll(".cycle-stop").forEach((item) => item.classList.toggle("is-active", item === button));
-      button.classList.add("is-visited");
-      const [title, message] = cycleMessages[index];
-      document.querySelector("#cycle-feedback").innerHTML = `<b>${title}</b><span>${message}</span>`;
-      updateNavigation();
-    });
+    button.addEventListener("click", () => activateCycle(Number(button.dataset.cycle)));
+  });
+
+  document.querySelector("#cycle-spin")?.addEventListener("click", () => {
+    const nextUnvisited = [0, 1, 2, 3].find((index) => !cycleVisited.has(index));
+    const active = Number(document.querySelector(".cycle-stop.is-active")?.dataset.cycle ?? -1);
+    activateCycle(nextUnvisited ?? ((active + 1) % 4));
   });
 
   document.querySelectorAll("#safety-quiz article").forEach((question) => {
@@ -316,6 +395,7 @@
         question.classList.toggle("is-wrong", !correct);
         question.querySelectorAll("button").forEach((item) => item.classList.toggle("is-selected", item === button));
         question.querySelector("p").textContent = correct ? solution.right : solution.wrong;
+        reward(`quiz:${key}`, correct ? "Sicherheitsfrage gelöst" : "Aus der Rückmeldung gelernt");
         updateNavigation();
       });
     });
@@ -324,6 +404,12 @@
   document.querySelector("#prompt-rule")?.addEventListener("input", (event) => {
     state.rule = event.target.value;
     updatePersonalContent();
+    promptLiveStatus.textContent = state.rule.trim() ? `Sichtbar übernommen: ${state.rule.length} Zeichen.` : "Deine Eingabe erscheint sofort rechts im Prompt.";
+    const promptPanel = document.querySelector(".generated-prompt");
+    promptPanel?.classList.remove("is-updating");
+    void promptPanel?.offsetWidth;
+    promptPanel?.classList.add("is-updating");
+    if (state.rule.trim().length >= 5) reward("action:custom-rule", "Eigene Regel ergänzt");
   });
 
   document.querySelector("#knowledge-copy-prompt")?.addEventListener("click", (event) => copyText(buildPrompt(), event.currentTarget));
@@ -398,6 +484,7 @@
 
   updateSelectedButtons("audience", state.audience);
   updateSelectedButtons("device", state.device);
+  updateDiscoveryUi();
   updatePersonalContent();
   showStep(stepFromHash(), false);
   window.setTimeout(showFirstVisitInfo, 1300);
