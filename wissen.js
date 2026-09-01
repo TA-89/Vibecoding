@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.1.3";
+  const VERSION = "4.2.0";
   const FIRST_VISIT_KEY = "vibecoding-install-info-v1";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
   const stepElements = Array.from(document.querySelectorAll(".journey-step"));
@@ -24,6 +24,11 @@
   const cycleOrbit = document.querySelector("#cycle-orbit");
   const cycleFeedback = document.querySelector("#cycle-feedback");
   const cycleCount = document.querySelector("#cycle-count");
+  const cycleDialog = document.querySelector("#cycle-dialog");
+  const cycleDialogNumber = document.querySelector("#cycle-dialog-number");
+  const cycleDialogTitle = document.querySelector("#cycle-dialog-title");
+  const cycleDialogText = document.querySelector("#cycle-dialog-text");
+  const cycleDialogProgress = document.querySelector("#cycle-dialog-progress");
   const promptLiveStatus = document.querySelector("#prompt-live-status");
   const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isAndroid = /android/i.test(navigator.userAgent);
@@ -33,6 +38,7 @@
   let currentStep = 1;
   let deferredInstall = null;
   let orbitRotation = 0;
+  let activeCycleIndex = -1;
   let toastTimer = 0;
 
   const state = {
@@ -47,6 +53,8 @@
       title: "Gruppengenerator",
       promptNoun: "einen einfachen Gruppengenerator",
       speech: "«Ich brauche einen Gruppengenerator, der auf dem Handy funktioniert.»",
+      aiAction: "Erstellt Eingabefelder für Namen, eine Gruppenauswahl und einen Knopf zum fairen Verteilen.",
+      resultAction: "Probierst Fantasienamen aus und meldest zurück, wenn eine Person allein bleibt oder die Bedienung auf dem Handy noch hakt.",
       goal: "Namen zufällig und möglichst gleichmässig auf Gruppen verteilen",
       features: "Ich füge Namen ein und wähle die Anzahl Gruppen. Niemand soll am Schluss allein in einer Gruppe sein.",
       description: "Ein überschaubares Werkzeug, das Namen fair verteilt.",
@@ -56,6 +64,8 @@
       title: "Lernquiz oder H5P-Idee",
       promptNoun: "eine einfache digitale Lernübung",
       speech: "«Ich brauche eine kurze Übung mit sofortiger Rückmeldung.»",
+      aiAction: "Baut drei erste Fragen, Antwortknöpfe und eine verständliche Rückmeldung nach jeder Auswahl.",
+      resultAction: "Beantwortest jede Frage richtig und falsch und sagst, welche Rückmeldung fachlich noch klarer werden muss.",
       goal: "eine kurze Übung zu einem klaren Lernziel erstellen",
       features: "Nach jeder Antwort soll eine verständliche Rückmeldung erscheinen. Am Schluss wird gezeigt, was bereits sitzt und was noch geübt werden sollte.",
       description: "Eine kurze Lernaktivität mit direkter Rückmeldung.",
@@ -65,6 +75,8 @@
       title: "Interaktive Checkliste",
       promptNoun: "eine einfache interaktive Checkliste",
       speech: "«Ich brauche eine einfache Checkliste für einen wiederkehrenden Ablauf.»",
+      aiAction: "Erstellt vier abhakbare Schritte, eine Fortschrittsanzeige und einen Knopf für den Neustart.",
+      resultAction: "Gehst den echten Ablauf durch und ergänzt genau den Schritt, der im Alltag noch fehlt.",
       goal: "einen wiederkehrenden Unterrichtsablauf als klare Checkliste darstellen",
       features: "Punkte können abgehakt werden. Der Fortschritt ist sichtbar und die Liste kann neu gestartet werden.",
       description: "Ein klarer Ablauf, der Schritt für Schritt abgearbeitet wird.",
@@ -74,6 +86,8 @@
       title: "Eigene Unterrichtsidee",
       promptNoun: "ein kleines digitales Werkzeug",
       speech: "«Ich habe eine Unterrichtsidee, für die es noch kein passendes Werkzeug gibt.»",
+      aiAction: "Fragt Ziel, Nutzende und Kernfunktion ab und baut daraus eine kleine, sichtbare erste Version.",
+      resultAction: "Prüfst den wichtigsten Weg und beschreibst nur die nächste konkrete Verbesserung.",
       goal: "meine Unterrichtsidee als kleines digitales Werkzeug umsetzen",
       features: "Frage mich zuerst nach Ziel, Nutzenden und den drei wichtigsten Funktionen. Erstelle danach eine kleine erste Version.",
       description: "Eine massgeschneiderte Lösung für ein konkretes Problem.",
@@ -143,12 +157,12 @@
     "hub-tools": {
       kicker: "Werkzeuge",
       title: "Wo kann ich starten?",
-      body: `<div class="detail-link-list"><a href="https://openai.com/codex/" target="_blank" rel="noopener"><b>OpenAI Codex</b><span>Arbeitet mit Projektdateien, verändert Code und führt Prüfungen aus.</span></a><a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable</b><span>Erstellt WebApps aus einer Beschreibung.</span></a><a href="https://replit.com/" target="_blank" rel="noopener"><b>Replit</b><span>Verbindet Erstellen, Daten und Veröffentlichung in einer Umgebung.</span></a><a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt</b><span>Erstellt Prototypen direkt im Browser.</span></a></div><p class="detail-note">Funktionen, Preise und Datenschutzbedingungen ändern sich. Prüfe vor der Nutzung die aktuellen Bedingungen deiner Schule und des Anbieters.</p>`
+      body: `<div class="detail-link-list"><a href="https://chatgpt.com/codex" target="_blank" rel="noopener"><b>OpenAI Codex</b><span>Arbeitet mit Projektdateien, verändert Code und führt Prüfungen aus.</span></a><a href="https://github.com/features/copilot" target="_blank" rel="noopener"><b>GitHub Copilot</b><span>Hilft im Editor, auf GitHub, im Terminal und mit Coding-Agenten.</span></a><a href="https://aistudio.google.com/" target="_blank" rel="noopener"><b>Google AI Studio</b><span>Erstellt Web- und Android-Prototypen aus natürlicher Sprache.</span></a><a href="https://lovable.dev/" target="_blank" rel="noopener"><b>Lovable</b><span>Erstellt WebApps aus einer Beschreibung.</span></a><a href="https://replit.com/" target="_blank" rel="noopener"><b>Replit</b><span>Verbindet Erstellen, Daten und Veröffentlichung in einer Umgebung.</span></a><a href="https://bolt.new/" target="_blank" rel="noopener"><b>Bolt</b><span>Erstellt Prototypen direkt im Browser.</span></a></div><p class="detail-note">Funktionen, Preise und Datenschutzbedingungen ändern sich. Prüfe vor der Nutzung die aktuellen Bedingungen deiner Schule und des Anbieters.</p>`
     },
     "hub-publish": {
       kicker: "Veröffentlichen",
       title: "Wie wird aus Dateien eine Webseite?",
-      body: `<p>Eine einfache Seite besteht oft aus <code>index.html</code>, <code>style.css</code>, <code>app.js</code> und Bildern.</p><p><b>GitHub Pages:</b> eignet sich gratis für öffentliche, statische Seiten. Repository anlegen, Dateien hochladen und unter «Settings → Pages» veröffentlichen.</p><p><b>Eigener Webserver:</b> ist nötig für PHP, Datenbanken, geschützte Logins oder Uploads. Solche Funktionen brauchen zusätzliche Sicherheitsprüfungen.</p><p class="detail-note">GitHub Pages ist öffentlich. Keine vertraulichen Daten oder privaten Bilder ins Repository laden.</p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">Offizielle GitHub-Pages-Anleitung ↗</a>`
+      body: `<p>Eine einfache Seite besteht oft aus <code>index.html</code>, <code>style.css</code>, <code>app.js</code> und Bildern.</p><p><b>GitHub Pages:</b> eignet sich für öffentliche, statische Seiten. Repository anlegen, Dateien hochladen und unter «Settings → Pages» veröffentlichen.</p><p><b>Netlify Drop:</b> Ein Projektordner mit HTML-Dateien lässt sich für einen schnellen Test per Drag-and-drop veröffentlichen.</p><p><b>Eigener Webserver:</b> ist nötig für PHP, Datenbanken, geschützte Logins oder Uploads. Solche Funktionen brauchen zusätzliche Sicherheitsprüfungen.</p><p class="detail-note">Öffentliche Testseiten dürfen keine vertraulichen Daten oder privaten Bilder enthalten.</p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub-Pages-Anleitung ↗</a><a href="https://docs.netlify.com/deploy/create-deploys/#drag-and-drop" target="_blank" rel="noopener">Netlify Drag-and-drop ↗</a>`
     },
     "hub-safety": {
       kicker: "Sicher arbeiten",
@@ -168,7 +182,7 @@
     "hub-sources": {
       kicker: "Quellen",
       title: "Worauf diese Lernreise basiert",
-      body: `<p>Definitionen und Sicherheitsregeln wurden mit aktuellen, möglichst offiziellen Quellen geprüft. Praxiszahlen sind als Anbieterangaben gekennzeichnet.</p><div class="detail-link-list"><a href="https://www.ibm.com/think/topics/vibe-coding" target="_blank" rel="noopener">IBM: What is Vibe Coding? ↗</a><a href="https://www.cloudflare.com/learning/ai/ai-vibe-coding/" target="_blank" rel="noopener">Cloudflare: What is vibe coding? ↗</a><a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener">GitHub: Responsible use of coding agents ↗</a><a href="https://www.w3.org/WAI/WCAG2/supplemental/objectives/o3-clear-content/" target="_blank" rel="noopener">W3C: klare und verständliche Inhalte ↗</a><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Veröffentlichung ↗</a><a href="https://h5p.org/content-types-and-applications" target="_blank" rel="noopener">H5P: Inhaltstypen und Beispiele ↗</a></div>`
+      body: `<p>Definitionen und Sicherheitsregeln wurden mit aktuellen, möglichst offiziellen Quellen geprüft. Praxiszahlen sind als Anbieterangaben gekennzeichnet.</p><div class="detail-link-list"><a href="https://www.ibm.com/think/topics/vibe-coding" target="_blank" rel="noopener">IBM: What is Vibe Coding? ↗</a><a href="https://www.cloudflare.com/learning/ai/ai-vibe-coding/" target="_blank" rel="noopener">Cloudflare: What is vibe coding? ↗</a><a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener">GitHub: Responsible use of coding agents ↗</a><a href="https://github.com/features/copilot" target="_blank" rel="noopener">GitHub Copilot: Funktionen ↗</a><a href="https://ai.google.dev/gemini-api/docs/aistudio-build-mode" target="_blank" rel="noopener">Google AI Studio: Apps bauen ↗</a><a href="https://www.w3.org/WAI/WCAG2/supplemental/objectives/o3-clear-content/" target="_blank" rel="noopener">W3C: klare und verständliche Inhalte ↗</a><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Veröffentlichung ↗</a><a href="https://docs.netlify.com/deploy/create-deploys/#drag-and-drop" target="_blank" rel="noopener">Netlify: Drag-and-drop-Veröffentlichung ↗</a><a href="https://h5p.org/content-types-and-applications" target="_blank" rel="noopener">H5P: Inhaltstypen und Beispiele ↗</a></div>`
     }
   };
 
@@ -228,6 +242,8 @@
   function updatePersonalContent() {
     const project = projects[state.project || "gruppen"];
     document.querySelector("#idea-speech").textContent = project.speech;
+    document.querySelector("#idea-ai-action").textContent = project.aiAction;
+    document.querySelector("#idea-result-action").textContent = project.resultAction;
     generatedPrompt.textContent = buildPrompt();
     document.querySelector("#route-project-title").textContent = project.title;
     document.querySelector("#route-project-description").textContent = project.description;
@@ -351,27 +367,36 @@
     if (externalLink) reward(`link:${externalLink.href}`, "Quelle geöffnet");
   });
 
-  function activateCycle(index) {
+  function openCycleDialog(index) {
+    const [title, message] = cycleMessages[index];
+    cycleDialogNumber.textContent = String(index + 1).padStart(2, "0");
+    cycleDialogTitle.textContent = title;
+    cycleDialogText.textContent = message;
+    cycleDialogProgress.textContent = `${index + 1} von 4 · weiter in Drehrichtung →`;
+    if (!cycleDialog.open) cycleDialog.showModal();
+  }
+
+  function activateCycle(index, showExplanation = true) {
+    const safeIndex = ((Number(index) % 4) + 4) % 4;
     const buttons = Array.from(document.querySelectorAll(".cycle-stop"));
-    const button = buttons.find((item) => Number(item.dataset.cycle) === index);
+    const button = buttons.find((item) => Number(item.dataset.cycle) === safeIndex);
     if (!button) return;
-    orbitRotation += 90;
+    activeCycleIndex = safeIndex;
+    orbitRotation = safeIndex * -90;
     cycleOrbit?.style.setProperty("--orbit-turn", `${orbitRotation}deg`);
     cycleOrbit?.style.setProperty("--orbit-counter-turn", `${-orbitRotation}deg`);
-    cycleVisited.add(index);
+    cycleVisited.add(safeIndex);
     buttons.forEach((item) => item.classList.toggle("is-active", item === button));
     button.classList.add("is-visited");
-    const [title, message] = cycleMessages[index];
-    cycleFeedback.innerHTML = `<span class="panel-label">Deine aktuelle Station</span><b>${title}</b><p>${message}</p>`;
+    const [title, message] = cycleMessages[safeIndex];
+    cycleFeedback.innerHTML = `<span class="panel-label">Aktuelle Station</span><b>${String(safeIndex + 1).padStart(2, "0")} · ${title}</b><p>${message}</p>`;
     cycleFeedback.classList.remove("is-changing");
     void cycleFeedback.offsetWidth;
     cycleFeedback.classList.add("is-changing");
     cycleCount.textContent = `${cycleVisited.size} von 4 entdeckt`;
-    reward(`cycle:${index}`, `${title} verstanden`);
+    reward(`cycle:${safeIndex}`, `${title} verstanden`);
     updateNavigation();
-    if (window.matchMedia("(max-width: 720px)").matches) {
-      window.setTimeout(() => cycleFeedback.scrollIntoView({ behavior: "smooth", block: "center" }), 180);
-    }
+    if (showExplanation) openCycleDialog(safeIndex);
   }
 
   document.querySelectorAll(".cycle-stop").forEach((button) => {
@@ -379,10 +404,13 @@
   });
 
   document.querySelector("#cycle-spin")?.addEventListener("click", () => {
-    const nextUnvisited = [0, 1, 2, 3].find((index) => !cycleVisited.has(index));
-    const active = Number(document.querySelector(".cycle-stop.is-active")?.dataset.cycle ?? -1);
-    activateCycle(nextUnvisited ?? ((active + 1) % 4));
+    activateCycle(activeCycleIndex < 0 ? 0 : (activeCycleIndex + 1) % 4);
   });
+
+  document.querySelector("#cycle-dialog-close")?.addEventListener("click", () => cycleDialog.close());
+  document.querySelector("#cycle-dialog-prev")?.addEventListener("click", () => activateCycle(activeCycleIndex - 1));
+  document.querySelector("#cycle-dialog-next")?.addEventListener("click", () => activateCycle(activeCycleIndex + 1));
+  cycleDialog?.addEventListener("click", (event) => { if (event.target === cycleDialog) cycleDialog.close(); });
 
   document.querySelectorAll("#safety-quiz article").forEach((question) => {
     question.querySelectorAll("[data-answer]").forEach((button) => {
@@ -422,7 +450,7 @@
   window.addEventListener("popstate", () => showStep(stepFromHash(), false));
   window.addEventListener("hashchange", () => showStep(stepFromHash(), false));
   window.addEventListener("keydown", (event) => {
-    if (detailDialog.open || installDialog.open || /input|textarea/i.test(document.activeElement?.tagName)) return;
+    if (detailDialog.open || installDialog.open || cycleDialog.open || /input|textarea/i.test(document.activeElement?.tagName)) return;
     if (event.key === "ArrowRight" && !nextButton.hidden && !nextButton.disabled) showStep(currentStep + 1, true);
     if (event.key === "ArrowLeft" && currentStep > 1) showStep(currentStep === 8 ? 7 : currentStep - 1, true);
   });

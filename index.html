@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding im Unterricht: eine interaktive Kurzpräsentation für Lehrpersonen der GBS St. Gallen.">
   <title>Vibecoding im Unterricht</title>
-  <link rel="manifest" href="manifest.json?v=4.1.3">
+  <link rel="manifest" href="manifest.json?v=4.2.0">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.1.3">
+  <link rel="stylesheet" href="style.css?v=4.2.0">
 </head>
 <body class="deck-page">
   <a class="skip-link" href="#deck">Zum Inhalt springen</a>
@@ -35,19 +35,19 @@
     <section class="slide" data-title="Wunsch und Idee">
       <p class="eyebrow">Der Anfang</p>
       <h2>Ein Wunsch. Eine Idee. Aber kein passendes Tool.</h2>
-      <div class="wish-flow" aria-label="Vom Wunsch über die erste Lösung zur Verbesserung">
-        <article><span>1</span><strong>Wunsch</strong><small>Etwas soll im Unterricht einfacher werden.</small></article>
-        <b aria-hidden="true">→</b>
-        <article><span>2</span><strong>Erste Lösung</strong><small>Eine kleine, brauchbare Version entsteht.</small></article>
-        <b aria-hidden="true">→</b>
-        <article><span>3</span><strong>Verbesserung</strong><small>Ausprobieren, rückmelden, weiterbauen.</small></article>
+      <div class="wish-flow" aria-label="Von der Idee über Prompts zur verbesserten Lösung">
+        <article><span>1</span><strong>Wunsch / Idee</strong><small>Etwas soll im Unterricht einfacher werden.</small></article>
+        <b class="prompt-arrow" aria-hidden="true"><span>Prompt</span><i>→</i></b>
+        <article><span>2</span><strong>Erste Lösung</strong><small>Zum Beispiel zuerst lokal auf dem eigenen Computer.</small><em>localhost</em></article>
+        <b class="prompt-arrow" aria-hidden="true"><span>Prompt</span><i>→</i></b>
+        <article><span>3</span><strong>Verbesserung</strong><small>Ausprobieren, konkret rückmelden, weiterbauen.</small></article>
       </div>
     </section>
 
     <section class="slide platform-slide" data-title="So entstand die Plattform">
       <p class="eyebrow">Schritt für Schritt</p>
       <h2>So entstand eine Unterrichtsplattform für Sanitärinstallateure.</h2>
-      <p class="lead">Klicke auf eine Nummer und schau dir den jeweiligen Entwicklungsschritt an.</p>
+      <p class="lead">Fahre mit der Maus über eine Nummer. Auf dem Handy genügt ein Antippen.</p>
       <div class="platform-timeline" aria-label="Entwicklung der Unterrichtsplattform">
         <button class="platform-step" data-platform="1" type="button"><span>1</span><b>Tagesprogramm</b></button>
         <button class="platform-step" data-platform="2" type="button"><span>2</span><b>Editor</b></button>
@@ -57,13 +57,17 @@
         <button class="platform-step" data-platform="6" type="button"><span>6</span><b>Praxisaufträge</b></button>
         <div class="timeline-more"><span aria-hidden="true"></span><b>weitere Ideen …</b></div>
       </div>
+      <div class="platform-preview" id="platform-preview" aria-live="polite" hidden>
+        <div class="platform-preview-copy"><span id="platform-preview-number">01</span><div><b id="platform-preview-title">Tagesprogramm</b><p id="platform-preview-summary"></p></div></div>
+        <div class="platform-preview-gallery" id="platform-preview-gallery"></div>
+      </div>
     </section>
 
     <section class="slide story-slide" data-title="Bild der Woche">
       <div class="story-photo" role="img" aria-label="Von der Idee vor dem Einschlafen über ein Baustellenfoto bis zur Besprechung in der Klasse"></div>
       <div class="story-copy">
         <div class="story-title"><p class="eyebrow">Die nächste Idee</p><h2>Vor dem Einschlafen dachte ich: Warum nicht ein «Bild der Woche»?</h2></div>
-        <div class="story-action"><p class="lead">Auf der Baustelle fotografieren. Kurz erklären. Im Unterricht gemeinsam besprechen.</p><a class="switch-link" href="https://openai.com/codex/" target="_blank" rel="noopener">Jetzt live mit Codex umsetzen <span>↗</span></a></div>
+        <div class="story-action"><p class="lead">Auf der Baustelle fotografieren. Kurz erklären. Im Unterricht gemeinsam besprechen.</p><a class="switch-link" href="https://chatgpt.com/codex" target="_blank" rel="noopener">Codex öffnen <span>↗</span></a></div>
       </div>
       <div class="story-labels" aria-hidden="true"><span>Idee</span><span>Praxisfoto</span><span>Besprechung</span></div>
     </section>
@@ -71,19 +75,21 @@
     <section class="slide cycle-slide" data-title="Der Vibecoding-Kreislauf">
       <p class="eyebrow">Per Sprache oder Text</p>
       <h2>Vibecoding ist ein Kreislauf.</h2>
-      <div class="cycle-orbit" aria-label="Vibecoding-Kreislauf mit vier anklickbaren Schritten">
-        <div class="cycle-ring" aria-hidden="true"></div>
-        <button class="cycle-node cycle-top is-active" data-cycle="0" type="button"><span>1</span><b>Beschreiben</b></button>
-        <button class="cycle-node cycle-right" data-cycle="1" type="button"><span>2</span><b>Generieren</b></button>
-        <button class="cycle-node cycle-bottom" data-cycle="2" type="button"><span>3</span><b>Ausprobieren</b></button>
-        <button class="cycle-node cycle-left" data-cycle="3" type="button"><span>4</span><b>Verbessern</b></button>
-        <div class="cycle-core"><strong>Vibecoding</strong><p id="cycle-text">Erkläre das Problem und den kleinsten nützlichen Ablauf.</p></div>
+      <div class="presentation-cycle" id="presentation-cycle" style="--deck-cycle-turn: 0deg; --deck-cycle-counter: 0deg" aria-label="Vibecoding-Kreislauf mit vier Schritten">
+        <div class="presentation-cycle-track">
+          <div class="cycle-ring" aria-hidden="true"></div>
+        </div>
+        <button class="cycle-node cycle-top is-active" data-cycle="0" type="button"><span class="cycle-node-copy"><small>1</small><b>Beschreiben</b></span></button>
+        <button class="cycle-node cycle-right" data-cycle="1" type="button"><span class="cycle-node-copy"><small>2</small><b>Generieren</b></span></button>
+        <button class="cycle-node cycle-bottom" data-cycle="2" type="button"><span class="cycle-node-copy"><small>3</small><b>Ausprobieren</b></span></button>
+        <button class="cycle-node cycle-left" data-cycle="3" type="button"><span class="cycle-node-copy"><small>4</small><b>Verbessern</b></span></button>
+        <div class="cycle-core"><span class="cycle-direction" aria-hidden="true">↻</span><strong>Vibecoding</strong><p id="cycle-text">Erkläre das Problem und den kleinsten nützlichen Ablauf.</p></div>
       </div>
     </section>
 
     <section class="slide" data-title="Was entsteht">
       <p class="eyebrow">Das Ergebnis</p>
-      <h2>Die KI erstellt einen Projektordner. Du behältst die Kontrolle.</h2>
+      <h2>Vier Dateien – und plötzlich wird daraus ein Tool.</h2>
       <div class="folder-layout">
         <div class="folder-shell" aria-label="Beispiel eines Projektordners">
           <div class="folder-tab">mein-tool/</div>
@@ -92,19 +98,17 @@
           <button class="file-row" data-file="js" type="button"><code>app.js</code><span>Funktionen</span></button>
           <button class="file-row" data-file="images" type="button"><code>images/</code><span>Bilder</span></button>
         </div>
-        <div class="file-actions">
-          <article><span>1</span><div><b>Öffnen</b><p>Die Seite im Browser anschauen.</p></div></article>
-          <article><span>2</span><div><b>Prüfen</b><p>Klicken, testen und Fehler beschreiben.</p></div></article>
-          <article><span>3</span><div><b>Hochladen</b><p>Die fertigen Dateien veröffentlichen.</p></div></article>
-          <article><span>4</span><div><b>Sichern</b><p>Den funktionierenden Stand behalten.</p></div></article>
+        <div class="file-live-preview" id="file-live-preview" data-file-mode="index">
+          <div class="mini-browser" aria-hidden="true"><span></span><span></span><span></span><div class="mini-page"><i></i><b>Mein Unterrichtstool</b><p></p><button tabindex="-1">Start</button></div></div>
+          <div class="file-preview-copy"><span id="file-preview-name">index.html</span><b id="file-preview-title">Hier stehen Inhalt und Aufbau.</b><p id="file-preview-text">Überschriften, Texte, Buttons und Felder bilden den sichtbaren Rohbau.</p></div>
         </div>
       </div>
-      <p class="click-hint">Die Dateinamen sind anklickbar.</p>
+      <p class="click-hint">Fahre über einen Dateinamen. Antippen öffnet die ausführliche Erklärung.</p>
     </section>
 
     <section class="slide" data-title="Webseite veröffentlichen">
       <p class="eyebrow">Vom Ordner ins Internet</p>
-      <h2>Zwei einfache Wege zur eigenen Webseite.</h2>
+      <h2>Drei einfache Wege zur eigenen Webseite.</h2>
       <div class="publish-routes">
         <article>
           <p class="route-number">01</p><h3>GitHub Pages</h3><p>Ideal für eine statische Testseite ohne PHP oder Datenbank.</p>
@@ -116,6 +120,11 @@
           <ol><li>Dateimanager oder FTP öffnen</li><li>Dateien in den Webordner laden</li><li>Seite und Rechte kontrollieren</li></ol>
           <a href="https://www.domains.ch/" target="_blank" rel="noopener">Beispiel domains.ch ↗</a>
         </article>
+        <article>
+          <p class="route-number">03</p><h3>Netlify Drop</h3><p>Für eine statische Testseite, die ohne Git-Befehle schnell online sein soll.</p>
+          <ol><li>Projektordner bereithalten</li><li>Ordner per Drag-and-drop ablegen</li><li>Erhaltenen Link öffnen und testen</li></ol>
+          <a href="https://docs.netlify.com/deploy/create-deploys/#drag-and-drop" target="_blank" rel="noopener">Offizielle Anleitung ↗</a>
+        </article>
       </div>
     </section>
 
@@ -123,7 +132,7 @@
       <p class="eyebrow">Kleine Werkzeuge</p>
       <h2>Was könnte deinen Unterricht morgen einfacher machen?</h2>
       <div class="idea-circles">
-        <span>Gruppen-<br>generator</span><span>Feedback-<br>formular</span><span>Quiz</span><span>Checkliste</span><span>Fehlersuch-<br>Simulator</span><span>Praxisfoto-<br>Challenge</span>
+        <span>Gruppen-<br>generator</span><span>Feedback-<br>formular</span><span>Quiz</span><span>Checkliste</span><span>H5P-<br>Lernpfad</span><span>Praxisfoto-<br>Challenge</span>
       </div>
     </section>
 
@@ -131,40 +140,33 @@
       <p class="eyebrow">Was ich dabei gelernt habe</p>
       <h2>Aus Ideen werden Werkzeuge, die genau zu meinem Unterricht passen.</h2>
       <div class="balance-grid">
-        <article class="positive"><h3>Was plötzlich möglich wird</h3><p>Eine Idee ist schnell ausprobiert. Danach verbessere ich genau das, was im Unterricht noch nicht funktioniert.</p></article>
-        <article class="careful"><h3>Wo ich bewusst langsam mache</h3><p>Bei Lernendendaten, Zugriffsrechten und Veröffentlichungen prüfe ich selbst und hole bei Bedarf Unterstützung.</p></article>
+        <article class="positive"><h3>Was plötzlich möglich wird</h3><ul><li>Idee noch am selben Tag testen</li><li>Werkzeug genau an den Unterricht anpassen</li><li>Mit jeder Runde gezielt verbessern</li></ul></article>
+        <article class="careful"><h3>Wo ich bewusst langsam mache</h3><ul><li>Keine vertraulichen Daten in öffentliche Tests</li><li>Links, Rollen und Uploads selbst prüfen</li><li>Funktionierenden Stand als Rückweg sichern</li></ul></article>
       </div>
-      <blockquote>Ich bin nicht plötzlich Programmierer. Aber ich kann meine Ideen klarer beschreiben, Lösungen prüfen und eigene Werkzeuge weiterentwickeln.</blockquote>
+      <blockquote>Ich muss nicht alles programmieren können. Ich muss mein Ziel erklären, prüfen und Verantwortung übernehmen.</blockquote>
     </section>
 
     <section class="slide check-slide" data-title="Zurück zu Codex">
       <p class="eyebrow">Der Live-Check</p>
       <h2>Was hat Codex aus der Idee gemacht?</h2>
-      <p class="lead">Wir prüfen die Dateien, laden sie hoch und testen die neue Funktion gemeinsam.</p>
-      <div class="deploy-keywords" aria-label="Möglichkeiten für eine direkte Veröffentlichung"><span>GitHub verbinden</span><span>Commit &amp; Push</span><span>GitHub Actions</span><span>SFTP / FTP</span><span>Vercel / Netlify</span></div>
-      <div class="control-note"><b>Direkt wäre möglich</b><p>Mit den passenden Zugriffsrechten kann ein Coding-Agent die Dateien selbst zu GitHub oder auf einen Webserver übertragen. Heute lade ich sie bewusst noch selbst hoch und behalte so den Überblick.</p></div>
+      <p class="lead">Wir öffnen den Demo-Ordner, prüfen die Dateien und laden genau diesen Stand auf die Domain.</p>
+      <div class="deploy-keywords" aria-label="Ablauf für den Live-Test"><span>Dateien prüfen</span><span>Domain öffnen</span><span>Dateien hochladen</span><span>Live testen</span><span>Rückweg behalten</span></div>
+      <div class="control-note"><b>Der Coding-Agent könnte auch veröffentlichen</b><p>Mit den passenden Zugriffsrechten wären Uploads per Git, SFTP, FTP oder Hosting-Schnittstelle automatisierbar. Für diese Demo lade ich bewusst selbst hoch und sehe dabei jede Datei.</p><button id="demo-folder-open" class="folder-open-button" type="button">Demo-Ordner öffnen</button><p class="folder-open-status" id="demo-folder-status" aria-live="polite">C:\Users\Tobias.Arnold\OneDrive - Kt. SG BLD\Desktop\VibeCoding GBS Bauabteilung</p></div>
     </section>
 
-    <section class="slide possibility-slide" data-title="Der grösste Vorteil">
-      <p class="eyebrow">Der grösste Vorteil</p>
-      <h2>Ich starte nicht mit Code. Ich starte mit einer Idee aus meinem Unterricht.</h2>
-      <p class="possibility-lead">Auch ohne Vorkenntnisse kann daraus etwas entstehen, das vorher ausser Reichweite schien.</p>
-      <div class="possibility-scale">
-        <article><span>Einfach</span><h3>Moodle-Lernpfad, H5P, Quiz oder Checkliste</h3></article>
-        <article><span>Individuell</span><h3>Unterrichtstool, Dashboard oder interaktive Übung</h3></article>
-        <article><span>Komplex</span><h3>Webseite, WebApp, App oder ganzer Arbeitsablauf</h3></article>
-      </div>
-      <p class="possibility-note">Die Technik wird zugänglicher. Entscheidend bleiben die Idee, das Ausprobieren und mein fachlicher Blick.</p>
+    <section class="slide possibility-slide possibility-quote-slide" data-title="Der grösste Vorteil">
+      <h2>Mit Vibecoding baue ich heute komplexe Werkzeuge und Webseiten, von denen ich früher nie geglaubt hätte, dass ich sie selbst erstellen kann.</h2>
     </section>
 
     <section class="slide knowledge-slide" data-title="In Ruhe vertiefen">
       <div>
         <p class="eyebrow">Zum Mitnehmen</p>
-        <h2>Vibecoding selbst ausprobieren.</h2>
-        <p class="lead">Einfach erklärt, mit Promptbeispiel, Gratis-Veröffentlichung über GitHub Pages, Werkzeugen sowie Chancen und Grenzen.</p>
-        <div class="knowledge-actions"><a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a><a href="index.html#1">Präsentation neu starten</a></div>
+        <h2>Vibe Coding Infos</h2>
+        <p class="lead">Scannen, in Ruhe durchklicken und die erste eigene Idee ausprobieren.</p>
+        <p class="thank-you">Vielen Dank. Ich hoffe, ich konnte euch neugierig machen.</p>
+        <div class="knowledge-actions"><a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a></div>
       </div>
-      <div class="qr-wrap"><div id="qr-code" class="qr-code" aria-label="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url"></p></div>
+      <a class="qr-wrap" href="wissen.html" aria-label="Vibecoding-Infoseite öffnen"><div id="qr-code" class="qr-code" aria-label="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url"></p></a>
     </section>
   </main>
 
@@ -180,7 +182,7 @@
     <button class="dialog-close" id="file-dialog-close" type="button" aria-label="Dateierklärung schliessen">×</button><p class="eyebrow">Diese Datei</p><h2 id="file-dialog-title"></h2><p class="file-dialog-lead" id="file-dialog-summary"></p><div class="file-dialog-body"><div><h3>Darin steckt</h3><ul id="file-dialog-list"></ul></div><div><h3>Einfach gesagt</h3><p id="file-dialog-example"></p></div></div>
   </dialog>
 
-  <script src="qrcode.min.js?v=4.1.3"></script>
-  <script src="app.js?v=4.1.3"></script>
+  <script src="qrcode.min.js?v=4.2.0"></script>
+  <script src="app.js?v=4.2.0"></script>
 </body>
 </html>

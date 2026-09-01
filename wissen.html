@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding als geführte Lernreise: verstehen, ausprobieren, prüfen und eine eigene Idee starten.">
   <title>Vibecoding Schritt für Schritt</title>
-  <link rel="manifest" href="manifest.json?v=4.1.3">
+  <link rel="manifest" href="manifest.json?v=4.2.0">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.1.3">
+  <link rel="stylesheet" href="style.css?v=4.2.0">
 </head>
 <body class="knowledge-page journey-page">
   <a class="skip-link" href="#journey-stage">Zum Inhalt springen</a>
@@ -54,9 +54,9 @@
         <div class="explain-stage" aria-label="Vibecoding einfach erklärt">
           <div class="speech-panel human-panel"><span class="panel-label">Du</span><p id="idea-speech">«Ich brauche einen Gruppengenerator, der auf dem Handy funktioniert.»</p></div>
           <span class="explain-arrow" aria-hidden="true">→</span>
-          <div class="speech-panel ai-panel"><span class="panel-label">Coding-KI</span><p>Erstellt Dateien, verbindet Funktionen und zeigt dir eine erste nutzbare Version.</p></div>
+          <div class="speech-panel ai-panel"><span class="panel-label">Coding-KI</span><p id="idea-ai-action">Erstellt Dateien, verbindet Funktionen und zeigt dir eine erste nutzbare Version.</p></div>
           <span class="explain-arrow" aria-hidden="true">→</span>
-          <div class="speech-panel result-panel"><span class="panel-label">Du wieder</span><p>Öffnest, klickst, prüfst und sagst konkret, was besser werden soll.</p></div>
+          <div class="speech-panel result-panel"><span class="panel-label">Du wieder</span><p id="idea-result-action">Öffnest, klickst, prüfst und sagst konkret, was besser werden soll.</p></div>
         </div>
         <div class="simple-definition">
           <b>Ganz einfach:</b>
@@ -79,9 +79,9 @@
               <button type="button" class="cycle-stop orbit-bottom" data-cycle="2"><span class="orbit-node-content"><small>03</small><b>Testen</b></span></button>
               <button type="button" class="cycle-stop orbit-left" data-cycle="3"><span class="orbit-node-content"><small>04</small><b>Verbessern</b></span></button>
             </div>
-            <button class="orbit-core" id="cycle-spin" type="button"><b>Kreislauf drehen</b><span id="cycle-count">0 von 4 entdeckt</span></button>
+            <button class="orbit-core" id="cycle-spin" type="button"><i aria-hidden="true">↻</i><b>Nächste Station</b><span id="cycle-count">0 von 4 entdeckt</span></button>
           </div>
-          <div class="cycle-feedback" id="cycle-feedback" aria-live="polite"><span class="panel-label">Deine aktuelle Station</span><b>Starte bei «Beschreiben».</b><p>Ein guter Auftrag erklärt zuerst das Problem, nicht die Technik.</p></div>
+          <div class="cycle-feedback" id="cycle-feedback" aria-live="polite"><span class="panel-label">Drehrichtung</span><b>01 → 02 → 03 → 04</b><p>Tippe auf «Nächste Station» oder direkt auf einen Kreis. Die Erklärung öffnet sich gross über dem Kreislauf.</p></div>
         </div>
       </div>
     </section>
@@ -103,13 +103,13 @@
     <section class="journey-step" data-step="5" aria-labelledby="step-5-title" hidden>
       <div class="journey-shell">
         <p class="journey-kicker">Echte Beispiele</p>
-        <h2 id="step-5-title">Aus kleinen, klaren Problemen wurden echte Anwendungen.</h2>
+        <h2 id="step-5-title">Vier Menschen, vier konkrete Probleme, vier echte Werkzeuge.</h2>
         <p class="journey-lead">Öffne ein Beispiel. Die Zahlen stammen aus veröffentlichten Fallstudien der jeweiligen Plattformanbieter und sind keine Erfolgsgarantie.</p>
         <div class="example-grid">
-          <button type="button" class="example-card example-education" data-detail="example-nursa"><span>Bildung</span><b>Nursa Study</b><small>Portal für Pflegeschulen in einem Wochenende</small><em>Fallstudie öffnen</em></button>
-          <button type="button" class="example-card example-construction" data-detail="example-helix"><span>Bau</span><b>Helix Electric</b><small>Eigene Werkzeuge für spezielle Bauabläufe</small><em>Fallstudie öffnen</em></button>
-          <button type="button" class="example-card example-health" data-detail="example-health"><span>Gesundheit</span><b>My Doctor</b><small>Plattform durch einen Arzt ohne Code-Erfahrung</small><em>Fallstudie öffnen</em></button>
-          <button type="button" class="example-card example-events" data-detail="example-saastr"><span>Organisation</span><b>SaaStr Tools</b><small>Sieben produktive Anwendungen in drei Monaten</small><em>Fallstudie öffnen</em></button>
+          <button type="button" class="example-card example-education" data-detail="example-nursa"><span>Bildung</span><strong>1 Wochenende</strong><b>Nursa Study</b><small>Ein Portal für Pflegeschulen beginnt als kleiner, funktionierender Test.</small><em>Geschichte öffnen</em></button>
+          <button type="button" class="example-card example-construction" data-detail="example-helix"><span>Bau</span><strong>500'000 Abläufe</strong><b>Helix Electric</b><small>Eine Baufirma baut Werkzeuge für Lücken, die Standardsoftware offenlässt.</small><em>Geschichte öffnen</em></button>
+          <button type="button" class="example-card example-health" data-detail="example-health"><span>Gesundheit</span><strong>4 Tage</strong><b>My Doctor</b><small>Ein Arzt ohne Programmiererfahrung übersetzt sein Fachwissen in eine Plattform.</small><em>Geschichte öffnen</em></button>
+          <button type="button" class="example-card example-events" data-detail="example-saastr"><span>Organisation</span><strong>7 Werkzeuge</strong><b>SaaStr Tools</b><small>Mehrere kleine Anwendungen lösen konkrete Aufgaben besser als ein Riesensystem.</small><em>Geschichte öffnen</em></button>
         </div>
         <div class="example-lesson"><b>Was alle Beispiele gemeinsam haben:</b><span>Sie lösen ein konkretes Problem für eine klar beschriebene Gruppe. Genau damit solltest du ebenfalls beginnen.</span></div>
       </div>
@@ -132,10 +132,11 @@
     <section class="journey-step" data-step="7" aria-labelledby="step-7-title" hidden>
       <div class="journey-shell route-shell">
         <p class="journey-kicker">Dein persönlicher Start</p>
-        <h2 id="step-7-title">Du weisst jetzt genug für die erste kleine Runde.</h2>
+        <h2 id="step-7-title">Deine erste kleine Version ist nur einen Prompt entfernt.</h2>
+        <p class="journey-lead">Du musst weder Code kennen noch alles im Voraus planen. Kopiere den Auftrag, warte auf die erste Version und klicke dich durch. Die nächste Verbesserung darf winzig sein.</p>
         <div class="route-result">
           <div class="route-summary"><span class="panel-label">Deine Auswahl</span><h3 id="route-project-title">Gruppengenerator</h3><p id="route-project-description">Ein überschaubares Werkzeug, das Namen fair verteilt.</p><dl><div><dt>Nutzende</dt><dd id="route-audience">Lernende</dd></div><div><dt>Gerät</dt><dd id="route-device">Handy</dd></div><div><dt>Guter erster Test</dt><dd id="route-test">Mit fünf Fantasienamen ausprobieren</dd></div></dl></div>
-          <div class="route-actions"><b>So gehst du weiter:</b><ol><li>Prompt kopieren und in ein Coding-Werkzeug einsetzen.</li><li>Die kleinste Version öffnen und selbst testen.</li><li>Nur eine konkrete Verbesserung auf einmal verlangen.</li></ol><button type="button" id="route-copy-prompt">Meinen Prompt kopieren</button><button type="button" class="secondary-button" data-go-step="8">Alle Themen öffnen</button></div>
+          <div class="route-actions"><b>So einfach beginnt es:</b><ol><li>Prompt kopieren und in ein Coding-Werkzeug einsetzen.</li><li>Auf die erste Vorschau warten und alles einmal anklicken.</li><li>Sagen: «Ändere bitte genau diesen einen Punkt.»</li></ol><p class="route-courage">Mehr braucht es für den ersten Versuch nicht.</p><button type="button" id="route-copy-prompt">Meinen Prompt kopieren</button><button type="button" class="secondary-button" data-go-step="8">Alle Themen öffnen</button></div>
         </div>
       </div>
     </section>
@@ -148,15 +149,15 @@
           <button type="button" class="hub-card" data-detail="hub-cycle"><span>02</span><b>Der Kreislauf</b><small>Beschreiben, bauen, testen, verbessern</small></button>
           <button type="button" class="hub-card" data-detail="hub-prompt"><span>03</span><b>Gute Prompts</b><small>Eine einfache Formel mit Beispiel</small></button>
           <button type="button" class="hub-card" data-detail="hub-ideas"><span>04</span><b>Ideen für den Unterricht</b><small>Von Quiz bis Fotodokumentation</small></button>
-          <button type="button" class="hub-card" data-detail="hub-tools"><span>05</span><b>Werkzeuge</b><small>Codex, Lovable, Replit und Bolt</small></button>
+          <button type="button" class="hub-card" data-detail="hub-tools"><span>05</span><b>Werkzeuge</b><small>Codex, Copilot, AI Studio und weitere</small></button>
           <button type="button" class="hub-card" data-detail="hub-publish"><span>06</span><b>Online stellen</b><small>GitHub Pages und Webserver</small></button>
           <button type="button" class="hub-card" data-detail="hub-safety"><span>07</span><b>Sicher arbeiten</b><small>Daten, Tests und Backups</small></button>
           <button type="button" class="hub-card" data-detail="hub-examples"><span>08</span><b>Echte Beispiele</b><small>Vier veröffentlichte Fallstudien</small></button>
           <button type="button" class="hub-card" data-detail="hub-glossary"><span>09</span><b>Wörterbuch</b><small>Prompt, Code, Repository und PWA</small></button>
           <button type="button" class="hub-card" data-detail="hub-sources"><span>10</span><b>Quellen</b><small>Offizielle Seiten und Methodik</small></button>
-          <a class="hub-card hub-card-media" href="mediathek.html"><span>11</span><b>Video-Mediathek</b><small>Deutsch lernen und weiterstöbern</small></a>
+          <a class="hub-card hub-card-media" href="mediathek.html"><span>11 · ▶ Videos</span><b>Video-Mediathek</b><small>Deutsche Erklärvideos mit Vorschaubildern ansehen</small></a>
         </div>
-        <div class="hub-links"><a href="index.html#1"><b>Präsentation</b><span>Den 10-Minuten-Vortrag öffnen →</span></a><a href="mediathek.html"><b>Weiterlernen</b><span>Videos und offizielle Anleitungen öffnen →</span></a></div>
+        <div class="hub-links"><a href="index.html#1"><b>Präsentation</b><span>Den 10-Minuten-Vortrag öffnen →</span></a><a class="hub-video-link" href="mediathek.html"><b>▶ Weiterlernen mit Videos</b><span>Vorschaubilder, deutsche Videos und offizielle Anleitungen →</span></a></div>
       </div>
     </section>
   </main>
@@ -164,6 +165,13 @@
   <nav class="journey-nav" aria-label="Lernreise steuern"><button id="journey-back" type="button" aria-label="Vorheriger Schritt">← <span>Zurück</span></button><span id="journey-nav-hint">Wähle zuerst eine Idee aus.</span><button id="journey-next" type="button"><span>Weiter</span> →</button></nav>
 
   <dialog class="detail-dialog" id="detail-dialog"><button class="dialog-close" id="detail-dialog-close" type="button" aria-label="Fenster schliessen">×</button><div id="detail-dialog-content"></div></dialog>
+
+  <dialog class="cycle-dialog" id="cycle-dialog">
+    <button class="dialog-close" id="cycle-dialog-close" type="button" aria-label="Kreislauf-Erklärung schliessen">×</button>
+    <button class="cycle-dialog-nav cycle-dialog-prev" id="cycle-dialog-prev" type="button" aria-label="Vorherige Station">←</button>
+    <div class="cycle-dialog-circle"><span id="cycle-dialog-number">01</span><b id="cycle-dialog-title">Beschreiben</b><p id="cycle-dialog-text"></p><small id="cycle-dialog-progress">1 von 4</small></div>
+    <button class="cycle-dialog-nav cycle-dialog-next" id="cycle-dialog-next" type="button" aria-label="Nächste Station">→</button>
+  </dialog>
 
   <dialog class="install-dialog first-visit-dialog" id="install-dialog">
     <button class="dialog-close" id="install-dialog-close" type="button" aria-label="Hinweis schliessen">×</button>
@@ -176,6 +184,6 @@
 
   <div class="discovery-toast" id="discovery-toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="wissen.js?v=4.1.3"></script>
+  <script src="wissen.js?v=4.2.0"></script>
 </body>
 </html>

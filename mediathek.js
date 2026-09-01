@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.1.3";
+  const VERSION = "4.2.0";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
   const cards = Array.from(document.querySelectorAll(".video-card"));
   const filters = Array.from(document.querySelectorAll(".media-filter[data-filter]"));

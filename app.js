@@ -11,9 +11,14 @@
   const fullscreenButton = document.querySelector("#fullscreen-toggle");
   const platformDialog = document.querySelector("#platform-dialog");
   const fileDialog = document.querySelector("#file-dialog");
+  const platformPreview = document.querySelector("#platform-preview");
+  const platformPreviewGallery = document.querySelector("#platform-preview-gallery");
+  const presentationCycle = document.querySelector("#presentation-cycle");
   let current = readHash();
   let touchStartX = 0;
   let touchStartY = 0;
+  let deckCycleRotation = 0;
+  let deckCycleIndex = 0;
 
   const cycleTexts = [
     "Erkläre das Problem und den kleinsten nützlichen Ablauf.",
@@ -26,38 +31,38 @@
     1: {
       title: "1 · Tagesprogramm",
       summary: "Der erste Wunsch: Lernende sehen für jeden Schultag ein aktuelles, klares Tagesprogramm.",
-      images: [{ src: "images/platform-01-tagesprogramm.png", alt: "Tagesprogramm einer Sanitärklasse", caption: "Aktueller Schultag mit Lektionen, Lernauftrag und Hausaufgaben" }]
+      images: [{ src: "images/platform-01-tagesprogramm.png", alt: "Tagesprogramm einer Sanitärklasse", caption: "Aktueller Schultag mit Lektionen, Lernauftrag und Hausaufgaben", frame: "desktop" }]
     },
     2: {
       title: "2 · Editor",
       summary: "Danach brauchte es eine einfache Oberfläche, damit Lehrpersonen Inhalte selbst anpassen können.",
-      images: [{ src: "images/platform-02-editor.png", alt: "Lehrer-Editor für einen Schultag", caption: "Editor für Lektionen, Links, Prüfungen und Zusatzmaterial" }]
+      images: [{ src: "images/platform-02-editor.png", alt: "Lehrer-Editor für einen Schultag", caption: "Editor für Lektionen, Links, Prüfungen und Zusatzmaterial", frame: "desktop" }]
     },
     3: {
       title: "3 · Hausaufgaben",
       summary: "Hausaufgaben werden einmal erfasst und erscheinen danach am richtigen Schultag in der Lernendenansicht.",
       images: [
-        { src: "images/platform-03-hausaufgaben-editor.png", alt: "Hausaufgabenbereich im Editor", caption: "Erfassen, fotografieren und speichern" },
-        { src: "images/platform-03-hausaufgaben-ansicht.png", alt: "Hausaufgaben in der Klassenansicht", caption: "Anzeige am richtigen Schultag" }
+        { src: "images/platform-03-hausaufgaben-editor.png", alt: "Hausaufgabenbereich im Editor", caption: "Erfassen, fotografieren und speichern", frame: "desktop" },
+        { src: "images/platform-03-hausaufgaben-ansicht.png", alt: "Hausaufgaben in der Klassenansicht", caption: "Anzeige am richtigen Schultag", frame: "desktop" }
       ]
     },
     4: {
       title: "4 · Fotos per QR-Code",
       summary: "Ein QR-Code verbindet den Computer der Lehrperson mit der Kamera auf dem Handy.",
-      images: [{ src: "images/platform-04-qr-upload.png", alt: "QR-Code für einen Foto-Upload", caption: "Foto direkt aufnehmen und dem ausgewählten Schultag zuordnen" }]
+      images: [{ src: "images/platform-04-qr-upload.png", alt: "QR-Code für einen Foto-Upload", caption: "Foto direkt aufnehmen und dem ausgewählten Schultag zuordnen", frame: "desktop" }]
     },
     5: {
       title: "5 · WebApp",
       summary: "Die Klassenansicht lässt sich auf dem Startbildschirm installieren und wie eine App öffnen.",
       images: [
-        { src: "images/platform-05-webapp-home.jpeg", alt: "Klassen-WebApp auf einem Android-Startbildschirm", caption: "Direkter Einstieg über das Klassenicon" },
-        { src: "images/platform-05-webapp-view.jpeg", alt: "Tagesprogramm in der mobilen WebApp", caption: "Daumenfreundliche Ansicht für Lernende" }
+        { src: "images/platform-05-webapp-home.jpeg", alt: "Klassen-WebApp auf einem Android-Startbildschirm", caption: "Direkter Einstieg über das Klassenicon", frame: "mobile" },
+        { src: "images/platform-05-webapp-view.jpeg", alt: "Tagesprogramm in der mobilen WebApp", caption: "Daumenfreundliche Ansicht für Lernende", frame: "mobile" }
       ]
     },
     6: {
       title: "6 · Praxisaufträge",
       summary: "Aus einer weiteren Idee entstand eine durchsuchbare Übersicht mit Praxisaufträgen und Kompetenzen.",
-      images: [{ src: "images/platform-06-praxisauftraege.png", alt: "Interaktive Übersicht der Praxisaufträge", caption: "Kompetenzen, Praxisaufträge und Lernaufträge an einem Ort" }]
+      images: [{ src: "images/platform-06-praxisauftraege.png", alt: "Interaktive Übersicht der Praxisaufträge", caption: "Kompetenzen, Praxisaufträge und Lernaufträge an einem Ort", frame: "desktop" }]
     }
   };
 
@@ -151,14 +156,41 @@
     overviewGrid.append(button);
   });
 
-  document.querySelectorAll("[data-cycle]").forEach((button) => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll("[data-cycle]").forEach((node) => node.classList.toggle("is-active", node === button));
-      document.querySelector("#cycle-text").textContent = cycleTexts[Number(button.dataset.cycle)] || cycleTexts[0];
-    });
+  function activatePresentationCycle(index) {
+    const safeIndex = ((Number(index) % 4) + 4) % 4;
+    const delta = (safeIndex - deckCycleIndex + 4) % 4;
+    deckCycleRotation += delta === 0 ? 360 : delta * 90;
+    deckCycleIndex = safeIndex;
+    presentationCycle?.style.setProperty("--deck-cycle-turn", `${deckCycleRotation}deg`);
+    presentationCycle?.style.setProperty("--deck-cycle-counter", `${-deckCycleRotation}deg`);
+    document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => node.classList.toggle("is-active", Number(node.dataset.cycle) === safeIndex));
+    document.querySelector("#cycle-text").textContent = cycleTexts[safeIndex] || cycleTexts[0];
+  }
+
+  document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((button) => {
+    const activate = () => activatePresentationCycle(button.dataset.cycle);
+    button.addEventListener("pointerenter", activate);
+    button.addEventListener("focus", activate);
+    button.addEventListener("click", activate);
   });
 
-  document.querySelectorAll("[data-platform]").forEach((button) => button.addEventListener("click", () => openPlatformDialog(button.dataset.platform)));
+  function renderPlatformPreview(key) {
+    const detail = platformDetails[key];
+    if (!detail || !platformPreview) return;
+    platformPreview.hidden = false;
+    document.querySelector("#platform-preview-number").textContent = String(key).padStart(2, "0");
+    document.querySelector("#platform-preview-title").textContent = detail.title.replace(/^\d+ · /, "");
+    document.querySelector("#platform-preview-summary").textContent = detail.summary;
+    platformPreviewGallery.classList.toggle("has-two", detail.images.length > 1);
+    platformPreviewGallery.innerHTML = detail.images.map((image) => `<figure class="device-frame ${image.frame || "desktop"}"><div><img src="${image.src}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`).join("");
+  }
+
+  document.querySelectorAll("[data-platform]").forEach((button) => {
+    const preview = () => renderPlatformPreview(button.dataset.platform);
+    button.addEventListener("pointerenter", preview);
+    button.addEventListener("focus", preview);
+    button.addEventListener("click", () => openPlatformDialog(button.dataset.platform));
+  });
   document.querySelector("#platform-dialog-close").addEventListener("click", () => platformDialog.close());
   platformDialog.addEventListener("click", (event) => { if (event.target === platformDialog) platformDialog.close(); });
 
@@ -173,7 +205,22 @@
     platformDialog.showModal();
   }
 
-  document.querySelectorAll("[data-file]").forEach((button) => button.addEventListener("click", () => openFileDialog(button.dataset.file)));
+  function renderFilePreview(key) {
+    const detail = fileDetails[key];
+    const preview = document.querySelector("#file-live-preview");
+    if (!detail || !preview) return;
+    preview.dataset.fileMode = key;
+    document.querySelector("#file-preview-name").textContent = detail.title;
+    document.querySelector("#file-preview-title").textContent = detail.summary;
+    document.querySelector("#file-preview-text").textContent = detail.example;
+  }
+
+  document.querySelectorAll("[data-file]").forEach((button) => {
+    const preview = () => renderFilePreview(button.dataset.file);
+    button.addEventListener("pointerenter", preview);
+    button.addEventListener("focus", preview);
+    button.addEventListener("click", () => openFileDialog(button.dataset.file));
+  });
   document.querySelector("#file-dialog-close").addEventListener("click", () => fileDialog.close());
   fileDialog.addEventListener("click", (event) => { if (event.target === fileDialog) fileDialog.close(); });
 
@@ -214,6 +261,16 @@
   }
   if (!document.documentElement.requestFullscreen && !document.documentElement.webkitRequestFullscreen) fullscreenButton.hidden = true;
 
+  document.querySelector("#demo-folder-open")?.addEventListener("click", async () => {
+    const folderPath = "C:\\Users\\Tobias.Arnold\\OneDrive - Kt. SG BLD\\Desktop\\VibeCoding GBS Bauabteilung";
+    const status = document.querySelector("#demo-folder-status");
+    let copied = false;
+    try { await navigator.clipboard.writeText(folderPath); copied = true; } catch (error) { /* The path remains visible as fallback. */ }
+    if (location.protocol === "file:") window.open("file:///C:/Users/Tobias.Arnold/OneDrive%20-%20Kt.%20SG%20BLD/Desktop/VibeCoding%20GBS%20Bauabteilung", "_blank");
+    if (location.protocol === "file:") status.textContent = copied ? "Ordner wird geöffnet. Der Pfad wurde zusätzlich kopiert." : `Ordner wird geöffnet. Pfad: ${folderPath}`;
+    else status.textContent = copied ? "Browser schützen lokale Ordner. Der vollständige Pfad wurde kopiert." : `Browser schützen lokale Ordner. Öffne diesen Pfad im Explorer: ${folderPath}`;
+  });
+
   function renderQr() {
     const qrCode = document.querySelector("#qr-code");
     const qrUrl = document.querySelector("#qr-url");
@@ -221,14 +278,14 @@
     qrUrl.textContent = url;
     if (!window.VibeQR) { qrCode.textContent = "QR-Code nicht verfügbar."; return; }
     try {
-      window.VibeQR.render(qrCode, url, { cellSize: 9, margin: 4 });
+      window.VibeQR.render(qrCode, url, { cellSize: 11, margin: 4 });
     } catch (error) {
       qrCode.textContent = "QR-Code konnte nicht erzeugt werden.";
     }
   }
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.1.3", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.0", { scope: "./" }).catch(() => {}));
   }
 
   renderQr();
