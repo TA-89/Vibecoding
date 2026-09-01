@@ -19,6 +19,7 @@
   let deckCycleRotation = 0;
   let deckCycleIndex = 0;
   let cycleAutoTimer = 0;
+  let ideaBurstTimer = 0;
 
   const cycleTexts = [
     "Erkläre das Problem und den kleinsten nützlichen Ablauf.",
@@ -203,6 +204,9 @@
   });
   document.querySelector("#platform-dialog-close").addEventListener("click", () => platformDialog.close());
   platformDialog.addEventListener("click", (event) => { if (event.target === platformDialog) platformDialog.close(); });
+  document.querySelector("#platform-dialog-gallery")?.addEventListener("click", (event) => {
+    if (event.target.closest(".dialog-device-screen")) platformDialog.close();
+  });
 
   function openPlatformDialog(key) {
     const detail = platformDetails[key];
@@ -211,7 +215,15 @@
     document.querySelector("#platform-dialog-summary").textContent = detail.summary;
     const gallery = document.querySelector("#platform-dialog-gallery");
     gallery.classList.toggle("has-two", detail.images.length > 1);
-    gallery.innerHTML = detail.images.map((image) => `<figure class="dialog-device ${image.frame || "desktop"}"><div class="dialog-device-screen"><img src="${image.src}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`).join("");
+    gallery.innerHTML = detail.images.map((image) => `<figure class="dialog-device ${image.frame || "desktop"}"><div class="dialog-device-screen" role="button" tabindex="0" aria-label="Bild schliessen"><img src="${image.src}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`).join("");
+    gallery.querySelectorAll(".dialog-device-screen").forEach((screen) => {
+      screen.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          platformDialog.close();
+        }
+      });
+    });
     platformDialog.showModal();
   }
 
@@ -228,7 +240,7 @@
   document.querySelectorAll("[data-file]").forEach((button) => {
     button.addEventListener("click", () => {
       renderFilePreview(button.dataset.file);
-      openFileDialog(button.dataset.file);
+      document.querySelectorAll("[data-file]").forEach((item) => item.classList.toggle("is-selected", item === button));
     });
   });
   document.querySelector("#file-dialog-close").addEventListener("click", () => fileDialog.close());
@@ -245,6 +257,33 @@
     document.querySelector("#file-dialog-example").textContent = detail.example;
     fileDialog.showModal();
   }
+
+  const ideaLabels = [
+    "Lernkarten", "Werkstattplan", "Materialcheck", "Zufallsfragen", "Fotolernweg", "Peerfeedback",
+    "Sicherheitsquiz", "QR-Posten", "Kompetenzrad", "Mini-Simulation", "Wochenplan", "Absenzenhilfe",
+    "Lernzielcheck", "Begriffsduell", "Praxisjournal", "Fehlersuche", "Klassenspiel", "Messwerthelfer",
+    "Projektboard", "Berichtscoach", "Reflexionsrad", "Bildvergleich", "Auftragscheck", "Ideenlabor"
+  ];
+
+  function launchIdeaBurst() {
+    const layer = document.querySelector("#idea-burst-layer");
+    if (!layer) return;
+    window.clearTimeout(ideaBurstTimer);
+    layer.innerHTML = ideaLabels.map((label, index) => {
+      const angle = (index / ideaLabels.length) * Math.PI * 2;
+      const radius = 36 + ((index * 17) % 42);
+      const x = 50 + Math.cos(angle) * radius;
+      const y = 50 + Math.sin(angle) * radius;
+      const size = 70 + ((index * 13) % 48);
+      return `<span class="floating-idea" style="--idea-x:${x.toFixed(1)}%;--idea-y:${y.toFixed(1)}%;--idea-size:${size}px;--idea-delay:${(index % 8) * 45}ms"><i aria-hidden="true"><b></b><b></b><b></b></i><em>${label}</em></span>`;
+    }).join("");
+    layer.classList.remove("is-active");
+    void layer.offsetWidth;
+    layer.classList.add("is-active");
+    ideaBurstTimer = window.setTimeout(() => layer.classList.remove("is-active"), 7000);
+  }
+
+  document.querySelector("#idea-burst")?.addEventListener("click", launchIdeaBurst);
 
   function isFullscreen() { return Boolean(document.fullscreenElement || document.webkitFullscreenElement); }
   async function toggleFullscreen() {
@@ -284,7 +323,7 @@
   });
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.3", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.5", { scope: "./" }).catch(() => {}));
   }
 
   go(current, true);

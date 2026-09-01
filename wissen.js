@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.3";
+  const VERSION = "4.2.5";
   const FIRST_VISIT_KEY = "vibecoding-install-info-v1";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
   const PROGRESS_KEY = "vibecoding-learning-progress-v1";
@@ -187,7 +187,7 @@
     "hub-sources": {
       kicker: "Quellen",
       title: "Worauf diese Lernreise basiert",
-      body: `<p>Definitionen und Sicherheitsregeln wurden mit aktuellen, möglichst offiziellen Quellen geprüft. Praxiszahlen sind als Anbieterangaben gekennzeichnet.</p><div class="detail-link-list"><a href="https://www.ibm.com/think/topics/vibe-coding" target="_blank" rel="noopener">IBM: What is Vibe Coding? ↗</a><a href="https://www.cloudflare.com/learning/ai/ai-vibe-coding/" target="_blank" rel="noopener">Cloudflare: What is vibe coding? ↗</a><a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener">GitHub: Responsible use of coding agents ↗</a><a href="https://github.com/features/copilot" target="_blank" rel="noopener">GitHub Copilot: Funktionen ↗</a><a href="https://ai.google.dev/gemini-api/docs/aistudio-build-mode" target="_blank" rel="noopener">Google AI Studio: Apps bauen ↗</a><a href="https://www.w3.org/WAI/WCAG2/supplemental/objectives/o3-clear-content/" target="_blank" rel="noopener">W3C: klare und verständliche Inhalte ↗</a><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Veröffentlichung ↗</a><a href="https://docs.netlify.com/deploy/create-deploys/#drag-and-drop" target="_blank" rel="noopener">Netlify: Drag-and-drop-Veröffentlichung ↗</a><a href="https://h5p.org/content-types-and-applications" target="_blank" rel="noopener">H5P: Inhaltstypen und Beispiele ↗</a></div>`
+      body: `<p>Definitionen und Sicherheitsregeln wurden mit aktuellen, möglichst offiziellen Quellen geprüft. Praxiszahlen sind als Anbieterangaben gekennzeichnet.</p><div class="detail-link-list"><a href="https://www.ibm.com/de-de/think/topics/vibe-coding" target="_blank" rel="noopener"><b>IBM Deutschland: Was ist Vibe Coding?</b><span>Deutschsprachige Einführung, aktualisiert im Juli 2026.</span></a><a href="https://www.ihk.de/ulm/hauptnavigation/online-magazin/im-fokus/vibe-coding-7075996" target="_blank" rel="noopener"><b>IHK Ulm: Vibe-Coding strategisch einsetzen</b><span>Deutschsprachiger Fachartikel zu Nutzen, Grenzen und Erfolgsfaktoren, Juni 2026.</span></a><a href="https://www.cloudflare.com/de-de/learning/ai/ai-vibe-coding/" target="_blank" rel="noopener">Cloudflare: Was ist Vibe-Coding? ↗</a><a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener">GitHub: Responsible use of coding agents ↗</a><a href="https://github.com/features/copilot" target="_blank" rel="noopener">GitHub Copilot: Funktionen ↗</a><a href="https://ai.google.dev/gemini-api/docs/aistudio-build-mode" target="_blank" rel="noopener">Google AI Studio: Apps bauen ↗</a><a href="https://www.w3.org/WAI/WCAG2/supplemental/objectives/o3-clear-content/" target="_blank" rel="noopener">W3C: klare und verständliche Inhalte ↗</a><a href="https://docs.github.com/de/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener">GitHub Pages: Veröffentlichung ↗</a><a href="https://docs.netlify.com/deploy/create-deploys/#drag-and-drop" target="_blank" rel="noopener">Netlify: Drag-and-drop-Veröffentlichung ↗</a><a href="https://h5p.org/content-types-and-applications" target="_blank" rel="noopener">H5P: Inhaltstypen und Beispiele ↗</a></div>`
     }
   };
 
@@ -365,6 +365,14 @@
     }
     const mediaLink = event.target.closest('a[href="mediathek.html"]');
     if (mediaLink) reward("page:mediathek", "Mediathek freigeschaltet");
+
+    const resetJourney = event.target.closest("[data-reset-journey]");
+    if (resetJourney) {
+      try { localStorage.setItem(PROGRESS_KEY, "0"); } catch (error) { /* Storage can be blocked. */ }
+      history.replaceState({ step: 1 }, "", "#schritt-1");
+      location.reload();
+      return;
+    }
 
     const stepButton = event.target.closest("[data-go-step]");
     if (stepButton) {
