@@ -107,6 +107,8 @@
       const cycleAutoButton = document.querySelector("#cycle-auto");
       cycleAutoButton?.classList.remove("is-running");
       cycleAutoButton?.setAttribute("aria-pressed", "false");
+      const cycleAutoLabel = document.querySelector("#cycle-auto-label");
+      if (cycleAutoLabel) cycleAutoLabel.textContent = "Kreislauf starten";
     }
     slides.forEach((slide, i) => slide.classList.toggle("is-active", i === current));
     counter.textContent = `${String(current + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
@@ -188,6 +190,7 @@
       button.classList.remove("is-running");
       button.setAttribute("aria-pressed", "false");
       button.title = "Kreislauf automatisch abspielen";
+      document.querySelector("#cycle-auto-label").textContent = "Kreislauf starten";
       return;
     }
     document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => node.classList.remove("is-visited"));
@@ -196,7 +199,8 @@
     button.classList.add("is-running");
     button.setAttribute("aria-pressed", "true");
     button.title = "Automatischen Kreislauf anhalten";
-    cycleAutoTimer = window.setInterval(() => activatePresentationCycle((deckCycleIndex + 1) % 4), 1500);
+    document.querySelector("#cycle-auto-label").textContent = "Kreislauf stoppen";
+    cycleAutoTimer = window.setInterval(() => activatePresentationCycle((deckCycleIndex + 1) % 4), 1800);
   });
 
   document.querySelectorAll("[data-platform]").forEach((button) => {
@@ -215,7 +219,12 @@
     document.querySelector("#platform-dialog-summary").textContent = detail.summary;
     const gallery = document.querySelector("#platform-dialog-gallery");
     gallery.classList.toggle("has-two", detail.images.length > 1);
-    gallery.innerHTML = detail.images.map((image) => `<figure class="dialog-device ${image.frame || "desktop"}"><div class="dialog-device-screen" role="button" tabindex="0" aria-label="Bild schliessen"><img src="${image.src}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`).join("");
+    gallery.innerHTML = detail.images.map((image) => {
+      const frame = image.frame || "desktop";
+      const filename = image.src.split("/").pop().replace(/\.[^.]+$/, "");
+      const mockup = `images/mockup-${filename}.png`;
+      return `<figure class="dialog-device ${frame}"><div class="dialog-device-screen" role="button" tabindex="0" aria-label="Bild schliessen"><img class="dialog-device-render" src="${mockup}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`;
+    }).join("");
     gallery.querySelectorAll(".dialog-device-screen").forEach((screen) => {
       screen.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
@@ -323,7 +332,7 @@
   });
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.5", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.8", { scope: "./" }).catch(() => {}));
   }
 
   go(current, true);

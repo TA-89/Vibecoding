@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.5";
+  const VERSION = "4.2.8";
   const FIRST_VISIT_KEY = "vibecoding-install-info-v1";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
   const PROGRESS_KEY = "vibecoding-learning-progress-v1";

@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.5";
+  const VERSION = "4.2.8";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
   const PROGRESS_KEY = "vibecoding-learning-progress-v1";
   const cards = Array.from(document.querySelectorAll(".video-card"));
