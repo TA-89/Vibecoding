@@ -11,14 +11,14 @@
   const fullscreenButton = document.querySelector("#fullscreen-toggle");
   const platformDialog = document.querySelector("#platform-dialog");
   const fileDialog = document.querySelector("#file-dialog");
-  const platformPreview = document.querySelector("#platform-preview");
-  const platformPreviewGallery = document.querySelector("#platform-preview-gallery");
+  const qrDialog = document.querySelector("#qr-dialog");
   const presentationCycle = document.querySelector("#presentation-cycle");
   let current = readHash();
   let touchStartX = 0;
   let touchStartY = 0;
   let deckCycleRotation = 0;
   let deckCycleIndex = 0;
+  let cycleAutoTimer = 0;
 
   const cycleTexts = [
     "Erkläre das Problem und den kleinsten nützlichen Ablauf.",
@@ -100,6 +100,13 @@
 
   function go(index, replaceHash) {
     current = Math.max(0, Math.min(slides.length - 1, index));
+    if (current !== 4 && cycleAutoTimer) {
+      window.clearInterval(cycleAutoTimer);
+      cycleAutoTimer = 0;
+      const cycleAutoButton = document.querySelector("#cycle-auto");
+      cycleAutoButton?.classList.remove("is-running");
+      cycleAutoButton?.setAttribute("aria-pressed", "false");
+    }
     slides.forEach((slide, i) => slide.classList.toggle("is-active", i === current));
     counter.textContent = `${String(current + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
     progress.style.width = `${((current + 1) / slides.length) * 100}%`;
@@ -159,36 +166,39 @@
   function activatePresentationCycle(index) {
     const safeIndex = ((Number(index) % 4) + 4) % 4;
     const delta = (safeIndex - deckCycleIndex + 4) % 4;
-    deckCycleRotation += delta === 0 ? 360 : delta * 90;
+    deckCycleRotation += delta * 90;
     deckCycleIndex = safeIndex;
     presentationCycle?.style.setProperty("--deck-cycle-turn", `${deckCycleRotation}deg`);
     presentationCycle?.style.setProperty("--deck-cycle-counter", `${-deckCycleRotation}deg`);
     document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => node.classList.toggle("is-active", Number(node.dataset.cycle) === safeIndex));
+    document.querySelector(`.presentation-cycle [data-cycle="${safeIndex}"]`)?.classList.add("is-visited");
     document.querySelector("#cycle-text").textContent = cycleTexts[safeIndex] || cycleTexts[0];
   }
 
   document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((button) => {
-    const activate = () => activatePresentationCycle(button.dataset.cycle);
-    button.addEventListener("pointerenter", activate);
-    button.addEventListener("focus", activate);
-    button.addEventListener("click", activate);
+    button.addEventListener("click", () => activatePresentationCycle(button.dataset.cycle));
   });
 
-  function renderPlatformPreview(key) {
-    const detail = platformDetails[key];
-    if (!detail || !platformPreview) return;
-    platformPreview.hidden = false;
-    document.querySelector("#platform-preview-number").textContent = String(key).padStart(2, "0");
-    document.querySelector("#platform-preview-title").textContent = detail.title.replace(/^\d+ · /, "");
-    document.querySelector("#platform-preview-summary").textContent = detail.summary;
-    platformPreviewGallery.classList.toggle("has-two", detail.images.length > 1);
-    platformPreviewGallery.innerHTML = detail.images.map((image) => `<figure class="device-frame ${image.frame || "desktop"}"><div><img src="${image.src}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`).join("");
-  }
+  document.querySelector("#cycle-auto")?.addEventListener("click", (event) => {
+    const button = event.currentTarget;
+    if (cycleAutoTimer) {
+      window.clearInterval(cycleAutoTimer);
+      cycleAutoTimer = 0;
+      button.classList.remove("is-running");
+      button.setAttribute("aria-pressed", "false");
+      button.title = "Kreislauf automatisch abspielen";
+      return;
+    }
+    document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => node.classList.remove("is-visited"));
+    deckCycleIndex = 3;
+    activatePresentationCycle(0);
+    button.classList.add("is-running");
+    button.setAttribute("aria-pressed", "true");
+    button.title = "Automatischen Kreislauf anhalten";
+    cycleAutoTimer = window.setInterval(() => activatePresentationCycle((deckCycleIndex + 1) % 4), 1500);
+  });
 
   document.querySelectorAll("[data-platform]").forEach((button) => {
-    const preview = () => renderPlatformPreview(button.dataset.platform);
-    button.addEventListener("pointerenter", preview);
-    button.addEventListener("focus", preview);
     button.addEventListener("click", () => openPlatformDialog(button.dataset.platform));
   });
   document.querySelector("#platform-dialog-close").addEventListener("click", () => platformDialog.close());
@@ -201,7 +211,7 @@
     document.querySelector("#platform-dialog-summary").textContent = detail.summary;
     const gallery = document.querySelector("#platform-dialog-gallery");
     gallery.classList.toggle("has-two", detail.images.length > 1);
-    gallery.innerHTML = detail.images.map((image) => `<figure><img src="${image.src}" alt="${image.alt}"><figcaption>${image.caption}</figcaption></figure>`).join("");
+    gallery.innerHTML = detail.images.map((image) => `<figure class="dialog-device ${image.frame || "desktop"}"><div class="dialog-device-screen"><img src="${image.src}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`).join("");
     platformDialog.showModal();
   }
 
@@ -216,13 +226,15 @@
   }
 
   document.querySelectorAll("[data-file]").forEach((button) => {
-    const preview = () => renderFilePreview(button.dataset.file);
-    button.addEventListener("pointerenter", preview);
-    button.addEventListener("focus", preview);
-    button.addEventListener("click", () => openFileDialog(button.dataset.file));
+    button.addEventListener("click", () => {
+      renderFilePreview(button.dataset.file);
+      openFileDialog(button.dataset.file);
+    });
   });
   document.querySelector("#file-dialog-close").addEventListener("click", () => fileDialog.close());
   fileDialog.addEventListener("click", (event) => { if (event.target === fileDialog) fileDialog.close(); });
+
+  qrDialog?.addEventListener("click", (event) => { if (event.target === qrDialog) qrDialog.close(); });
 
   function openFileDialog(key) {
     const detail = fileDetails[key];
@@ -271,23 +283,9 @@
     else status.textContent = copied ? "Browser schützen lokale Ordner. Der vollständige Pfad wurde kopiert." : `Browser schützen lokale Ordner. Öffne diesen Pfad im Explorer: ${folderPath}`;
   });
 
-  function renderQr() {
-    const qrCode = document.querySelector("#qr-code");
-    const qrUrl = document.querySelector("#qr-url");
-    const url = new URL("wissen.html", location.href).href.split("#")[0];
-    qrUrl.textContent = url;
-    if (!window.VibeQR) { qrCode.textContent = "QR-Code nicht verfügbar."; return; }
-    try {
-      window.VibeQR.render(qrCode, url, { cellSize: 11, margin: 4 });
-    } catch (error) {
-      qrCode.textContent = "QR-Code konnte nicht erzeugt werden.";
-    }
-  }
-
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.0", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.3", { scope: "./" }).catch(() => {}));
   }
 
-  renderQr();
   go(current, true);
 })();

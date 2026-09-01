@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding als geführte Lernreise: verstehen, ausprobieren, prüfen und eine eigene Idee starten.">
   <title>Vibecoding Schritt für Schritt</title>
-  <link rel="manifest" href="manifest.json?v=4.2.0">
+  <link rel="manifest" href="manifest.json?v=4.2.3">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.2.0">
+  <link rel="stylesheet" href="style.css?v=4.2.3">
 </head>
 <body class="knowledge-page journey-page">
   <a class="skip-link" href="#journey-stage">Zum Inhalt springen</a>
@@ -20,7 +20,10 @@
       <span id="journey-step-label">Schritt 1 von 7</span>
       <div class="journey-progress" aria-hidden="true"><span id="journey-progress-bar"></span></div>
     </div>
-    <div class="discovery-score" title="Deine Entdeckungen auf dieser Lernreise"><span aria-hidden="true">+</span><b id="discovery-points">0</b><small>Punkte</small></div>
+    <div class="learning-progress-control">
+      <button class="learning-progress-button" id="learning-progress-button" type="button" aria-expanded="false" aria-controls="learning-progress-popover"><span>Lernfortschritt</span><b id="learning-progress-percent">0%</b></button>
+      <div class="learning-progress-popover" id="learning-progress-popover" hidden><b>Lernfortschritt</b><span id="learning-progress-summary">Es fehlen noch 7 von 7 Schritten.</span></div>
+    </div>
     <a class="media-button" href="mediathek.html">Mediathek</a>
     <button class="overview-button" type="button" data-go-step="8" title="Alle Themen öffnen">Übersicht</button>
   </header>
@@ -184,6 +187,6 @@
 
   <div class="discovery-toast" id="discovery-toast" role="status" aria-live="polite" hidden></div>
 
-  <script src="wissen.js?v=4.2.0"></script>
+  <script src="wissen.js?v=4.2.3"></script>
 </body>
 </html>

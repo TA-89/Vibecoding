@@ -1,11 +1,15 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.0";
+  const VERSION = "4.2.3";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
+  const PROGRESS_KEY = "vibecoding-learning-progress-v1";
   const cards = Array.from(document.querySelectorAll(".video-card"));
   const filters = Array.from(document.querySelectorAll(".media-filter[data-filter]"));
-  const points = document.querySelector("#discovery-points");
+  const learningProgressButton = document.querySelector("#learning-progress-button");
+  const learningProgressPercent = document.querySelector("#learning-progress-percent");
+  const learningProgressPopover = document.querySelector("#learning-progress-popover");
+  const learningProgressSummary = document.querySelector("#learning-progress-summary");
   const progressTitle = document.querySelector("#media-progress-title");
   const progressCopy = document.querySelector("#media-progress-copy");
   const progressBar = document.querySelector("#media-progress-bar");
@@ -42,12 +46,16 @@
     discoveries.add(key);
     saveDiscoveries();
     updateProgress();
-    showToast(`+10 Punkte · ${label}`);
+    showToast(`Entdeckt · ${label}`);
     return true;
   }
 
   function updateProgress() {
-    points.textContent = String(discoveries.size * 10);
+    let highestStep = 0;
+    try { highestStep = Math.max(0, Math.min(7, Number(localStorage.getItem(PROGRESS_KEY)) || 0)); } catch (error) { /* Storage can be blocked. */ }
+    learningProgressPercent.textContent = `${Math.round((highestStep / 7) * 100)}%`;
+    const missing = 7 - highestStep;
+    learningProgressSummary.textContent = missing === 0 ? "Alle 7 Schritte sind abgeschlossen." : `Es fehlen noch ${missing} von 7 Schritten.`;
     const watched = cards.filter((card) => discoveries.has(`video:${card.dataset.video}`)).length;
     cards.forEach((card) => card.classList.toggle("is-visited", discoveries.has(`video:${card.dataset.video}`)));
     document.querySelectorAll("[data-resource]").forEach((link) => link.classList.toggle("is-visited", discoveries.has(`resource:${link.dataset.resource}`)));
@@ -92,6 +100,18 @@
     target.scrollIntoView({ behavior: "smooth", block: "center" });
     showToast("Dieser Inhalt könnte zu dir passen.");
     window.setTimeout(() => target.classList.remove("is-highlighted"), 2200);
+  });
+
+  learningProgressButton?.addEventListener("click", () => {
+    const willOpen = learningProgressPopover.hidden;
+    learningProgressPopover.hidden = !willOpen;
+    learningProgressButton.setAttribute("aria-expanded", String(willOpen));
+  });
+  document.addEventListener("click", (event) => {
+    if (learningProgressPopover && !event.target.closest(".learning-progress-control")) {
+      learningProgressPopover.hidden = true;
+      learningProgressButton?.setAttribute("aria-expanded", "false");
+    }
   });
 
   updateProgress();

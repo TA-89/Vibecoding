@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Deutschsprachige Videos und offizielle Anleitungen zu Vibecoding, GitHub und GitHub Pages.">
   <title>Vibecoding Mediathek</title>
-  <link rel="manifest" href="manifest.json?v=4.2.0">
+  <link rel="manifest" href="manifest.json?v=4.2.3">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.2.0">
+  <link rel="stylesheet" href="style.css?v=4.2.3">
 </head>
 <body class="knowledge-page media-page">
   <a class="skip-link" href="#media-content">Zum Inhalt springen</a>
@@ -17,7 +17,10 @@
   <header class="media-header">
     <a class="knowledge-brand" href="wissen.html#uebersicht"><span aria-hidden="true"></span>Vibecoding</a>
     <div class="media-header-title"><b>Mediathek</b><span>Videos und sichere Startpunkte</span></div>
-    <div class="discovery-score" title="Deine Entdeckungen"><span aria-hidden="true">+</span><b id="discovery-points">0</b><small>Punkte</small></div>
+    <div class="learning-progress-control">
+      <button class="learning-progress-button" id="learning-progress-button" type="button" aria-expanded="false" aria-controls="learning-progress-popover"><span>Lernfortschritt</span><b id="learning-progress-percent">0%</b></button>
+      <div class="learning-progress-popover" id="learning-progress-popover" hidden><b>Lernfortschritt</b><span id="learning-progress-summary">Es fehlen noch 7 von 7 Schritten.</span></div>
+    </div>
     <a class="media-back" href="wissen.html#uebersicht">Zur Wissenskarte</a>
   </header>
 
@@ -79,6 +82,6 @@
   </main>
 
   <div class="discovery-toast" id="discovery-toast" role="status" aria-live="polite" hidden></div>
-  <script src="mediathek.js?v=4.2.0"></script>
+  <script src="mediathek.js?v=4.2.3"></script>
 </body>
 </html>

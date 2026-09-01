@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding im Unterricht: eine interaktive Kurzpräsentation für Lehrpersonen der GBS St. Gallen.">
   <title>Vibecoding im Unterricht</title>
-  <link rel="manifest" href="manifest.json?v=4.2.0">
+  <link rel="manifest" href="manifest.json?v=4.2.3">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.2.0">
+  <link rel="stylesheet" href="style.css?v=4.2.3">
 </head>
 <body class="deck-page">
   <a class="skip-link" href="#deck">Zum Inhalt springen</a>
@@ -24,11 +24,12 @@
     <section class="slide title-slide" data-title="Unterrichtsproblem">
       <div class="title-photo" role="img" aria-label="Berufsfachschul-Werkstatt mit digitalem Unterrichtswerkzeug"></div>
       <div class="title-veil" aria-hidden="true"></div>
+      <img class="title-gbs-logo" src="images/gbs-logo-lime.jpg" alt="GBS St. Gallen">
       <div class="title-copy">
-        <p class="eyebrow">Startkonvent · GBS St. Gallen</p>
-        <p class="vibecoding-mark">Vibecoding</p>
-        <h1>Ich wollte nie programmieren.</h1>
-        <p class="lead">Ich hatte einfach Unterrichtsprobleme, für die es kein passendes Werkzeug gab.</p>
+        <p class="title-event-bar">Eröffnungskonvent Bauabteilung GBS St. Gallen</p>
+        <h1>Programmieren...Ich? Niemals!</h1>
+        <p class="title-whisper">.....aber dann hörte ich von Vibe Coding.</p>
+        <p class="title-date">07.09.2026</p>
       </div>
     </section>
 
@@ -47,7 +48,7 @@
     <section class="slide platform-slide" data-title="So entstand die Plattform">
       <p class="eyebrow">Schritt für Schritt</p>
       <h2>So entstand eine Unterrichtsplattform für Sanitärinstallateure.</h2>
-      <p class="lead">Fahre mit der Maus über eine Nummer. Auf dem Handy genügt ein Antippen.</p>
+      <p class="lead">Klicke auf eine Nummer, um den Entwicklungsschritt gross zu sehen.</p>
       <div class="platform-timeline" aria-label="Entwicklung der Unterrichtsplattform">
         <button class="platform-step" data-platform="1" type="button"><span>1</span><b>Tagesprogramm</b></button>
         <button class="platform-step" data-platform="2" type="button"><span>2</span><b>Editor</b></button>
@@ -56,10 +57,6 @@
         <button class="platform-step" data-platform="5" type="button"><span>5</span><b>WebApp</b></button>
         <button class="platform-step" data-platform="6" type="button"><span>6</span><b>Praxisaufträge</b></button>
         <div class="timeline-more"><span aria-hidden="true"></span><b>weitere Ideen …</b></div>
-      </div>
-      <div class="platform-preview" id="platform-preview" aria-live="polite" hidden>
-        <div class="platform-preview-copy"><span id="platform-preview-number">01</span><div><b id="platform-preview-title">Tagesprogramm</b><p id="platform-preview-summary"></p></div></div>
-        <div class="platform-preview-gallery" id="platform-preview-gallery"></div>
       </div>
     </section>
 
@@ -85,6 +82,7 @@
         <button class="cycle-node cycle-left" data-cycle="3" type="button"><span class="cycle-node-copy"><small>4</small><b>Verbessern</b></span></button>
         <div class="cycle-core"><span class="cycle-direction" aria-hidden="true">↻</span><strong>Vibecoding</strong><p id="cycle-text">Erkläre das Problem und den kleinsten nützlichen Ablauf.</p></div>
       </div>
+      <button class="cycle-auto-button" id="cycle-auto" type="button" aria-pressed="false" aria-label="Kreislauf automatisch abspielen" title="Kreislauf automatisch abspielen">⚙</button>
     </section>
 
     <section class="slide" data-title="Was entsteht">
@@ -103,7 +101,7 @@
           <div class="file-preview-copy"><span id="file-preview-name">index.html</span><b id="file-preview-title">Hier stehen Inhalt und Aufbau.</b><p id="file-preview-text">Überschriften, Texte, Buttons und Felder bilden den sichtbaren Rohbau.</p></div>
         </div>
       </div>
-      <p class="click-hint">Fahre über einen Dateinamen. Antippen öffnet die ausführliche Erklärung.</p>
+      <p class="click-hint">Klicke auf einen Dateinamen: Die Vorschau wechselt und die Erklärung öffnet sich.</p>
     </section>
 
     <section class="slide" data-title="Webseite veröffentlichen">
@@ -132,7 +130,7 @@
       <p class="eyebrow">Kleine Werkzeuge</p>
       <h2>Was könnte deinen Unterricht morgen einfacher machen?</h2>
       <div class="idea-circles">
-        <span>Gruppen-<br>generator</span><span>Feedback-<br>formular</span><span>Quiz</span><span>Checkliste</span><span>H5P-<br>Lernpfad</span><span>Praxisfoto-<br>Challenge</span>
+        <span>Gruppen-<br>generator</span><span>Feedback-<br>formular</span><span>Quiz</span><span>Checkliste</span><span>H5P-<br>Lernpfad</span><span>Praxisfoto-<br>Challenge</span><span class="idea-placeholder" aria-label="Platz für eine weitere Idee">....</span><span class="idea-placeholder" aria-label="Platz für eine weitere Idee">....</span>
       </div>
     </section>
 
@@ -148,14 +146,14 @@
 
     <section class="slide check-slide" data-title="Zurück zu Codex">
       <p class="eyebrow">Der Live-Check</p>
-      <h2>Was hat Codex aus der Idee gemacht?</h2>
+      <h2>Wir schauen uns das Resultat der «Bild der Woche»-Funktion an.</h2>
       <p class="lead">Wir öffnen den Demo-Ordner, prüfen die Dateien und laden genau diesen Stand auf die Domain.</p>
       <div class="deploy-keywords" aria-label="Ablauf für den Live-Test"><span>Dateien prüfen</span><span>Domain öffnen</span><span>Dateien hochladen</span><span>Live testen</span><span>Rückweg behalten</span></div>
       <div class="control-note"><b>Der Coding-Agent könnte auch veröffentlichen</b><p>Mit den passenden Zugriffsrechten wären Uploads per Git, SFTP, FTP oder Hosting-Schnittstelle automatisierbar. Für diese Demo lade ich bewusst selbst hoch und sehe dabei jede Datei.</p><button id="demo-folder-open" class="folder-open-button" type="button">Demo-Ordner öffnen</button><p class="folder-open-status" id="demo-folder-status" aria-live="polite">C:\Users\Tobias.Arnold\OneDrive - Kt. SG BLD\Desktop\VibeCoding GBS Bauabteilung</p></div>
     </section>
 
     <section class="slide possibility-slide possibility-quote-slide" data-title="Der grösste Vorteil">
-      <h2>Mit Vibecoding baue ich heute komplexe Werkzeuge und Webseiten, von denen ich früher nie geglaubt hätte, dass ich sie selbst erstellen kann.</h2>
+      <blockquote>«Mit Vibe Coding baue ich Dinge, die ich mir früher nie zugetraut hätte.»</blockquote>
     </section>
 
     <section class="slide knowledge-slide" data-title="In Ruhe vertiefen">
@@ -166,7 +164,7 @@
         <p class="thank-you">Vielen Dank. Ich hoffe, ich konnte euch neugierig machen.</p>
         <div class="knowledge-actions"><a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a></div>
       </div>
-      <a class="qr-wrap" href="wissen.html" aria-label="Vibecoding-Infoseite öffnen"><div id="qr-code" class="qr-code" aria-label="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url"></p></a>
+      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.2.3" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
     </section>
   </main>
 
@@ -182,7 +180,14 @@
     <button class="dialog-close" id="file-dialog-close" type="button" aria-label="Dateierklärung schliessen">×</button><p class="eyebrow">Diese Datei</p><h2 id="file-dialog-title"></h2><p class="file-dialog-lead" id="file-dialog-summary"></p><div class="file-dialog-body"><div><h3>Darin steckt</h3><ul id="file-dialog-list"></ul></div><div><h3>Einfach gesagt</h3><p id="file-dialog-example"></p></div></div>
   </dialog>
 
-  <script src="qrcode.min.js?v=4.2.0"></script>
-  <script src="app.js?v=4.2.0"></script>
+  <dialog id="qr-dialog" class="qr-dialog">
+    <button class="dialog-close" id="qr-dialog-close" type="button" aria-label="QR-Code schliessen" onclick="this.closest('dialog').close()">×</button>
+    <p>Na... neugierig?</p>
+    <img src="images/vibecoding-info-qr.svg?v=4.2.3" alt="QR-Code zur Vibecoding-Infoseite">
+    <h2>Vielen Dank!</h2>
+    <a href="wissen.html">Vibecoding-Infoseite öffnen</a>
+  </dialog>
+
+  <script src="app.js?v=4.2.3"></script>
 </body>
 </html>
