@@ -1,9 +1,10 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.0";
+  const VERSION = "4.2.1";
   const FIRST_VISIT_KEY = "vibecoding-install-info-v1";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
+  const PROGRESS_KEY = "vibecoding-learning-progress-v1";
   const stepElements = Array.from(document.querySelectorAll(".journey-step"));
   const backButton = document.querySelector("#journey-back");
   const nextButton = document.querySelector("#journey-next");
@@ -19,7 +20,10 @@
   const installIntro = document.querySelector("#install-dialog-intro");
   const installSteps = document.querySelector("#install-dialog-steps");
   const nativeInstall = document.querySelector("#native-install");
-  const discoveryPoints = document.querySelector("#discovery-points");
+  const learningProgressButton = document.querySelector("#learning-progress-button");
+  const learningProgressPercent = document.querySelector("#learning-progress-percent");
+  const learningProgressPopover = document.querySelector("#learning-progress-popover");
+  const learningProgressSummary = document.querySelector("#learning-progress-summary");
   const discoveryToast = document.querySelector("#discovery-toast");
   const cycleOrbit = document.querySelector("#cycle-orbit");
   const cycleFeedback = document.querySelector("#cycle-feedback");
@@ -40,6 +44,7 @@
   let orbitRotation = 0;
   let activeCycleIndex = -1;
   let toastTimer = 0;
+  let highestStep = readLearningProgress();
 
   const state = {
     project: null,
@@ -199,14 +204,31 @@
     try { localStorage.setItem(DISCOVERY_KEY, JSON.stringify(Array.from(discoveries))); } catch (error) { /* Storage can be blocked. */ }
   }
 
+  function readLearningProgress() {
+    try {
+      const saved = Number(localStorage.getItem(PROGRESS_KEY));
+      return Number.isFinite(saved) ? Math.max(1, Math.min(7, saved)) : 1;
+    } catch (error) {
+      return 1;
+    }
+  }
+
+  function updateLearningProgress(step) {
+    const reachedStep = Math.min(7, Number(step) || 1);
+    highestStep = Math.max(highestStep, reachedStep);
+    try { localStorage.setItem(PROGRESS_KEY, String(highestStep)); } catch (error) { /* Storage can be blocked. */ }
+    const percentage = Math.round((highestStep / 7) * 100);
+    if (learningProgressPercent) learningProgressPercent.textContent = `${percentage}%`;
+    if (learningProgressSummary) learningProgressSummary.textContent = highestStep === 7 ? "Lernreise abgeschlossen" : `Bis Schritt ${highestStep} von 7`;
+  }
+
   function updateDiscoveryUi() {
-    if (discoveryPoints) discoveryPoints.textContent = String(discoveries.size * 10);
     document.querySelectorAll("[data-detail]").forEach((element) => {
       element.classList.toggle("is-discovered", discoveries.has(`detail:${element.dataset.detail}`));
     });
   }
 
-  function reward(key, label, points = 10) {
+  function reward(key, label) {
     if (discoveries.has(key)) return;
     discoveries.add(key);
     saveDiscoveries();
@@ -214,7 +236,7 @@
     if (!discoveryToast) return;
     window.clearTimeout(toastTimer);
     discoveryToast.hidden = false;
-    discoveryToast.textContent = `+${points} Punkte · ${label}`;
+    discoveryToast.textContent = `Entdeckt · ${label}`;
     discoveryToast.classList.remove("is-showing");
     void discoveryToast.offsetWidth;
     discoveryToast.classList.add("is-showing");
@@ -295,6 +317,7 @@
     const hub = safeStep === 8;
     stepLabel.textContent = hub ? "Wissenskarte" : `Schritt ${safeStep} von 7`;
     progressBar.style.width = `${hub ? 100 : (safeStep / 7) * 100}%`;
+    updateLearningProgress(hub ? 7 : safeStep);
     document.body.classList.toggle("is-hub", hub);
     updatePersonalContent();
     updateNavigation();
@@ -335,6 +358,10 @@
   }
 
   document.addEventListener("click", (event) => {
+    if (learningProgressPopover && !event.target.closest(".learning-progress-control")) {
+      learningProgressPopover.hidden = true;
+      learningProgressButton?.setAttribute("aria-expanded", "false");
+    }
     const mediaLink = event.target.closest('a[href="mediathek.html"]');
     if (mediaLink) reward("page:mediathek", "Mediathek freigeschaltet");
 
@@ -444,6 +471,11 @@
   document.querySelector("#route-copy-prompt")?.addEventListener("click", (event) => copyText(buildPrompt(), event.currentTarget));
   nextButton.addEventListener("click", () => { if (stepIsReady(currentStep)) showStep(Math.min(8, currentStep + 1), true); });
   backButton.addEventListener("click", () => showStep(currentStep === 8 ? 7 : Math.max(1, currentStep - 1), true));
+  learningProgressButton?.addEventListener("click", () => {
+    const willOpen = learningProgressPopover.hidden;
+    learningProgressPopover.hidden = !willOpen;
+    learningProgressButton.setAttribute("aria-expanded", String(willOpen));
+  });
 
   document.querySelector("#detail-dialog-close")?.addEventListener("click", () => detailDialog.close());
   detailDialog?.addEventListener("click", (event) => { if (event.target === detailDialog) detailDialog.close(); });

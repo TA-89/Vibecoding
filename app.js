@@ -11,8 +11,6 @@
   const fullscreenButton = document.querySelector("#fullscreen-toggle");
   const platformDialog = document.querySelector("#platform-dialog");
   const fileDialog = document.querySelector("#file-dialog");
-  const platformPreview = document.querySelector("#platform-preview");
-  const platformPreviewGallery = document.querySelector("#platform-preview-gallery");
   const presentationCycle = document.querySelector("#presentation-cycle");
   let current = readHash();
   let touchStartX = 0;
@@ -168,27 +166,10 @@
   }
 
   document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((button) => {
-    const activate = () => activatePresentationCycle(button.dataset.cycle);
-    button.addEventListener("pointerenter", activate);
-    button.addEventListener("focus", activate);
-    button.addEventListener("click", activate);
+    button.addEventListener("click", () => activatePresentationCycle(button.dataset.cycle));
   });
 
-  function renderPlatformPreview(key) {
-    const detail = platformDetails[key];
-    if (!detail || !platformPreview) return;
-    platformPreview.hidden = false;
-    document.querySelector("#platform-preview-number").textContent = String(key).padStart(2, "0");
-    document.querySelector("#platform-preview-title").textContent = detail.title.replace(/^\d+ · /, "");
-    document.querySelector("#platform-preview-summary").textContent = detail.summary;
-    platformPreviewGallery.classList.toggle("has-two", detail.images.length > 1);
-    platformPreviewGallery.innerHTML = detail.images.map((image) => `<figure class="device-frame ${image.frame || "desktop"}"><div><img src="${image.src}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`).join("");
-  }
-
   document.querySelectorAll("[data-platform]").forEach((button) => {
-    const preview = () => renderPlatformPreview(button.dataset.platform);
-    button.addEventListener("pointerenter", preview);
-    button.addEventListener("focus", preview);
     button.addEventListener("click", () => openPlatformDialog(button.dataset.platform));
   });
   document.querySelector("#platform-dialog-close").addEventListener("click", () => platformDialog.close());
@@ -216,10 +197,10 @@
   }
 
   document.querySelectorAll("[data-file]").forEach((button) => {
-    const preview = () => renderFilePreview(button.dataset.file);
-    button.addEventListener("pointerenter", preview);
-    button.addEventListener("focus", preview);
-    button.addEventListener("click", () => openFileDialog(button.dataset.file));
+    button.addEventListener("click", () => {
+      renderFilePreview(button.dataset.file);
+      openFileDialog(button.dataset.file);
+    });
   });
   document.querySelector("#file-dialog-close").addEventListener("click", () => fileDialog.close());
   fileDialog.addEventListener("click", (event) => { if (event.target === fileDialog) fileDialog.close(); });
@@ -271,23 +252,9 @@
     else status.textContent = copied ? "Browser schützen lokale Ordner. Der vollständige Pfad wurde kopiert." : `Browser schützen lokale Ordner. Öffne diesen Pfad im Explorer: ${folderPath}`;
   });
 
-  function renderQr() {
-    const qrCode = document.querySelector("#qr-code");
-    const qrUrl = document.querySelector("#qr-url");
-    const url = new URL("wissen.html", location.href).href.split("#")[0];
-    qrUrl.textContent = url;
-    if (!window.VibeQR) { qrCode.textContent = "QR-Code nicht verfügbar."; return; }
-    try {
-      window.VibeQR.render(qrCode, url, { cellSize: 11, margin: 4 });
-    } catch (error) {
-      qrCode.textContent = "QR-Code konnte nicht erzeugt werden.";
-    }
-  }
-
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.0", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.1", { scope: "./" }).catch(() => {}));
   }
 
-  renderQr();
   go(current, true);
 })();
