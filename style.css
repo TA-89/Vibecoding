@@ -321,10 +321,16 @@ blockquote { max-width: 1080px; margin: 34px 0 0; padding: 20px 24px; border-lef
 .possibility-scale span { display: block; margin-bottom: 24px; color: var(--muted); font-family: var(--mono); font-weight: 900; text-transform: uppercase; }
 .possibility-scale h3 { font-size: 1.55rem; }
 .possibility-note { margin-top: 28px; color: var(--lime); font-size: 1.15rem; font-weight: 900; }
-.possibility-quote-slide { display: none; place-items: center; text-align: center; }
+.possibility-quote-slide { display: none; place-items: center; overflow: hidden; cursor: pointer; text-align: center; }
 .possibility-quote-slide.is-active { display: grid; }
-.possibility-quote-slide blockquote { max-width: 980px; margin: 0; border: 0; background: transparent; color: #fff; font-family: var(--display); font-size: clamp(2.1rem, 4vw, 4.7rem); font-style: normal; font-weight: 850; line-height: 1.08; }
-.possibility-quote-slide blockquote::before { display: block; width: 84px; height: 9px; margin: 0 auto 32px; background: var(--lime); content: ""; }
+.possibility-quote-stage { position: relative; display: grid; place-items: center; width: min(1180px, 100%); min-height: min(70vh, 680px); isolation: isolate; }
+.possibility-first-quote { position: relative; z-index: 4; max-width: 980px; margin: 0; border: 0; background: transparent; color: #fff; font-family: var(--display); font-size: clamp(2.1rem, 4vw, 4.7rem); font-style: normal; font-weight: 850; line-height: 1.08; transform-origin: center; transition: opacity 720ms ease, transform 920ms cubic-bezier(.2, .75, .25, 1); }
+.possibility-first-quote::before { display: block; width: 84px; height: 9px; margin: 0 auto 32px; background: var(--lime); content: ""; }
+.possibility-second-quote { position: absolute; z-index: 5; top: 50%; left: 50%; width: min(1000px, 90%); margin: 0; color: #fff; font-family: var(--display); font-size: clamp(3rem, 6.4vw, 7rem); font-weight: 900; line-height: .98; opacity: 0; transform: translate(-50%, -42%) scale(.58); transition: opacity 520ms 300ms ease, transform 880ms 220ms cubic-bezier(.18, .86, .25, 1.18); }
+.possibility-pointing-hand { position: absolute; z-index: 3; right: -10%; bottom: -45%; display: block; width: min(55vw, 680px); max-width: none; height: auto; opacity: 0; pointer-events: none; filter: drop-shadow(0 28px 30px rgba(0, 0, 0, .34)); transform: translate(34%, 40%) scale(.28) rotate(-8deg); transform-origin: 78% 78%; transition: opacity 280ms 360ms ease, transform 1050ms 260ms cubic-bezier(.16, .84, .22, 1.12); }
+.possibility-quote-slide.is-revealed .possibility-first-quote { opacity: .64; transform: translateY(-155px) scale(.25); }
+.possibility-quote-slide.is-revealed .possibility-second-quote { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.possibility-quote-slide.is-revealed .possibility-pointing-hand { opacity: 1; transform: translate(0, 0) scale(1) rotate(-3deg); }
 
 /* QR-Abschluss */
 .knowledge-slide { grid-template-columns: minmax(0, 1fr) 360px; align-items: center; gap: 70px; }
@@ -528,6 +534,11 @@ dialog::backdrop { background: rgba(17, 28, 32, .84); backdrop-filter: blur(5px)
   blockquote { font-size: 1.15rem; }
   .possibility-scale { margin-top: 30px; }
   .possibility-scale article { min-height: 0; }
+  .possibility-quote-slide { padding: 56px 12px 82px; overflow: hidden; }
+  .possibility-quote-stage { min-height: calc(100dvh - 138px); }
+  .possibility-second-quote { width: 96%; font-size: clamp(2.5rem, 12vw, 4.2rem); }
+  .possibility-pointing-hand { right: -40%; bottom: -22%; width: min(112vw, 590px); }
+  .possibility-quote-slide.is-revealed .possibility-first-quote { transform: translateY(-150px) scale(.29); }
   .knowledge-slide { align-content: start; gap: 34px; }
   .qr-code { min-width: 280px; min-height: 280px; }
   .overview-grid { grid-template-columns: 1fr 1fr; }

@@ -13,6 +13,8 @@
   const fileDialog = document.querySelector("#file-dialog");
   const qrDialog = document.querySelector("#qr-dialog");
   const presentationCycle = document.querySelector("#presentation-cycle");
+  const possibilityQuoteSlide = document.querySelector("#possibility-quote-slide");
+  const possibilityQuoteIndex = slides.indexOf(possibilityQuoteSlide);
   let current = readHash();
   let touchStartX = 0;
   let touchStartY = 0;
@@ -21,6 +23,7 @@
   let deckCycleMoving = false;
   let ideaBurstTimer = 0;
   let storyTimer = 0;
+  let possibilityQuoteRevealed = false;
 
   const cycleTexts = [
     "Erkläre das Problem und den kleinsten nützlichen Ablauf.",
@@ -101,7 +104,9 @@
   }
 
   function go(index, replaceHash) {
-    current = Math.max(0, Math.min(slides.length - 1, index));
+    const nextIndex = Math.max(0, Math.min(slides.length - 1, index));
+    if (current === possibilityQuoteIndex && nextIndex !== possibilityQuoteIndex) resetPossibilityQuote();
+    current = nextIndex;
     window.clearTimeout(storyTimer);
     const storyPrompt = document.querySelector("#story-live-prompt");
     storyPrompt?.classList.remove("is-visible");
@@ -118,18 +123,46 @@
     slides[current].scrollTop = 0;
   }
 
-  function next() { if (current < slides.length - 1) go(current + 1); }
-  function previous() { if (current > 0) go(current - 1); }
+  function revealPossibilityQuote() {
+    if (current !== possibilityQuoteIndex || possibilityQuoteRevealed) return false;
+    possibilityQuoteRevealed = true;
+    possibilityQuoteSlide.classList.add("is-revealed");
+    possibilityQuoteSlide.setAttribute("aria-label", "Und das kannst auch du! Nochmals klicken, um zur letzten Folie zu wechseln.");
+    return true;
+  }
+
+  function resetPossibilityQuote() {
+    possibilityQuoteRevealed = false;
+    possibilityQuoteSlide?.classList.remove("is-revealed");
+    possibilityQuoteSlide?.setAttribute("aria-label", "Der grösste Vorteil. Klicken, um den zweiten Spruch zu zeigen.");
+  }
+
+  function next() {
+    if (revealPossibilityQuote()) return;
+    if (current < slides.length - 1) go(current + 1);
+  }
+
+  function previous() {
+    if (current === possibilityQuoteIndex && possibilityQuoteRevealed) {
+      resetPossibilityQuote();
+      return;
+    }
+    if (current > 0) go(current - 1);
+  }
   function anyDialogOpen() { return Array.from(document.querySelectorAll("dialog")).some((dialog) => dialog.open); }
 
   prevButton.addEventListener("click", previous);
   nextButton.addEventListener("click", next);
+  possibilityQuoteSlide?.addEventListener("click", (event) => {
+    if (event.target.closest("a, button")) return;
+    next();
+  });
   document.querySelector("#overview-open").addEventListener("click", () => overview.showModal());
 
   document.addEventListener("keydown", (event) => {
     if (anyDialogOpen()) return;
-    if (event.key === "ArrowRight" || event.key === " ") { event.preventDefault(); next(); }
-    if (event.key === "ArrowLeft") { event.preventDefault(); previous(); }
+    if (event.key === "ArrowRight" || event.key === " " || event.key === "PageDown") { event.preventDefault(); next(); }
+    if (event.key === "ArrowLeft" || event.key === "PageUp") { event.preventDefault(); previous(); }
     if (event.key === "Home") { event.preventDefault(); go(0); }
     if (event.key === "End") { event.preventDefault(); go(slides.length - 1); }
     if (event.key.toLowerCase() === "o") overview.showModal();
@@ -330,7 +363,7 @@
   if (!document.documentElement.requestFullscreen && !document.documentElement.webkitRequestFullscreen) fullscreenButton.hidden = true;
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.3.3", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.4.1", { scope: "./" }).catch(() => {}));
   }
 
   go(current, true);

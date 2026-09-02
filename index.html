@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding im Unterricht: eine interaktive Kurzpräsentation für Lehrpersonen der GBS St. Gallen.">
   <title>Vibecoding im Unterricht</title>
-  <link rel="manifest" href="manifest.json?v=4.3.3">
+  <link rel="manifest" href="manifest.json?v=4.4.1">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.3.3">
+  <link rel="stylesheet" href="style.css?v=4.4.1">
 </head>
 <body class="deck-page">
   <a class="skip-link" href="#deck">Zum Inhalt springen</a>
@@ -153,8 +153,12 @@
       <div class="ftp-info" id="ftp-info" hidden><b>FTP verbindet deinen Computer mit dem Webserver.</b><p>Damit lassen sich die geprüften Projektdateien direkt in den Webordner der Domain hochladen.</p></div>
     </section>
 
-    <section class="slide possibility-slide possibility-quote-slide" data-title="Der grösste Vorteil">
-      <blockquote>«Mit Vibe Coding baue ich Dinge, die ich mir früher nie zugetraut hätte.»</blockquote>
+    <section class="slide possibility-slide possibility-quote-slide" id="possibility-quote-slide" data-title="Der grösste Vorteil" aria-label="Der grösste Vorteil. Klicken, um den zweiten Spruch zu zeigen.">
+      <div class="possibility-quote-stage">
+        <blockquote class="possibility-first-quote">«Mit Vibe Coding baue ich Dinge, die ich mir früher nie zugetraut hätte.»</blockquote>
+        <p class="possibility-second-quote" aria-live="polite">Und das kannst auch du!</p>
+        <img class="possibility-pointing-hand" src="images/pointing-hand-audience.png" alt="">
+      </div>
     </section>
 
     <section class="slide knowledge-slide" data-title="In Ruhe vertiefen">
@@ -165,7 +169,7 @@
         <p class="thank-you">Vielen Dank. Ich hoffe, ich konnte euch neugierig machen.</p>
         <div class="knowledge-actions"><a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a></div>
       </div>
-      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.3.3" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
+      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.4.1" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
     </section>
   </main>
 
@@ -184,11 +188,11 @@
   <dialog id="qr-dialog" class="qr-dialog">
     <button class="dialog-close" id="qr-dialog-close" type="button" aria-label="QR-Code schliessen" onclick="this.closest('dialog').close()">×</button>
     <p>Na... neugierig?</p>
-    <img src="images/vibecoding-info-qr.svg?v=4.3.3" alt="QR-Code zur Vibecoding-Infoseite">
+    <img src="images/vibecoding-info-qr.svg?v=4.4.1" alt="QR-Code zur Vibecoding-Infoseite">
     <h2>Vielen Dank!</h2>
     <a href="wissen.html">Vibecoding-Infoseite öffnen</a>
   </dialog>
 
-  <script src="app.js?v=4.3.3"></script>
+  <script src="app.js?v=4.4.1"></script>
 </body>
 </html>
