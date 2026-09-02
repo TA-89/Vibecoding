@@ -17,9 +17,9 @@
   let touchStartX = 0;
   let touchStartY = 0;
   let deckCycleRotation = 0;
-  let deckCycleIndex = 0;
-  let cycleAutoTimer = 0;
+  let deckCycleStep = 0;
   let ideaBurstTimer = 0;
+  let storyTimer = 0;
 
   const cycleTexts = [
     "Erkläre das Problem und den kleinsten nützlichen Ablauf.",
@@ -101,15 +101,10 @@
 
   function go(index, replaceHash) {
     current = Math.max(0, Math.min(slides.length - 1, index));
-    if (current !== 4 && cycleAutoTimer) {
-      window.clearInterval(cycleAutoTimer);
-      cycleAutoTimer = 0;
-      const cycleAutoButton = document.querySelector("#cycle-auto");
-      cycleAutoButton?.classList.remove("is-running");
-      cycleAutoButton?.setAttribute("aria-pressed", "false");
-      const cycleAutoLabel = document.querySelector("#cycle-auto-label");
-      if (cycleAutoLabel) cycleAutoLabel.textContent = "Kreislauf starten";
-    }
+    window.clearTimeout(storyTimer);
+    const storyPrompt = document.querySelector("#story-live-prompt");
+    storyPrompt?.classList.remove("is-visible");
+    if (current === 3) storyTimer = window.setTimeout(() => storyPrompt?.classList.add("is-visible"), 10000);
     slides.forEach((slide, i) => slide.classList.toggle("is-active", i === current));
     counter.textContent = `${String(current + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
     progress.style.width = `${((current + 1) / slides.length) * 100}%`;
@@ -166,47 +161,39 @@
     overviewGrid.append(button);
   });
 
-  function activatePresentationCycle(index) {
-    const safeIndex = ((Number(index) % 4) + 4) % 4;
-    const delta = (safeIndex - deckCycleIndex + 4) % 4;
-    deckCycleRotation += delta * 90;
-    deckCycleIndex = safeIndex;
+  function resetPresentationCycle() {
+    deckCycleStep = 0;
+    deckCycleRotation = 0;
     presentationCycle?.style.setProperty("--deck-cycle-turn", `${deckCycleRotation}deg`);
     presentationCycle?.style.setProperty("--deck-cycle-counter", `${-deckCycleRotation}deg`);
-    document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => node.classList.toggle("is-active", Number(node.dataset.cycle) === safeIndex));
-    document.querySelector(`.presentation-cycle [data-cycle="${safeIndex}"]`)?.classList.add("is-visited");
-    document.querySelector("#cycle-text").textContent = cycleTexts[safeIndex] || cycleTexts[0];
+    document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => node.classList.remove("is-active", "is-visited"));
+    document.querySelector("#cycle-text").textContent = "Ein Klick startet den ersten Schritt.";
+    document.querySelector("#cycle-auto-label").textContent = "Start";
   }
 
-  document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((button) => {
-    button.addEventListener("click", () => activatePresentationCycle(button.dataset.cycle));
-  });
-
   document.querySelector("#cycle-auto")?.addEventListener("click", (event) => {
-    const button = event.currentTarget;
-    if (cycleAutoTimer) {
-      window.clearInterval(cycleAutoTimer);
-      cycleAutoTimer = 0;
-      button.classList.remove("is-running");
-      button.setAttribute("aria-pressed", "false");
-      button.title = "Kreislauf automatisch abspielen";
-      document.querySelector("#cycle-auto-label").textContent = "Kreislauf starten";
+    if (deckCycleStep >= 4) {
+      resetPresentationCycle();
       return;
     }
-    document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => node.classList.remove("is-visited"));
-    deckCycleIndex = 3;
-    activatePresentationCycle(0);
-    button.classList.add("is-running");
-    button.setAttribute("aria-pressed", "true");
-    button.title = "Automatischen Kreislauf anhalten";
-    document.querySelector("#cycle-auto-label").textContent = "Kreislauf stoppen";
-    cycleAutoTimer = window.setInterval(() => activatePresentationCycle((deckCycleIndex + 1) % 4), 1800);
+    const completedIndex = deckCycleStep;
+    deckCycleStep += 1;
+    deckCycleRotation = deckCycleStep * -90;
+    presentationCycle?.style.setProperty("--deck-cycle-turn", `${deckCycleRotation}deg`);
+    presentationCycle?.style.setProperty("--deck-cycle-counter", `${-deckCycleRotation}deg`);
+    document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => {
+      const index = Number(node.dataset.cycle);
+      node.classList.toggle("is-visited", index < deckCycleStep);
+      node.classList.toggle("is-active", index === completedIndex);
+    });
+    document.querySelector("#cycle-text").textContent = cycleTexts[completedIndex];
+    document.querySelector("#cycle-auto-label").textContent = deckCycleStep === 4 ? "Neue Runde" : "Weiter";
+    event.currentTarget.title = deckCycleStep === 4 ? "Kreislauf zurücksetzen" : "Nächsten Schritt zeigen";
   });
 
   document.querySelectorAll("[data-platform]").forEach((button) => {
     button.addEventListener("click", () => openPlatformDialog(button.dataset.platform));
   });
-  document.querySelector("#platform-dialog-close").addEventListener("click", () => platformDialog.close());
   platformDialog.addEventListener("click", (event) => { if (event.target === platformDialog) platformDialog.close(); });
   document.querySelector("#platform-dialog-gallery")?.addEventListener("click", (event) => {
     if (event.target.closest(".dialog-device-screen")) platformDialog.close();
@@ -215,24 +202,14 @@
   function openPlatformDialog(key) {
     const detail = platformDetails[key];
     if (!detail) return;
-    document.querySelector("#platform-dialog-title").textContent = detail.title;
-    document.querySelector("#platform-dialog-summary").textContent = detail.summary;
     const gallery = document.querySelector("#platform-dialog-gallery");
     gallery.classList.toggle("has-two", detail.images.length > 1);
     gallery.innerHTML = detail.images.map((image) => {
       const frame = image.frame || "desktop";
       const filename = image.src.split("/").pop().replace(/\.[^.]+$/, "");
       const mockup = `images/mockup-${filename}.png`;
-      return `<figure class="dialog-device ${frame}"><div class="dialog-device-screen" role="button" tabindex="0" aria-label="Bild schliessen"><img class="dialog-device-render" src="${mockup}" alt="${image.alt}"></div><figcaption>${image.caption}</figcaption></figure>`;
+      return `<figure class="dialog-device ${frame}"><div class="dialog-device-screen"><img class="dialog-device-render" src="${mockup}" alt="${image.alt}"></div></figure>`;
     }).join("");
-    gallery.querySelectorAll(".dialog-device-screen").forEach((screen) => {
-      screen.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          platformDialog.close();
-        }
-      });
-    });
     platformDialog.showModal();
   }
 
@@ -241,6 +218,9 @@
     const preview = document.querySelector("#file-live-preview");
     if (!detail || !preview) return;
     preview.dataset.fileMode = key;
+    preview.classList.remove("is-demo-running");
+    const demoButton = document.querySelector("#mini-demo-start");
+    if (demoButton) demoButton.textContent = "Start";
     document.querySelector("#file-preview-name").textContent = detail.title;
     document.querySelector("#file-preview-title").textContent = detail.summary;
     document.querySelector("#file-preview-text").textContent = detail.example;
@@ -251,6 +231,12 @@
       renderFilePreview(button.dataset.file);
       document.querySelectorAll("[data-file]").forEach((item) => item.classList.toggle("is-selected", item === button));
     });
+  });
+  document.querySelector("#mini-demo-start")?.addEventListener("click", (event) => {
+    const preview = document.querySelector("#file-live-preview");
+    if (!preview || preview.dataset.fileMode === "images") return;
+    const running = preview.classList.toggle("is-demo-running");
+    event.currentTarget.textContent = running ? "Noch einmal" : "Start";
   });
   document.querySelector("#file-dialog-close").addEventListener("click", () => fileDialog.close());
   fileDialog.addEventListener("click", (event) => { if (event.target === fileDialog) fileDialog.close(); });
@@ -294,6 +280,14 @@
 
   document.querySelector("#idea-burst")?.addEventListener("click", launchIdeaBurst);
 
+  document.querySelector("#ftp-info-button")?.addEventListener("click", (event) => {
+    const info = document.querySelector("#ftp-info");
+    if (!info) return;
+    const willOpen = info.hidden;
+    info.hidden = !willOpen;
+    event.currentTarget.setAttribute("aria-expanded", String(willOpen));
+  });
+
   function isFullscreen() { return Boolean(document.fullscreenElement || document.webkitFullscreenElement); }
   async function toggleFullscreen() {
     try {
@@ -321,18 +315,8 @@
   }
   if (!document.documentElement.requestFullscreen && !document.documentElement.webkitRequestFullscreen) fullscreenButton.hidden = true;
 
-  document.querySelector("#demo-folder-open")?.addEventListener("click", async () => {
-    const folderPath = "C:\\Users\\Tobias.Arnold\\OneDrive - Kt. SG BLD\\Desktop\\VibeCoding GBS Bauabteilung";
-    const status = document.querySelector("#demo-folder-status");
-    let copied = false;
-    try { await navigator.clipboard.writeText(folderPath); copied = true; } catch (error) { /* The path remains visible as fallback. */ }
-    if (location.protocol === "file:") window.open("file:///C:/Users/Tobias.Arnold/OneDrive%20-%20Kt.%20SG%20BLD/Desktop/VibeCoding%20GBS%20Bauabteilung", "_blank");
-    if (location.protocol === "file:") status.textContent = copied ? "Ordner wird geöffnet. Der Pfad wurde zusätzlich kopiert." : `Ordner wird geöffnet. Pfad: ${folderPath}`;
-    else status.textContent = copied ? "Browser schützen lokale Ordner. Der vollständige Pfad wurde kopiert." : `Browser schützen lokale Ordner. Öffne diesen Pfad im Explorer: ${folderPath}`;
-  });
-
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.2.8", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.3.1", { scope: "./" }).catch(() => {}));
   }
 
   go(current, true);

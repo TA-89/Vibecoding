@@ -1,10 +1,12 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.2.8";
+  const VERSION = "4.3.1";
   const FIRST_VISIT_KEY = "vibecoding-install-info-v1";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
-  const PROGRESS_KEY = "vibecoding-learning-progress-v1";
+  const PROGRESS_KEY = "vibecoding-learning-progress-v2";
+  const HUB_CARD_IDS = ["hub-definition", "hub-cycle", "hub-prompt", "hub-ideas", "hub-tools", "hub-publish", "hub-safety", "hub-examples", "hub-glossary", "hub-sources", "mediathek", "presentation"];
+  const REQUIRED_VIDEO_COUNT = 5;
   const stepElements = Array.from(document.querySelectorAll(".journey-step"));
   const backButton = document.querySelector("#journey-back");
   const nextButton = document.querySelector("#journey-next");
@@ -44,7 +46,7 @@
   let orbitRotation = 0;
   let activeCycleIndex = -1;
   let toastTimer = 0;
-  let highestStep = readLearningProgress();
+  let learningProgress = readLearningProgress();
 
   const state = {
     project: null,
@@ -206,27 +208,61 @@
 
   function readLearningProgress() {
     try {
-      const saved = Number(localStorage.getItem(PROGRESS_KEY));
-      return Number.isFinite(saved) ? Math.max(0, Math.min(7, saved)) : 0;
+      const saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
+      return {
+        journey: Array.isArray(saved.journey) ? saved.journey : [],
+        cards: Array.isArray(saved.cards) ? saved.cards : [],
+        mediaOpened: saved.mediaOpened === true,
+        videos: Array.isArray(saved.videos) ? saved.videos : []
+      };
     } catch (error) {
-      return 0;
+      return { journey: [], cards: [], mediaOpened: false, videos: [] };
     }
   }
 
-  function updateLearningProgress(step) {
-    const reachedStep = Math.max(0, Math.min(7, Number(step) || 0));
-    highestStep = Math.max(highestStep, reachedStep);
-    try { localStorage.setItem(PROGRESS_KEY, String(highestStep)); } catch (error) { /* Storage can be blocked. */ }
-    const percentage = Math.round((highestStep / 7) * 100);
+  function saveLearningProgress() {
+    try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(learningProgress)); } catch (error) { /* Storage can be blocked. */ }
+  }
+
+  function markLearningProgress(group, value) {
+    if (group === "mediaOpened") {
+      learningProgress.mediaOpened = true;
+    } else if (Array.isArray(learningProgress[group]) && !learningProgress[group].includes(value)) {
+      learningProgress[group].push(value);
+    } else {
+      return;
+    }
+    saveLearningProgress();
+    updateLearningProgress();
+  }
+
+  function updateLearningProgress() {
+    const journeyDone = new Set(learningProgress.journey.map(Number).filter((step) => step >= 1 && step <= 7)).size;
+    const cardsDone = HUB_CARD_IDS.filter((id) => learningProgress.cards.includes(id)).length;
+    const videosDone = Math.min(REQUIRED_VIDEO_COUNT, new Set(learningProgress.videos).size);
+    const mediaDone = learningProgress.mediaOpened ? 1 : 0;
+    const total = 7 + HUB_CARD_IDS.length + 1 + REQUIRED_VIDEO_COUNT;
+    const completed = journeyDone + cardsDone + mediaDone + videosDone;
+    const percentage = Math.round((completed / total) * 100);
     if (learningProgressPercent) learningProgressPercent.textContent = `${percentage}%`;
-    const missing = 7 - highestStep;
-    if (learningProgressSummary) learningProgressSummary.textContent = missing === 0 ? "Alle 7 Schritte sind abgeschlossen." : `Es fehlen noch ${missing} von 7 Schritten.`;
+    if (!learningProgressSummary) return;
+    if (completed === total) {
+      learningProgressSummary.textContent = "100 %: Lernreise, Wissenskarten und Mediathek sind vollständig entdeckt.";
+      return;
+    }
+    const parts = [];
+    if (journeyDone < 7) parts.push(`${7 - journeyDone} Lernschritt${7 - journeyDone === 1 ? "" : "e"}`);
+    if (cardsDone < HUB_CARD_IDS.length) parts.push(`${HUB_CARD_IDS.length - cardsDone} Wissenskarte${HUB_CARD_IDS.length - cardsDone === 1 ? "" : "n"}`);
+    if (!mediaDone) parts.push("Mediathek öffnen");
+    if (videosDone < REQUIRED_VIDEO_COUNT) parts.push(`${REQUIRED_VIDEO_COUNT - videosDone} Video${REQUIRED_VIDEO_COUNT - videosDone === 1 ? "" : "s"}`);
+    learningProgressSummary.textContent = `Noch offen: ${parts.join(" · ")}.`;
   }
 
   function updateDiscoveryUi() {
     document.querySelectorAll("[data-detail]").forEach((element) => {
-      element.classList.toggle("is-discovered", discoveries.has(`detail:${element.dataset.detail}`));
+      element.classList.toggle("is-discovered", discoveries.has(`detail:${element.dataset.detail}`) || learningProgress.cards.includes(element.dataset.detail));
     });
+    document.querySelectorAll("[data-progress-card]").forEach((element) => element.classList.toggle("is-discovered", learningProgress.cards.includes(element.dataset.progressCard)));
   }
 
   function reward(key, label) {
@@ -318,13 +354,14 @@
     const hub = safeStep === 8;
     stepLabel.textContent = hub ? "Wissenskarte" : `Schritt ${safeStep} von 7`;
     progressBar.style.width = `${hub ? 100 : ((safeStep - 1) / 7) * 100}%`;
-    updateLearningProgress(hub ? 7 : Math.max(0, safeStep - 1));
+    updateLearningProgress();
     document.body.classList.toggle("is-hub", hub);
     updatePersonalContent();
     updateNavigation();
     if (addHistory) {
       history.pushState({ step: safeStep }, "", hub ? "#uebersicht" : `#schritt-${safeStep}`);
       reward(`step:${safeStep}`, hub ? "Wissenskarte geöffnet" : `Schritt ${safeStep} erreicht`);
+      if (safeStep <= 7) markLearningProgress("journey", safeStep);
     }
     window.setTimeout(() => { if (activeSection) activeSection.scrollTop = 0; }, 60);
   }
@@ -355,6 +392,7 @@
     if (promptTarget) promptTarget.textContent = buildPrompt();
     if (!detailDialog.open) detailDialog.showModal();
     detailDialog.scrollTop = 0;
+    if (HUB_CARD_IDS.includes(key)) markLearningProgress("cards", key);
     reward(`detail:${key}`, "Neues Thema entdeckt");
   }
 
@@ -363,12 +401,18 @@
       learningProgressPopover.hidden = true;
       learningProgressButton?.setAttribute("aria-expanded", "false");
     }
+    const progressCard = event.target.closest("[data-progress-card]");
+    if (progressCard) markLearningProgress("cards", progressCard.dataset.progressCard);
+
     const mediaLink = event.target.closest('a[href="mediathek.html"]');
     if (mediaLink) reward("page:mediathek", "Mediathek freigeschaltet");
 
     const resetJourney = event.target.closest("[data-reset-journey]");
     if (resetJourney) {
-      try { localStorage.setItem(PROGRESS_KEY, "0"); } catch (error) { /* Storage can be blocked. */ }
+      try {
+        localStorage.removeItem(PROGRESS_KEY);
+        localStorage.removeItem(DISCOVERY_KEY);
+      } catch (error) { /* Storage can be blocked. */ }
       history.replaceState({ step: 1 }, "", "#schritt-1");
       location.reload();
       return;
@@ -389,6 +433,7 @@
       updatePersonalContent();
       updateNavigation();
       reward(`choice:${type}:${value}`, "Auswahl übernommen");
+      if (type === "project") markLearningProgress("journey", 1);
       return;
     }
     const detailButton = event.target.closest("[data-detail]");

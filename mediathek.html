@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Deutschsprachige Videos und offizielle Anleitungen zu Vibecoding, GitHub und GitHub Pages.">
   <title>Vibecoding Mediathek</title>
-  <link rel="manifest" href="manifest.json?v=4.2.8">
+  <link rel="manifest" href="manifest.json?v=4.3.1">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.2.8">
+  <link rel="stylesheet" href="style.css?v=4.3.1">
 </head>
 <body class="knowledge-page media-page">
   <a class="skip-link" href="#media-content">Zum Inhalt springen</a>
@@ -19,7 +19,7 @@
     <div class="media-header-title"><b>Mediathek</b><span>Videos und sichere Startpunkte</span></div>
     <div class="learning-progress-control">
       <button class="learning-progress-button" id="learning-progress-button" type="button" aria-expanded="false" aria-controls="learning-progress-popover"><span>Lernfortschritt</span><b id="learning-progress-percent">0%</b></button>
-      <div class="learning-progress-popover" id="learning-progress-popover" hidden><b>Lernfortschritt</b><span id="learning-progress-summary">Es fehlen noch 7 von 7 Schritten.</span></div>
+      <div class="learning-progress-popover" id="learning-progress-popover" hidden><b>Lernfortschritt</b><span id="learning-progress-summary">Die Lernreise beginnt bei 0 %.</span></div>
     </div>
     <a class="media-back" href="wissen.html#uebersicht">Zur Wissenskarte</a>
   </header>
@@ -76,17 +76,18 @@
 
     <section class="resource-section" aria-labelledby="resource-title">
       <p class="journey-kicker">Nachlesen und ausprobieren</p>
-      <h2 id="resource-title">Drei verlässliche nächste Schritte</h2>
+      <h2 id="resource-title">Vier verlässliche nächste Schritte</h2>
       <p>Diese Seiten erklären die Grundlagen direkt bei den jeweiligen Anbietern.</p>
       <div class="resource-grid">
         <a class="resource-card" data-resource="google-vibe" href="https://cloud.google.com/discover/what-is-vibe-coding?hl=de" target="_blank" rel="noopener"><small>Deutsch · Erklärung</small><b>Google Cloud: Was ist Vibe Coding?</b><span>Begriff, Kreislauf, Werkzeuge und verantwortungsbewusstes Arbeiten.</span></a>
         <a class="resource-card" data-resource="github-pages" href="https://docs.github.com/de/pages/getting-started-with-github-pages" target="_blank" rel="noopener"><small>Deutsch · Anleitung</small><b>GitHub Pages: Erste Schritte</b><span>Eine statische Webseite direkt aus einem Repository veröffentlichen.</span></a>
         <a class="resource-card" data-resource="openai-codex" href="https://openai.com/codex/" target="_blank" rel="noopener"><small>Werkzeug · Englisch</small><b>OpenAI Codex</b><span>Projektdateien verändern, Funktionen umsetzen und Ergebnisse prüfen lassen.</span></a>
+        <a class="resource-card" data-resource="claude-code" href="https://docs.anthropic.com/en/docs/claude-code/getting-started" target="_blank" rel="noopener"><small>Deutsch erklärt · offizielle Anleitung</small><b>Claude Code</b><span>Ein Coding-Agent von Anthropic, der Projektdateien liest, verändert und Befehle direkt im Terminal ausführt.</span></a>
       </div>
     </section>
   </main>
 
   <div class="discovery-toast" id="discovery-toast" role="status" aria-live="polite" hidden></div>
-  <script src="mediathek.js?v=4.2.8"></script>
+  <script src="mediathek.js?v=4.3.1"></script>
 </body>
 </html>

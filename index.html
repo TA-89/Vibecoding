@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding im Unterricht: eine interaktive Kurzpräsentation für Lehrpersonen der GBS St. Gallen.">
   <title>Vibecoding im Unterricht</title>
-  <link rel="manifest" href="manifest.json?v=4.2.8">
+  <link rel="manifest" href="manifest.json?v=4.3.1">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.2.8">
+  <link rel="stylesheet" href="style.css?v=4.3.1">
 </head>
 <body class="deck-page">
   <a class="skip-link" href="#deck">Zum Inhalt springen</a>
@@ -64,7 +64,7 @@
       <div class="story-photo" role="img" aria-label="Von der Idee vor dem Einschlafen über ein Baustellenfoto bis zur Besprechung in der Klasse"></div>
       <div class="story-copy">
         <div class="story-title"><p class="eyebrow">Die nächste Idee</p><h2>Vor dem Einschlafen dachte ich: Warum nicht ein «Bild der Woche»?</h2></div>
-        <div class="story-action"><p class="lead">Auf der Baustelle fotografieren. Kurz erklären. Im Unterricht gemeinsam besprechen.</p><a class="switch-link" href="https://chatgpt.com/codex" target="_blank" rel="noopener">Live-Test <span>↗</span></a></div>
+        <p class="story-live-prompt" id="story-live-prompt" aria-live="polite">Wir machen einen Live-Test.</p>
       </div>
       <div class="story-labels" aria-hidden="true"><span>Idee</span><span>Praxisfoto</span><span>Besprechung</span></div>
     </section>
@@ -75,13 +75,13 @@
       <div class="presentation-cycle" id="presentation-cycle" style="--deck-cycle-turn: 0deg; --deck-cycle-counter: 0deg" aria-label="Vibecoding-Kreislauf mit vier Schritten">
         <div class="presentation-cycle-track">
           <div class="cycle-ring" aria-hidden="true"></div>
-          <button class="cycle-node cycle-top is-active" data-cycle="0" type="button"><span class="cycle-node-copy"><small>1</small><b>Beschreiben</b></span></button>
-          <button class="cycle-node cycle-right" data-cycle="1" type="button"><span class="cycle-node-copy"><small>2</small><b>Generieren</b></span></button>
-          <button class="cycle-node cycle-bottom" data-cycle="2" type="button"><span class="cycle-node-copy"><small>3</small><b>Ausprobieren</b></span></button>
-          <button class="cycle-node cycle-left" data-cycle="3" type="button"><span class="cycle-node-copy"><small>4</small><b>Verbessern</b></span></button>
+          <div class="cycle-node cycle-top" data-cycle="0"><span class="cycle-node-copy"><small>1</small><b>Beschreiben</b></span></div>
+          <div class="cycle-node cycle-right" data-cycle="1"><span class="cycle-node-copy"><small>2</small><b>Generieren</b></span></div>
+          <div class="cycle-node cycle-bottom" data-cycle="2"><span class="cycle-node-copy"><small>3</small><b>Testen</b></span></div>
+          <div class="cycle-node cycle-left" data-cycle="3"><span class="cycle-node-copy"><small>4</small><b>Verbessern</b></span></div>
         </div>
-        <div class="cycle-core"><span class="cycle-direction" aria-hidden="true">↻</span><strong>Vibecoding</strong><p id="cycle-text">Erkläre das Problem und den kleinsten nützlichen Ablauf.</p></div>
-        <button class="cycle-auto-button" id="cycle-auto" type="button" aria-pressed="false" aria-label="Kreislauf automatisch abspielen" title="Kreislauf automatisch abspielen"><span aria-hidden="true">↻</span><b id="cycle-auto-label">Kreislauf starten</b></button>
+        <div class="cycle-core"><span class="cycle-direction" aria-hidden="true">↶</span><strong>Vibecoding</strong><p id="cycle-text">Ein Klick startet den ersten Schritt.</p></div>
+        <button class="cycle-auto-button" id="cycle-auto" type="button" aria-label="Nächsten Schritt im Kreislauf zeigen" title="Nächsten Schritt zeigen"><span aria-hidden="true">▶</span><b id="cycle-auto-label">Start</b></button>
       </div>
     </section>
 
@@ -97,7 +97,7 @@
           <button class="file-row" data-file="images" type="button"><code>images/</code><span>Bilder</span></button>
         </div>
         <div class="file-live-preview" id="file-live-preview" data-file-mode="index">
-          <div class="mini-browser" aria-hidden="true"><span></span><span></span><span></span><div class="mini-page"><i></i><b>Mein Unterrichtstool</b><p></p><button tabindex="-1">Start</button></div></div>
+          <div class="mini-browser"><span></span><span></span><span></span><div class="mini-page"><i></i><b>Mein Unterrichtstool</b><p></p><button id="mini-demo-start" type="button">Start</button><output class="mini-demo-result" id="mini-demo-result" aria-live="polite">Klick erkannt: Die Funktion läuft.</output></div></div>
           <div class="file-preview-copy"><span id="file-preview-name">index.html</span><b id="file-preview-title">Hier stehen Inhalt und Aufbau.</b><p id="file-preview-text">Überschriften, Texte, Buttons und Felder bilden den sichtbaren Rohbau.</p></div>
         </div>
       </div>
@@ -148,8 +148,8 @@
     <section class="slide check-slide" data-title="Zurück zu Codex">
       <p class="eyebrow">Der Live-Check</p>
       <h2>Wir schauen uns das Resultat der «Bild der Woche»-Funktion an.</h2>
-      <div class="deploy-keywords" aria-label="Ablauf für den Live-Test"><span>Dateien prüfen</span><span>Domain öffnen</span><span>Hochladen</span><span>Live testen</span></div>
-      <div class="control-note"><b>Der Coding-Agent könnte auch veröffentlichen</b><p>Mit den passenden Zugriffsrechten wäre auch der Upload automatisierbar. Heute lade ich die geprüften Dateien bewusst selbst hoch.</p><button id="demo-folder-open" class="folder-open-button" type="button">Demo-Ordner öffnen</button><p class="folder-open-status" id="demo-folder-status" aria-live="polite">C:\Users\Tobias.Arnold\OneDrive - Kt. SG BLD\Desktop\VibeCoding GBS Bauabteilung</p></div>
+      <button class="ftp-info-button" id="ftp-info-button" type="button" aria-expanded="false" aria-controls="ftp-info">Was ist FTP?</button>
+      <div class="ftp-info" id="ftp-info" hidden><b>FTP verbindet deinen Computer mit dem Webserver.</b><p>Damit lassen sich die geprüften Projektdateien direkt in den Webordner der Domain hochladen.</p></div>
     </section>
 
     <section class="slide possibility-slide possibility-quote-slide" data-title="Der grösste Vorteil">
@@ -164,7 +164,7 @@
         <p class="thank-you">Vielen Dank. Ich hoffe, ich konnte euch neugierig machen.</p>
         <div class="knowledge-actions"><a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a></div>
       </div>
-      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.2.8" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
+      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.3.1" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
     </section>
   </main>
 
@@ -173,7 +173,7 @@
   <dialog id="overview" class="overview"><form method="dialog"><div class="overview-head"><h2>Folienübersicht</h2><button class="close-btn" value="close">Schliessen</button></div><div class="overview-grid" id="overview-grid"></div></form></dialog>
 
   <dialog id="platform-dialog" class="platform-dialog">
-    <button class="dialog-close" id="platform-dialog-close" type="button" aria-label="Screenshot schliessen">×</button><p class="eyebrow">Entwicklungsschritt</p><h2 id="platform-dialog-title"></h2><p class="dialog-lead" id="platform-dialog-summary"></p><p class="dialog-close-hint">Zum Schliessen nochmals auf das geöffnete Bild klicken.</p><div class="platform-gallery" id="platform-dialog-gallery"></div>
+    <div class="platform-gallery" id="platform-dialog-gallery" aria-label="Screenshot gross anzeigen"></div>
   </dialog>
 
   <dialog id="file-dialog" class="file-dialog">
@@ -183,11 +183,11 @@
   <dialog id="qr-dialog" class="qr-dialog">
     <button class="dialog-close" id="qr-dialog-close" type="button" aria-label="QR-Code schliessen" onclick="this.closest('dialog').close()">×</button>
     <p>Na... neugierig?</p>
-    <img src="images/vibecoding-info-qr.svg?v=4.2.8" alt="QR-Code zur Vibecoding-Infoseite">
+    <img src="images/vibecoding-info-qr.svg?v=4.3.1" alt="QR-Code zur Vibecoding-Infoseite">
     <h2>Vielen Dank!</h2>
     <a href="wissen.html">Vibecoding-Infoseite öffnen</a>
   </dialog>
 
-  <script src="app.js?v=4.2.8"></script>
+  <script src="app.js?v=4.3.1"></script>
 </body>
 </html>
