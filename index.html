@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding im Unterricht: eine interaktive Kurzpräsentation für Lehrpersonen der GBS St. Gallen.">
   <title>Vibecoding im Unterricht</title>
-  <link rel="manifest" href="manifest.json?v=4.3.1">
+  <link rel="manifest" href="manifest.json?v=4.3.3">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.3.1">
+  <link rel="stylesheet" href="style.css?v=4.3.3">
 </head>
 <body class="deck-page">
   <a class="skip-link" href="#deck">Zum Inhalt springen</a>
@@ -75,11 +75,12 @@
       <div class="presentation-cycle" id="presentation-cycle" style="--deck-cycle-turn: 0deg; --deck-cycle-counter: 0deg" aria-label="Vibecoding-Kreislauf mit vier Schritten">
         <div class="presentation-cycle-track">
           <div class="cycle-ring" aria-hidden="true"></div>
-          <div class="cycle-node cycle-top" data-cycle="0"><span class="cycle-node-copy"><small>1</small><b>Beschreiben</b></span></div>
+          <div class="cycle-node cycle-top is-active" data-cycle="0"><span class="cycle-node-copy"><small>1</small><b>Beschreiben</b></span></div>
           <div class="cycle-node cycle-right" data-cycle="1"><span class="cycle-node-copy"><small>2</small><b>Generieren</b></span></div>
           <div class="cycle-node cycle-bottom" data-cycle="2"><span class="cycle-node-copy"><small>3</small><b>Testen</b></span></div>
           <div class="cycle-node cycle-left" data-cycle="3"><span class="cycle-node-copy"><small>4</small><b>Verbessern</b></span></div>
         </div>
+        <span class="cycle-position-marker" aria-hidden="true"></span>
         <div class="cycle-core"><span class="cycle-direction" aria-hidden="true">↶</span><strong>Vibecoding</strong><p id="cycle-text">Ein Klick startet den ersten Schritt.</p></div>
         <button class="cycle-auto-button" id="cycle-auto" type="button" aria-label="Nächsten Schritt im Kreislauf zeigen" title="Nächsten Schritt zeigen"><span aria-hidden="true">▶</span><b id="cycle-auto-label">Start</b></button>
       </div>
@@ -164,7 +165,7 @@
         <p class="thank-you">Vielen Dank. Ich hoffe, ich konnte euch neugierig machen.</p>
         <div class="knowledge-actions"><a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a></div>
       </div>
-      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.3.1" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
+      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.3.3" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
     </section>
   </main>
 
@@ -183,11 +184,11 @@
   <dialog id="qr-dialog" class="qr-dialog">
     <button class="dialog-close" id="qr-dialog-close" type="button" aria-label="QR-Code schliessen" onclick="this.closest('dialog').close()">×</button>
     <p>Na... neugierig?</p>
-    <img src="images/vibecoding-info-qr.svg?v=4.3.1" alt="QR-Code zur Vibecoding-Infoseite">
+    <img src="images/vibecoding-info-qr.svg?v=4.3.3" alt="QR-Code zur Vibecoding-Infoseite">
     <h2>Vielen Dank!</h2>
     <a href="wissen.html">Vibecoding-Infoseite öffnen</a>
   </dialog>
 
-  <script src="app.js?v=4.3.1"></script>
+  <script src="app.js?v=4.3.3"></script>
 </body>
 </html>

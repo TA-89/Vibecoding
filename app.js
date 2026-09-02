@@ -18,6 +18,7 @@
   let touchStartY = 0;
   let deckCycleRotation = 0;
   let deckCycleStep = 0;
+  let deckCycleMoving = false;
   let ideaBurstTimer = 0;
   let storyTimer = 0;
 
@@ -163,32 +164,45 @@
 
   function resetPresentationCycle() {
     deckCycleStep = 0;
-    deckCycleRotation = 0;
     presentationCycle?.style.setProperty("--deck-cycle-turn", `${deckCycleRotation}deg`);
     presentationCycle?.style.setProperty("--deck-cycle-counter", `${-deckCycleRotation}deg`);
     document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => node.classList.remove("is-active", "is-visited"));
+    document.querySelector('.presentation-cycle [data-cycle="0"]')?.classList.add("is-active");
     document.querySelector("#cycle-text").textContent = "Ein Klick startet den ersten Schritt.";
     document.querySelector("#cycle-auto-label").textContent = "Start";
+    document.querySelector("#cycle-auto")?.setAttribute("title", "Nächsten Schritt zeigen");
   }
 
   document.querySelector("#cycle-auto")?.addEventListener("click", (event) => {
+    if (deckCycleMoving) return;
     if (deckCycleStep >= 4) {
       resetPresentationCycle();
       return;
     }
-    const completedIndex = deckCycleStep;
+    const button = event.currentTarget;
     deckCycleStep += 1;
-    deckCycleRotation = deckCycleStep * -90;
+    deckCycleRotation -= 90;
+    const activeIndex = deckCycleStep % 4;
     presentationCycle?.style.setProperty("--deck-cycle-turn", `${deckCycleRotation}deg`);
     presentationCycle?.style.setProperty("--deck-cycle-counter", `${-deckCycleRotation}deg`);
     document.querySelectorAll(".presentation-cycle [data-cycle]").forEach((node) => {
       const index = Number(node.dataset.cycle);
       node.classList.toggle("is-visited", index < deckCycleStep);
-      node.classList.toggle("is-active", index === completedIndex);
+      node.classList.toggle("is-active", index === activeIndex);
     });
-    document.querySelector("#cycle-text").textContent = cycleTexts[completedIndex];
+    document.querySelector("#cycle-text").textContent = deckCycleStep === 4
+      ? "Eine Runde ist abgeschlossen. Die nächste Verbesserung kann beginnen."
+      : cycleTexts[activeIndex];
     document.querySelector("#cycle-auto-label").textContent = deckCycleStep === 4 ? "Neue Runde" : "Weiter";
-    event.currentTarget.title = deckCycleStep === 4 ? "Kreislauf zurücksetzen" : "Nächsten Schritt zeigen";
+    button.title = deckCycleStep === 4 ? "Kreislauf zurücksetzen" : "Nächsten Schritt zeigen";
+    deckCycleMoving = true;
+    button.disabled = true;
+    presentationCycle?.setAttribute("aria-busy", "true");
+    window.setTimeout(() => {
+      deckCycleMoving = false;
+      button.disabled = false;
+      presentationCycle?.removeAttribute("aria-busy");
+    }, 1500);
   });
 
   document.querySelectorAll("[data-platform]").forEach((button) => {
@@ -316,7 +330,7 @@
   if (!document.documentElement.requestFullscreen && !document.documentElement.webkitRequestFullscreen) fullscreenButton.hidden = true;
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.3.1", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.3.3", { scope: "./" }).catch(() => {}));
   }
 
   go(current, true);
