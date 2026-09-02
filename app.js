@@ -363,7 +363,7 @@
   if (!document.documentElement.requestFullscreen && !document.documentElement.webkitRequestFullscreen) fullscreenButton.hidden = true;
 
   if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.4.1", { scope: "./" }).catch(() => {}));
+    window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js?v=4.4.2", { scope: "./" }).catch(() => {}));
   }
 
   go(current, true);

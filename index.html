@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#C6D300">
   <meta name="description" content="Vibecoding im Unterricht: eine interaktive Kurzpräsentation für Lehrpersonen der GBS St. Gallen.">
   <title>Vibecoding im Unterricht</title>
-  <link rel="manifest" href="manifest.json?v=4.4.1">
+  <link rel="manifest" href="manifest.json?v=4.4.2">
   <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
-  <link rel="stylesheet" href="style.css?v=4.4.1">
+  <link rel="stylesheet" href="style.css?v=4.4.2">
 </head>
 <body class="deck-page">
   <a class="skip-link" href="#deck">Zum Inhalt springen</a>
@@ -149,6 +149,7 @@
     <section class="slide check-slide" data-title="Zurück zu Codex">
       <p class="eyebrow">Der Live-Check</p>
       <h2>Wir schauen uns das Resultat der «Bild der Woche»-Funktion an.</h2>
+      <p class="check-flow"><strong>Dateien anschauen</strong><span>→</span><strong>hochladen</strong><span>→</span><strong>testen</strong><small>oder alternativ: FTP-Anwendungen</small></p>
       <button class="ftp-info-button" id="ftp-info-button" type="button" aria-expanded="false" aria-controls="ftp-info">Was ist FTP?</button>
       <div class="ftp-info" id="ftp-info" hidden><b>FTP verbindet deinen Computer mit dem Webserver.</b><p>Damit lassen sich die geprüften Projektdateien direkt in den Webordner der Domain hochladen.</p></div>
     </section>
@@ -169,7 +170,7 @@
         <p class="thank-you">Vielen Dank. Ich hoffe, ich konnte euch neugierig machen.</p>
         <div class="knowledge-actions"><a class="mega-link" href="wissen.html">Infoseite öffnen <span>→</span></a></div>
       </div>
-      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.4.1" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
+      <button class="qr-wrap qr-enlarge-button" id="qr-enlarge" type="button" aria-label="QR-Code vergrössern" onclick="document.getElementById('qr-dialog').showModal()"><div class="qr-code"><img src="images/vibecoding-info-qr.svg?v=4.4.2" alt="QR-Code zur Vibecoding-Infoseite"></div><p id="qr-url" class="qr-url">https://ta-89.github.io/Vibecoding/wissen.html</p><span>Zum Vergrössern anklicken</span></button>
     </section>
   </main>
 
@@ -188,11 +189,11 @@
   <dialog id="qr-dialog" class="qr-dialog">
     <button class="dialog-close" id="qr-dialog-close" type="button" aria-label="QR-Code schliessen" onclick="this.closest('dialog').close()">×</button>
     <p>Na... neugierig?</p>
-    <img src="images/vibecoding-info-qr.svg?v=4.4.1" alt="QR-Code zur Vibecoding-Infoseite">
+    <img src="images/vibecoding-info-qr.svg?v=4.4.2" alt="QR-Code zur Vibecoding-Infoseite">
     <h2>Vielen Dank!</h2>
     <a href="wissen.html">Vibecoding-Infoseite öffnen</a>
   </dialog>
 
-  <script src="app.js?v=4.4.1"></script>
+  <script src="app.js?v=4.4.2"></script>
 </body>
 </html>

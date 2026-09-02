@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const VERSION = "4.4.1";
+  const VERSION = "4.4.2";
   const DISCOVERY_KEY = "vibecoding-discoveries-v1";
   const PROGRESS_KEY = "vibecoding-learning-progress-v2";
   const HUB_CARD_IDS = ["hub-definition", "hub-cycle", "hub-prompt", "hub-ideas", "hub-tools", "hub-publish", "hub-safety", "hub-examples", "hub-glossary", "hub-sources", "mediathek", "presentation"];
